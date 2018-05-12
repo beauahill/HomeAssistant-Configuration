@@ -1,0 +1,24 @@
+scene:
+  - name: Outdoor Lights On
+    entities:
+        light.level_3:
+          state: on
+  
+  - name: Outdoor Lights Off
+    entities:
+        light.level_3:
+          state: off
+  
+  - name: Indoor Lights On
+    entities:
+        light.level:
+          state: on
+        light.level_2:
+          state: on
+
+  - name: Indoor Lights Off
+    entities:
+        light.level:
+          state: off
+        light.level_2:
+          state: off       

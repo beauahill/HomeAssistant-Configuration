@@ -1,0 +1,11 @@
+living_room_lights:
+  name: Indoor Lights
+  entities:
+    - light.level
+    - light.level_2
+    
+outdoor_lights:  
+  name: Outdoor Lights
+  entities:
+    - light.level_3
+   
