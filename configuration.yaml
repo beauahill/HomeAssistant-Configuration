@@ -12,12 +12,15 @@ homeassistant:
   time_zone: America/Denver
   # Customization file
   customize: !include customize.yaml
+  packages: !include_dir_named packages
+  
+  #python_script:
 
 panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: http://hassio.local:3218
+    url: https://192.168.0.131:3218
 
   mdiindex:
     title: MDI Icon Index
@@ -40,7 +43,7 @@ http:
   # Secrets are defined in the file secrets.yaml
   api_password: !secret http_password
   cors_allowed_origins:
-    - http://192.168.0.131:708
+    - http://192.168.0.131:7080
     - http://192.168.0.145
     - https://reformedreality.com
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
@@ -71,11 +74,14 @@ logbook:
 map:
 
 # Track the sun
+mqtt:
+  broker: core-mosquito
+  username: !secret mos_username
+  password: !secret mos_password
+  
 sun:
 
 # Weather prediction
-sensor:
-  - platform: yr
 
 # Text to speech
 tts:
@@ -87,12 +93,13 @@ cloud:
 zwave:
     usb_path: /dev/ttyACM0
 
-appdaemon:
+#appdaemon:
 
-hadashboard:
-  dash_url: http://192.168.1.131:5050
-  dash_password: !secret dash_password
+#hadashboard:
+  #dash_url: http://192.168.1.131:5050
+  #dash_password: !secret dash_password
   
 group: !include groups.yaml
 automation: !include automations.yaml
-script: !include scripts.yaml
+
+

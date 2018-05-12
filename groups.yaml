@@ -8,4 +8,91 @@ outdoor_lights:
   name: Outdoor Lights
   entities:
     - light.level_3
-   
+    
+security_sensor:
+  name: Security Sensors
+  view: no
+  control: hidden
+  entities: 
+    - sensor.vision_zp3111_multisensor_4in1_burglar
+    - sensor.vision_zp3111_multisensor_4in1_emergency
+    - sensor.vision_zp3111_multisensor_4in1_sourcenodeid
+    - zwave.vision_zd2105us5_recessed_doorwindow_sensor
+    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_access_control
+    - sensor.alarm_level_2
+    - sensor.alarm_type_2
+    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_burglar
+    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_clock
+    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_power_management
+    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_sourcenodeid
+    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_system
+    - sensor.vision_zp3111_multisensor_4in1_luminance
+    - sensor.vision_zp3111_multisensor_4in1_relative_humidity
+    - sensor.vision_zp3111_multisensor_4in1_temperature
+    - sensor.alarm_level_3
+    - sensor.alarm_type_3
+    - sensor.vision_zg8101_garage_door_detector_burglar
+    - binary_sensor.sensor
+    - sensor.vision_zg8101_garage_door_detector_sourcenodeid
+    - 
+    
+
+dark_sky:
+  name: Weather Sensors
+  view: no
+  control: hidden
+  entities:
+    - sensor.dark_sky_cloud_coverage
+    - sensor.dark_sky_cloud_coverage_1
+    - sensor.dark_sky_cloud_coverage_2
+    - sensor.dark_sky_cloud_coverage_3
+    - sensor.dark_sky_cloud_coverage_4
+    - sensor.dark_sky_cloud_coverage_5
+    - sensor.dark_sky_cloud_coverage_6
+    - sensor.dark_sky_cloud_coverage_7
+    - sensor.dark_sky_daily_high_temperature
+    - sensor.dark_sky_daily_high_temperature_1
+    - sensor.dark_sky_daily_high_temperature_2
+    - sensor.dark_sky_daily_high_temperature_3
+    - sensor.dark_sky_daily_high_temperature_4
+    - sensor.dark_sky_daily_high_temperature_5
+    - sensor.dark_sky_daily_high_temperature_6
+    - sensor.dark_sky_daily_high_temperature_7
+    - sensor.dark_sky_daily_low_temperature
+    - sensor.dark_sky_daily_low_temperature_1
+    - sensor.dark_sky_daily_low_temperature_2
+    - sensor.dark_sky_daily_low_temperature_3
+    - sensor.dark_sky_daily_low_temperature_4
+    - sensor.dark_sky_daily_low_temperature_5
+    - sensor.dark_sky_daily_low_temperature_6
+    - sensor.dark_sky_daily_low_temperature_7
+    - sensor.dark_sky_daily_summary
+    - sensor.dark_sky_hourly_summary
+    - sensor.dark_sky_icon
+    - sensor.dark_sky_icon_1
+    - sensor.dark_sky_icon_2
+    - sensor.dark_sky_icon_3
+    - sensor.dark_sky_icon_4
+    - sensor.dark_sky_icon_5
+    - sensor.dark_sky_icon_6
+    - sensor.dark_sky_icon_7
+    - sensor.dark_sky_precip_probability
+    - sensor.dark_sky_precip_probability_1
+    - sensor.dark_sky_precip_probability_2
+    - sensor.dark_sky_precip_probability_3
+    - sensor.dark_sky_precip_probability_4
+    - sensor.dark_sky_precip_probability_5
+    - sensor.dark_sky_precip_probability_6
+    - sensor.dark_sky_precip_probability_7
+    - sensor.dark_sky_summary
+    - sensor.dark_sky_wind_speed
+    - sensor.dark_sky_wind_speed_1
+    - sensor.dark_sky_wind_speed_2
+    - sensor.dark_sky_wind_speed_3
+    - sensor.dark_sky_wind_speed_4
+    - sensor.dark_sky_wind_speed_5
+    - sensor.dark_sky_wind_speed_6
+    - sensor.dark_sky_wind_speed_7
+    - sensor.season
+    
+    

@@ -110,3 +110,31 @@ sensor.vision_zg8101_garage_door_detector_burglar:
   name:
   platform: zwave
   unique_id: 7-72057594161414305
+zwave.aeotec_zw090_zstick_gen5_us:
+  name:
+  platform: zwave
+  unique_id: node-1
+zwave.airline_mechanical_zds100:
+  name:
+  platform: zwave
+  unique_id: node-2
+zwave.airline_mechanical_zds100_2:
+  name:
+  platform: zwave
+  unique_id: node-3
+zwave.vision_zd2105us5_recessed_doorwindow_sensor:
+  name:
+  platform: zwave
+  unique_id: node-6
+zwave.vision_zg8101_garage_door_detector:
+  name:
+  platform: zwave
+  unique_id: node-7
+zwave.vision_zp3111_multisensor_4in1:
+  name:
+  platform: zwave
+  unique_id: node-9
+zwave.linear_lb60z1_dimmable_led_light_bulb:
+  name:
+  platform: zwave
+  unique_id: node-10
