@@ -22,6 +22,16 @@ sensor:
       - temperature_max
       - daily_summary
       - hourly_summary
+      - pressure
+      - temperature
+      - humidity
+      - visibility
+      - wind_bearing
+      - precip_intensity_max
+      - precip_intensity
+      - precip_type
+      - apparent_temperature
+      
 
   - platform: season
   - platform: template

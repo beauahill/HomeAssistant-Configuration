@@ -8,6 +8,10 @@ outdoor_lights:
   name: Outdoor Lights
   entities:
     - light.level_3
+
+gate_opener:
+  name: Gate
+  entities: input_boolean.gate_actuate
     
 security_sensor:
   name: Security Sensors

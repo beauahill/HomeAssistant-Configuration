@@ -1,6 +1,6 @@
 input_boolean:
   gate_actuate:
-    name: Gate Open
+    name: Open or Close Gate
     initial: off
 
 automation:
@@ -10,13 +10,13 @@ automation:
         entity_id: input_boolean.gate_actuate
         to: 'on'
     action:
-      - service: switch.gate_opener
-        data: {"event":"lounge_dimmed_50", "value1":"on"}
-  - alias: turn off when fancy switch off
+      - service: ifttt.trigger
+        data: {"event":"gate_opener"}
+  - alias: Send Off to Switch
     trigger: 
       - platform: state
-        entity_id: input_boolean.my_fancy_switch
+        entity_id: input_boolean.gate_actuate
         to: 'off'
     action:
       - service: ifttt.trigger
-        data: {"event":"lounge_dimmed_50", "value1":"off"}
+        data: {"event":"gate_close"}

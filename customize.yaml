@@ -1,0 +1,11 @@
+lock.locked:
+  friendly_name: Garage Lock
+  
+zwave.vision_zd2105us5_recessed_doorwindow_sensor:
+  friendly_name: Back Door Sensor
+  
+zwave.vision_zp3111_multisensor_4in1:
+  friendly_name: PIR Sensor
+  
+zwave.vision_zg8101_garage_door_detector:
+  friendly_name: Single Garage Door Sensor
