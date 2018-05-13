@@ -49,6 +49,9 @@ http:
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   # base_url: example.duckdns.org:8123
 
+ifttt:
+  key: !secret ifttt_key
+
 # Checks for available updates
 # Note: This component will send some information about your system to
 # the developers to assist with development of Home Assistant.
@@ -75,7 +78,7 @@ map:
 
 # Track the sun
 mqtt:
-  broker: core-mosquito
+  broker: core-mosquitto
   username: !secret mos_username
   password: !secret mos_password
   

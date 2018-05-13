@@ -12,7 +12,6 @@ outdoor_lights:
 security_sensor:
   name: Security Sensors
   view: no
-  control: hidden
   entities: 
     - sensor.vision_zp3111_multisensor_4in1_burglar
     - sensor.vision_zp3111_multisensor_4in1_emergency
@@ -34,13 +33,10 @@ security_sensor:
     - sensor.vision_zg8101_garage_door_detector_burglar
     - binary_sensor.sensor
     - sensor.vision_zg8101_garage_door_detector_sourcenodeid
-    - 
     
-
 dark_sky:
   name: Weather Sensors
   view: no
-  control: hidden
   entities:
     - sensor.dark_sky_cloud_coverage
     - sensor.dark_sky_cloud_coverage_1
@@ -94,5 +90,6 @@ dark_sky:
     - sensor.dark_sky_wind_speed_6
     - sensor.dark_sky_wind_speed_7
     - sensor.season
+
     
     

@@ -1,3 +1,14 @@
+- id: Hide_Sensors
+  alias: Hide Sensors from Default View
+  trigger:
+    platform: event
+    event_type: homeassistant_start
+  action:
+    service: group.set_visibility
+    entity_id: group.dark_sky, group.security_sensor 
+    data:
+     visible: False
+        
 - id: Indoor_Lights_On
   alias: Indoor Lights on at Sunset
   trigger:
@@ -36,4 +47,15 @@
   action:
     service: light.turn_off
     entity_id: group.outdoor_lights
+    
+- id: open_gate  
+  alias: Open Gate
+  trigger: 
+    platform: state
+    entity_id: switch.gate_opener
+    from: 'off'
+    to: 'on'
+  action:
+    service: ifttt.trigger
+    data: {"event":"gate_opener"}
     
