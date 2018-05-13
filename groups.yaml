@@ -11,7 +11,7 @@ outdoor_lights:
     
 security_sensor:
   name: Security Sensors
-  view: no
+  view: yes
   entities: 
     - sensor.vision_zp3111_multisensor_4in1_burglar
     - sensor.vision_zp3111_multisensor_4in1_emergency
