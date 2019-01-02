@@ -1,17 +1,55 @@
+default_view:
+  view: yes
+  icon: mdi:home
+  entities:
+    - group.outdoor_lights
+    - group.indoor_lights
+    - group.gate_control
+    - automation.outdoor_lights_on_at_night
+    - automation.outdoor_lights_off_at_sunrise
+    - automation.indoor_lights_on_at_sunset
+    - automation.indoor_lights_off_at_bedtime
+    - automation.lock_garage_door
+    - automation.unlock_garage_door
+    - lock.kwikset_touchpad_electronic_deadbolt_locked_2
+    - media_player.spotify
+    - sensor.season
+    - sensor.vision_zp3111_multisensor_4in1_temperature
+    - sensor.vision_zp3111_multisensor_4in1_relative_humidity
+    - sensor.vision_zp3111_multisensor_4in1_luminance
+    - sensor.dark_sky_apparent_temperature
+
+surveillance:
+  name: Surveillance
+  view: yes
+  entities:
+   - camera.garage_dogs
+   - camera.ptz_camera
+
 living_room_lights:
   name: Indoor Lights
   entities:
     - light.level
     - light.level_2
+    - light.level_6
     
 outdoor_lights:  
   name: Outdoor Lights
   entities:
     - light.level_3
+    - light.level_4
+    - light.level_5
+    - switch.inovelli_nzw30s_onoff_switchscene_switch
+    - input_boolean.landscapelt_toggle
 
-gate_opener:
-  name: Gate
-  entities: input_boolean.gate_actuate
+gate_control:
+  name: Gate Control
+  entities: cover.gate_control
+  
+landscape_lights:
+  name: Landscape Lights
+  entities: 
+    - input_boolean.landscapelt_toggle
     
 security_sensor:
   name: Security Sensors
@@ -20,80 +58,41 @@ security_sensor:
     - sensor.vision_zp3111_multisensor_4in1_burglar
     - sensor.vision_zp3111_multisensor_4in1_emergency
     - sensor.vision_zp3111_multisensor_4in1_sourcenodeid
-    - zwave.vision_zd2105us5_recessed_doorwindow_sensor
-    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_access_control
-    - sensor.alarm_level_2
-    - sensor.alarm_type_2
-    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_burglar
-    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_clock
-    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_power_management
-    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_sourcenodeid
-    - sensor.vision_zd2105us5_recessed_doorwindow_sensor_system
+    - sensor.kwikset_touchpad_electronic_deadbolt_alarm_level_2
+    #- zwave.vision_zd2105us5_recessed_doorwindow_sensor
+    #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_access_control
+    #- sensor.alarm_level_2
+    #- sensor.alarm_type_2
+    #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_burglar
+    #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_clock
+    #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_power_management
+    #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_sourcenodeid
+    #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_system
     - sensor.vision_zp3111_multisensor_4in1_luminance
     - sensor.vision_zp3111_multisensor_4in1_relative_humidity
-    - sensor.vision_zp3111_multisensor_4in1_temperature
-    - sensor.alarm_level_3
-    - sensor.alarm_type_3
-    - sensor.vision_zg8101_garage_door_detector_burglar
-    - binary_sensor.sensor
-    - sensor.vision_zg8101_garage_door_detector_sourcenodeid
+    #- sensor.vision_zp3111_multisensor_4in1_temperature
+    #- sensor.alarm_level_3
+    #- sensor.alarm_type_3
+    #- sensor.vision_zg8101_garage_door_detector_burglar
+    #- binary_sensor.sensor
+    #- sensor.vision_zg8101_garage_door_detector_sourcenodeid
     
-dark_sky:
-  name: Weather Sensors
-  view: no
-  entities:
-    - sensor.dark_sky_cloud_coverage
-    - sensor.dark_sky_cloud_coverage_1
-    - sensor.dark_sky_cloud_coverage_2
-    - sensor.dark_sky_cloud_coverage_3
-    - sensor.dark_sky_cloud_coverage_4
-    - sensor.dark_sky_cloud_coverage_5
-    - sensor.dark_sky_cloud_coverage_6
-    - sensor.dark_sky_cloud_coverage_7
-    - sensor.dark_sky_daily_high_temperature
-    - sensor.dark_sky_daily_high_temperature_1
-    - sensor.dark_sky_daily_high_temperature_2
-    - sensor.dark_sky_daily_high_temperature_3
-    - sensor.dark_sky_daily_high_temperature_4
-    - sensor.dark_sky_daily_high_temperature_5
-    - sensor.dark_sky_daily_high_temperature_6
-    - sensor.dark_sky_daily_high_temperature_7
-    - sensor.dark_sky_daily_low_temperature
-    - sensor.dark_sky_daily_low_temperature_1
-    - sensor.dark_sky_daily_low_temperature_2
-    - sensor.dark_sky_daily_low_temperature_3
-    - sensor.dark_sky_daily_low_temperature_4
-    - sensor.dark_sky_daily_low_temperature_5
-    - sensor.dark_sky_daily_low_temperature_6
-    - sensor.dark_sky_daily_low_temperature_7
-    - sensor.dark_sky_daily_summary
-    - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_icon
-    - sensor.dark_sky_icon_1
-    - sensor.dark_sky_icon_2
-    - sensor.dark_sky_icon_3
-    - sensor.dark_sky_icon_4
-    - sensor.dark_sky_icon_5
-    - sensor.dark_sky_icon_6
-    - sensor.dark_sky_icon_7
-    - sensor.dark_sky_precip_probability
-    - sensor.dark_sky_precip_probability_1
-    - sensor.dark_sky_precip_probability_2
-    - sensor.dark_sky_precip_probability_3
-    - sensor.dark_sky_precip_probability_4
-    - sensor.dark_sky_precip_probability_5
-    - sensor.dark_sky_precip_probability_6
-    - sensor.dark_sky_precip_probability_7
-    - sensor.dark_sky_summary
-    - sensor.dark_sky_wind_speed
-    - sensor.dark_sky_wind_speed_1
-    - sensor.dark_sky_wind_speed_2
-    - sensor.dark_sky_wind_speed_3
-    - sensor.dark_sky_wind_speed_4
-    - sensor.dark_sky_wind_speed_5
-    - sensor.dark_sky_wind_speed_6
-    - sensor.dark_sky_wind_speed_7
-    - sensor.season
 
-    
-    
+indoor_lights:
+    name: Indoor Lighting
+    entities:
+      - light.level_2
+      - light.level
+      - light.level_6
+      
+ 
+locks:
+    name: Garage Lock
+    entities:
+      - lock.kwikset_touchpad_electronic_deadbolt_locked_2
+      
+cameras:
+    name: Cameras
+    entities:
+      - camera.garage_dogs
+      - camera.ptz_camera

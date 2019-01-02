@@ -1,0 +1,204 @@
+title: HILL HOME AUTOMATION
+background: !include views/background.yaml
+
+#############PAGE 1 - HOME CONTROL#############################################################
+views:
+  - name: Home
+    theme: NightOwlTransparent
+    cards:
+    - type: horizontal-stack
+      cards:
+      - type: vertical-stack
+        cards:
+          - entity: light.level_3
+            name: Garage Doors
+            type: light
+          - entity: light.level_4
+            name: Garage Patio
+            type: light
+          - entity: light.level_5
+            name: Front Porch
+            type: light
+          - entity: switch.inovelli_nzw30s_onoff_switchscene_switch
+            icon: 'mdi:lightbulb'
+            name: Back Porch Lights
+            tap_action:
+              action: call-service
+              service: switch.toggle
+            type: entity-button
+      - type: vertical-stack
+        cards:
+          - entity: light.level
+            name: Lamp Dimmer
+            type: light
+          - entity: light.level_2
+            name: Lamp Dimmer
+            type: light
+          - entity: light.level_6
+            name: Lamp Bulb
+            type: light
+          - entity: input_boolean.landscapelt_toggle
+            icon: 'mdi:lightbulb'
+            tap_action:
+             action: call-service
+             data:
+               event: landscape_lights_on
+               service: ifttt.trigger
+            type: entity-button
+    - entity: cover.gate_control
+      icon: 'mdi:gate'
+      name: Toggle Gate
+      tap_action:
+        action: call-service
+        service: cover.open_cover
+      type: entity-button
+    - type: horizontal-stack
+      cards:
+        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_2
+          icon: 'mdi:lock'
+          name: Lock Garage Entry Door
+          tap_action:
+            action: call-service
+            service: lock.lock
+          type: entity-button
+        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_2
+          icon: 'mdi:lock-open'
+          name: Unlock Garage Entry Door
+          tap_action:
+            action: call-service
+            service: lock.unlock
+          type: entity-button
+    - type: vertical-stack
+      cards:
+        - entities:
+          - automation.outdoor_lights_on_at_night
+          - automation.outdoor_lights_off_at_sunrise
+          - automation.indoor_lights_on_at_sunset
+          - automation.indoor_lights_off_at_bedtime
+          - automation.lock_garage_door
+          - automation.unlock_garage_door
+          title: Automation
+          type: entities
+    icon: 'mdi:home'
+    path: default_view
+    title: default_view
+################################################################################################################################    
+
+##########PAGE 2 - ALARM PANEL#################################################################################################
+  - name: Alarm
+    theme: NightOwlTransparent
+    cards:
+      - entity: alarm_control_panel.home_alarm
+        name: House Alarm
+        states:
+          - arm_home
+          - arm_away
+          - arm_night
+          - armed_custom_bypass
+        type: alarm-panel
+    icon: 'mdi:blur-radial'
+################################################################################################################################
+
+########PAGE 3 - SURVIELLANCE###################################################################################################
+  - name: Surveillance
+    theme: NightOwlTransparent
+    cards:
+      - camera-image: camera.ptz_camera
+        entity: camera.ptz_camera
+        show_info: false
+        title: Driveway Camera
+        type: picture-entity
+      - type: map    
+        aspect_ratio: 969
+        default_zoom: 11
+        entities:
+          - device_tracker.beauhill_beausphone
+          - device_tracker.evaughnhill_erinphone
+          - zone.home
+      - entity: binary_sensor.back_porch_door
+        icon: 'mdi:door'
+        name: Back Porch Door
+        type: entity-button
+      - type: horizontal-stack
+        cards:
+          - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+            icon: 'mdi:garage'
+            name: Single Garage Door
+            type: entity-button
+          - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+            icon: 'mdi:garage'
+            name: Double Garage Door
+            type: entity-button
+    icon: 'mdi:eye'
+    title: Surviellance
+###############################################################################################################################
+
+##########PAGE 4 - WEATHER######################################################################################################    
+  - name: Weather
+    theme: NightOwlTransparent[]
+    cards:
+      - aspect_ration: 969
+        image: >-
+          https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=UDX&brand=wui&num=10&delay=25&type=N0R&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25769976&lat=0&lon=0&label=you       
+        type: picture
+      - entities:
+          - sensor.pws_feelslike_f
+          - sensor.vision_zp3111_multisensor_4in1_temperature
+        hours_to_show: 48
+        title: Feels Like Temperature
+        type: history-graph
+      - type: vertical-stack
+        cards: 
+         - type: sensor
+           entity: sensor.pws_temp_f
+           name: Temperature
+           icon: 'mdi:thermometer'
+           graph: line
+           detail: 2
+           hours_to_show: 48
+         - type: sensor
+           entity: sensor.pws_wind_mph
+           graph: line
+           detail: 2
+           hours_to_show: 48
+           name: Wind Speed
+           icon: 'mdi:weather-windy'
+         - type: sensor
+           entity: sensor.pws_wind_gust_mph
+           graph: line
+           detail: 2
+           hours_to_show: 48
+           name: Wind Gusts 
+           icon: 'mdi:weather-windy'
+      - entity: weather.dark_sky
+        type: weather-forecast
+      - type: vertical-stack
+        cards:
+          - entities:
+             - sensor.pws_weather_1d
+             - sensor.pws_weather_1n
+             - sensor.pws_weather_2d
+             - sensor.pws_weather_3d
+             - sensor.pws_weather_4d
+            name: Weather Forecast
+            type: entities
+    icon: 'mdi:theme-light-dark'
+    path: weather
+    title: Weather
+
+################################################################################################################################
+
+#######PAGE 5 - MEDIA CONTROLS#################################################################################################
+  - name: Media
+    theme: NightOwlTransparent
+    cards:
+      - entity: media_player.spotify
+        type: media-control
+      - entity: media_player.denonavr
+        type: media-control
+    icon: 'mdi:cast'
+    title: Media
+    
+    
+    
+

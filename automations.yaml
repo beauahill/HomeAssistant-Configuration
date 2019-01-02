@@ -1,61 +1,118 @@
-- id: Hide_Sensors
-  alias: Hide Sensors from Default View
+- id: Set Theme at Startup
+  alias: 'Set theme at startup'
+  initial_state: 'on'
   trigger:
-    platform: event
-    event_type: homeassistant_start
+    platform: homeassistant
+    event: start
   action:
-    service: group.set_visibility
-    entity_id: group.dark_sky, group.security_sensor 
+   - service: frontend.set_theme
+     data:
+       name: NightOwl
+       
+- id: letsencrypt-renewal
+  alias: "Let's Encrypt Renewal"
+  trigger:
+  - platform: time
+    at: '00:00:00'
+  action:
+  - service: hassio.addon_restart
     data:
-     visible: False
-        
+      addon: core_letsencrypt
+
 - id: Indoor_Lights_On
   alias: Indoor Lights on at Sunset
   trigger:
     platform: sun
     event: sunset
-    offset: "-00:45:00"
+    offset: '-00:45:00'
   action:
-    service: light.turn_on
-    entity_id: group.living_room_lights
-
+    - service: light.turn_on
+      data:
+        entity_id: group.living_room_lights
+        brightness: 255
+    
 - id: Indoor_Lights_Off
   alias: Indoor Lights off at Bedtime
   trigger:
     platform: time
-    at: "21:00:00"
+    at: '21:00:00'
   action:
-    service: light.turn_off
-    entity_id: group.living_room_lights
-  
+    - service: light.turn_off
+      data:
+        entity_id: group.living_room_lights
+      
 - id: Outdoor_Lights_On
   alias: Outdoor Lights on at Night
   trigger:
     platform: sun
     event: sunset
-    offset: "-00:45:00"
   action:
-    service: light.turn_on
-    entity_id: group.outdoor_lights
-
+    - service: light.turn_on
+      data:
+        entity_id: group.outdoor_lights
+        brightness: 255
+    - service: switch.turn_on
+    - service: ifttt.trigger
+      data: {"event":"landscapelt_on"}
+      
 - id: Outdoor_Lights_Off
   alias: Outdoor Lights off at Sunrise
   trigger:
     platform: sun
     event: sunrise
-    offset: "+00:30:00"
+    offset: '+00:30:00'
   action:
-    service: light.turn_off
-    entity_id: group.outdoor_lights
+    - service: light.turn_off
+      data:
+        entity_id: 
+          - group.outdoor_lights
+          - group.landscape_lights
+    - service: switch.turn_off
+    - service: ifttt.trigger
+      data: {"event":"landscapelt_off"}
     
-- id: open_gate  
-  alias: Open Gate
+#- id: open_gate
+#  alias: Open Gate
+#  trigger:
+#    platform: state
+#    entity_id: switch.gate_opener
+#    from: 'off'
+#    to: 'on'
+#  action:
+#    service: ifttt.trigger
+#    data:
+#      event: gate_opener
+
+- id: lock_door
+  alias: Lock Garage Door
+  trigger:
+    platform: time
+    at: '20:00:00'
+  action:
+    service: lock.lock
+    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
+
+- id: unlock_door
+  alias: Unlock Garage Door
+  trigger:
+    platform: time
+    at: '06:45:00'
+  action:
+    service: lock.unlock
+    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
+    
+
+- id: restart_HA
+  alias: Restart HA
   trigger: 
-    platform: state
-    entity_id: switch.gate_opener
-    from: 'off'
-    to: 'on'
+    platform: time
+    at: '02:00:00'  
+  condition:
+    condition: time
+    weekday:
+    - sun
+    - wed
+    - fri
   action:
-    service: ifttt.trigger
-    data: {"event":"gate_opener"}
-    
+    - service: homeassistant.restart
+

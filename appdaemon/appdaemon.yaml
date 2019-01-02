@@ -5,11 +5,19 @@ log:
 appdaemon:
   threads: 10
   app_dir: /config/appdaemon/apps
+  rss_feeds:
+  - feed: http://www.startribune.com/local/index.rss2
+    target: news
+  rss_update: 300
   plugins:
     HASS:
       type: hass
-      ha_url: http://hassio/homeassistant
-      ha_key: b5e32b2e56f4450f983b0bee8ebc9f8a
+      ha_url: https://beauhill.duckdns.org:8123
+      token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI5ODljNGJlZGQ1NTc0M2JiOTYyMWE5MjhlZGRiMTk5NiIsImlhdCI6MTU0NjAxODkzOCwiZXhwIjoxODYxMzc4OTM4fQ.VdDfbiLxl7qcKEH9cWEAShJVCASeVBivyPi0_1AdzqE
 hadashboard:
-  dash_url: http://127.0.0.1:5050
+  dash_url: http://192.168.0.137:5050
   dash_dir: /config/appdaemon/dashboards
+  rss_feeds:
+  - feed: http://www.startribune.com/local/index.rss2
+    target: news
+  rss_update: 300

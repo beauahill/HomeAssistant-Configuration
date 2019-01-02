@@ -1,0 +1,39 @@
+cloud:
+  google_actions:
+    filter:
+      include_entities:
+        - switch.inovelli_nzw30s_onoff_switchscene_switch
+        - light.level_5
+        - light.level_4
+        - light.level_3
+        - cover.gate_control
+        - zwave.kwikset_touchpad_electronic_deadbolt_3
+        - light.level_2
+        - light.level
+        - media_player.man_cave
+        - media_player.49_tcl_roku_tv
+        - media_player.spotify
+      include_domains:
+        - group.indoor_lights
+        - group.living_room_lights
+        - group.landscape_lights
+        - group.outdoor_lights
+  alexa:
+    filter:
+      include_entities:
+        - switch.inovelli_nzw30s_onoff_switchscene_switch
+        - light.level_5
+        - light.level_4
+        - light.level_3
+        - cover.gate_control
+        - zwave.kwikset_touchpad_electronic_deadbolt_3
+        - light.level_2
+        - light.level
+        - media_player.man_cave
+        - media_player.49_tcl_roku_tv
+        - media_player.spotify
+      include_domains:
+        - group.indoor_lights
+        - group.living_room_lights
+        - group.landscape_lights
+        - group.outdoor_lights

@@ -1,11 +1,14 @@
-lock.locked:
-  friendly_name: Garage Lock
-  
-zwave.vision_zd2105us5_recessed_doorwindow_sensor:
-  friendly_name: Back Door Sensor
-  
 zwave.vision_zp3111_multisensor_4in1:
   friendly_name: PIR Sensor
-  
-zwave.vision_zg8101_garage_door_detector:
-  friendly_name: Single Garage Door Sensor
+media_player.49_tcl_roku_tv:
+  friendly_name: Roku TV
+media_player.roku_player:
+  friendly_name: Bedroom Roku
+binary_sensor.vision_zg8101_garage_door_detector_sensor_3:
+  friendly_name: Single Garage Door
+  device_class: opening
+binary_sensor.vision_zg8101_garage_door_detector_sensor_4:
+  friendly_name: Double Garage Door
+  device_class: opening
+binary_sensor.back_porch_door:
+  friendly_name: Back Porch Door

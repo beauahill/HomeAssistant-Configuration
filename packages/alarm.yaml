@@ -1,0 +1,45 @@
+alarm_control_panel:
+  - platform: manual
+    name: Home Alarm
+    code: !secret alarm_code
+    pending_time: 30
+    delay_time: 20
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      pending_time: 0
+      delay_time: 0
+
+automation:
+- alias: 'Trigger alarm while armed away'
+  trigger:
+    - platform: state
+      entity_id: 
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+        - binary_sensor.back_porch_door
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_away
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.home_alarm
+    - service: ifttt.trigger
+      data: {"event":"alarm_away"}
+    - service: notify.beau_pushbullet
+      data:
+        message: "HOME ALARM TRIGGERED"
+        title: "ALARM TRIGGERED"
+    - service: media_player.volume_set
+      data:
+        volume_level: 0.6
+        entity_id: media_player.spotify
+    - service: media_player.play_media
+      data:
+        media_content_id: https://open.spotify.com/track/2zyZ8yPJ9WaallVz8NHMdT
+        media_content_type: 'music'
+        entity_id: media_player.spotify
+      

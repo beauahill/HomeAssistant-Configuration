@@ -1,0 +1,7 @@
+binary_sensor:
+    - platform: template
+      sensors:
+        back_porch_door:
+            value_template: "{{ states('sensor.vision_zd2105us5_recessed_doorwindow_sensor_alarm_level')|float > 250 }}"
+            device_class: opening
+            entity_id: sensor.vision_zd2105us5_recessed_doorwindow_sensor_alarm_level

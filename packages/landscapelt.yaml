@@ -1,0 +1,23 @@
+input_boolean:
+  landscapelt_toggle:
+    name: Landscape Lights Control
+    initial: off
+
+automation:
+  - alias: Landscape Lights On
+    trigger: 
+      - platform: state
+        entity_id: input_boolean.landscapelt_toggle
+        to: 'on'
+    action:
+      - service: ifttt.trigger
+        data: {"event":"landscapelt_on"}
+
+  - alias: Landscape Lights Off
+    trigger: 
+      - platform: state
+        entity_id: input_boolean.landscapelt_toggle
+        to: 'off'
+    action:
+      - service: ifttt.trigger
+        data: {"event":"landscapelt_off"}

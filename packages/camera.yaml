@@ -1,0 +1,13 @@
+camera:
+  - platform: xiaomi
+    name: Garage Dogs
+    host: '192.168.0.191'
+    model: 'yi'
+    password: !secret yigarage_password
+#    ffmpeg_arguments: '-vf scale=800:450'
+  - platform: mjpeg
+    mjpeg_url: http://192.168.0.210:8000/videostream.cgi?user=beauhill&pwd=CebhWYO81!
+    #port: 8000
+    #username: beauhill
+    #password: CebhWYO81!
+    name: PTZ Camera

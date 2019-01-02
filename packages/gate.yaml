@@ -1,22 +1,46 @@
-input_boolean:
-  gate_actuate:
-    name: Open or Close Gate
-    initial: off
+#input_boolean:
+#  gate_actuate:
+#    name: Open or Close Gate
+#    initial: off
 
-automation:
-  - alias: Open or Close Gate
-    trigger: 
-      - platform: state
-        entity_id: input_boolean.gate_actuate
-        to: 'on'
-    action:
-      - service: ifttt.trigger
-        data: {"event":"gate_opener"}
-  - alias: Send Off to Switch
-    trigger: 
-      - platform: state
-        entity_id: input_boolean.gate_actuate
-        to: 'off'
-    action:
-      - service: ifttt.trigger
-        data: {"event":"gate_close"}
+#automation:
+#  - alias: Open or Close Gate
+#    trigger: 
+#      - platform: state
+#        entity_id: input_boolean.gate_actuate
+#        to: 'on'
+#        for:
+#          seconds: 1
+#    action:
+#      - service: ifttt.trigger
+#        data: {"event":"gate_control"}
+
+#  - alias: Send Off to Switch
+#    trigger: 
+#      - platform: state
+#        entity_id: input_boolean.gate_actuate
+#        to: 'off'
+#    action:
+#      - service: ifttt.trigger
+#        data: {"event":"gate_close"}
+
+cover:
+  - platform: template
+    covers: 
+      gate_control:
+        friendly_name: 'Gate Control'
+        open_cover:
+          service: ifttt.trigger
+          data: {"event":"gate_control"}
+        close_cover:
+          service: ifttt.trigger
+          data: {"event":"gate_control"}
+        #stop_cover:
+        #  service: ifttt.trigger
+        #  data: {"event":"gate_control"}
+        icon_template: 
+#         {%- if states.binary_sensor.garagedoor.state == 'on' -%}
+          mdi:gate
+#         {%- else -%}
+#         mdi:garage
+#         {%- endif -%}
