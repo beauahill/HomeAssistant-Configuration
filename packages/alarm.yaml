@@ -1,7 +1,7 @@
 alarm_control_panel:
   - platform: manual
     name: Home Alarm
-    code: !secret alarm_code
+    code: 2971
     pending_time: 30
     delay_time: 20
     trigger_time: 4
@@ -10,15 +10,60 @@ alarm_control_panel:
     armed_home:
       pending_time: 0
       delay_time: 0
+ 
+automation:      
+###############NOTIFY ARMED AWAY###############################
+- alias: Notify Armed Away
+  initial_state: 'on'
+  trigger:
+   - platform: state
+     entity_id:
+       - alarm_control_panel.home_alarm
+     to: 'armed_away'
+  action:
+    - service: media_player.alexa_tts
+      entity_id: media_player.beaus_echo
+      data:
+        message: "Alarm is armed away"
 
-automation:
-- alias: 'Trigger alarm while armed away'
+#####################NOTIFY ARMED HOME####################
+- alias: Notify Armed Home
+  initial_state: 'on'
+  trigger:
+   - platform: state
+     entity_id:
+       - alarm_control_panel.home_alarm
+     to: 'armed_home'
+  action:
+    - service: media_player.alexa_tts
+      entity_id: media_player.beaus_echo
+      data:
+        message: "Alarm is Armed Home"
+
+########################NOTIFY DISARMED###########################
+- alias: Notify Disarmed
+  initial_state: 'on'
+  trigger:
+   - platform: state
+     entity_id:
+       - alarm_control_panel.home_alarm
+     to: 'disarmed'
+  action:
+    - service: media_player.alexa_tts
+      entity_id: media_player.beaus_echo
+      data:
+        message: "Alarm is Disarmed"
+        
+        
+##############################ARMED AWAY################################################    
+- alias: Trigger alarm while armed away
+  initial_state: 'on'
   trigger:
     - platform: state
       entity_id: 
+        - binary_sensor.back_porch_door
         - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
         - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
-        - binary_sensor.back_porch_door
       to: 'on'
   condition:
     - condition: state
@@ -33,13 +78,66 @@ automation:
       data:
         message: "HOME ALARM TRIGGERED"
         title: "ALARM TRIGGERED"
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.spotify
+        source: 'Everywhere'
     - service: media_player.volume_set
       data:
-        volume_level: 0.6
         entity_id: media_player.spotify
+        volume_level: '1.0'   
     - service: media_player.play_media
       data:
-        media_content_id: https://open.spotify.com/track/2zyZ8yPJ9WaallVz8NHMdT
-        media_content_type: 'music'
         entity_id: media_player.spotify
+        media_content_id: 'spotify:track:1GHJ6Qt08DWmbozdSJ4s0d'
+        media_content_type: 'music'
+#    - service: media_player.media_play
+#      data:
+#        entity_id: media_player_spotify
       
+      
+#    - service: media_player.play_media
+#      data:
+#        entity_id: media_player.beaus_echo
+#        media_content_id: http://www.orangefreesounds.com/wp-content/uploads/2016/05/Burglar-alarm-sound.mp3
+#        media_content_type: audio/mp4
+
+#####################ARMED HOME######################################################################################3
+- alias: Trigger Alarm While Armed Home
+  initial_state: 'on'
+  trigger:
+    - platform: state
+      entity_id: 
+        - binary_sensor.back_porch_door
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_home
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.home_alarm
+    - service: ifttt.trigger
+      data: {"event":"alarm_home"}
+    - service: notify.beau_pushbullet
+      data:
+        message: "HOME ALARM TRIGGERED"
+        title: "ALARM TRIGGERED"
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.spotify
+        source: 'Everywhere'
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.spotify
+        volume_level: '0.60'   
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.spotify
+        media_content_id: 'spotify:track:5DXJXnxyOqupTpR6QrmSa0'
+        media_content_type: 'music'
+#    - service: media_player.media_play
+#      data:
+#        entity_id: media_player_spotify

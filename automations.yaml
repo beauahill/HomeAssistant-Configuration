@@ -1,5 +1,6 @@
+####SET THEME######################################
 - id: Set Theme at Startup
-  alias: 'Set theme at startup'
+  alias: Set theme at startup
   initial_state: 'on'
   trigger:
     platform: homeassistant
@@ -8,9 +9,11 @@
    - service: frontend.set_theme
      data:
        name: NightOwl
-       
-- id: letsencrypt-renewal
-  alias: "Let's Encrypt Renewal"
+
+###SSL RENEWAL########################################       
+- id: letsencrypt_renewal
+  alias: Lets Encrypt Renewal
+  initial_state: 'on'
   trigger:
   - platform: time
     at: '00:00:00'
@@ -18,9 +21,11 @@
   - service: hassio.addon_restart
     data:
       addon: core_letsencrypt
-
+      
+####LIGHTING AUTOMATIONS#################################
 - id: Indoor_Lights_On
   alias: Indoor Lights on at Sunset
+  initial_state: 'on'
   trigger:
     platform: sun
     event: sunset
@@ -29,10 +34,14 @@
     - service: light.turn_on
       data:
         entity_id: group.living_room_lights
-        brightness: 255
+    - service: light.turn_on
+      data: 
+        entity_id: light.level_6
+        brightness: 200
     
 - id: Indoor_Lights_Off
   alias: Indoor Lights off at Bedtime
+  initial_state: 'on'
   trigger:
     platform: time
     at: '21:00:00'
@@ -40,9 +49,13 @@
     - service: light.turn_off
       data:
         entity_id: group.living_room_lights
+    - service: light.turn_off
+      data: 
+        entity_id: light.level_6
       
 - id: Outdoor_Lights_On
   alias: Outdoor Lights on at Night
+  initial_state: 'on'
   trigger:
     platform: sun
     event: sunset
@@ -57,6 +70,7 @@
       
 - id: Outdoor_Lights_Off
   alias: Outdoor Lights off at Sunrise
+  initial_state: 'on'
   trigger:
     platform: sun
     event: sunrise
@@ -70,7 +84,7 @@
     - service: switch.turn_off
     - service: ifttt.trigger
       data: {"event":"landscapelt_off"}
-    
+###########################################################   
 #- id: open_gate
 #  alias: Open Gate
 #  trigger:
@@ -83,27 +97,31 @@
 #    data:
 #      event: gate_opener
 
+##########LOCK AUTOMATION###############################
 - id: lock_door
   alias: Lock Garage Door
+  initial_state: 'on'
   trigger:
     platform: time
     at: '20:00:00'
   action:
     service: lock.lock
-    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
+    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked_7
 
 - id: unlock_door
   alias: Unlock Garage Door
+  initial_state: 'on'
   trigger:
     platform: time
     at: '06:45:00'
   action:
     service: lock.unlock
-    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
+    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked_7
     
-
+#############HA RESTART###################################
 - id: restart_HA
   alias: Restart HA
+  initial_state: 'on'
   trigger: 
     platform: time
     at: '02:00:00'  
@@ -115,4 +133,34 @@
     - fri
   action:
     - service: homeassistant.restart
+    
+##########NOTIFY IF GARAGE LEFT OPEN#########################################
+- alias: Notify if garage left open
+  initial_state: 'on'
+  trigger:
+    - platform: state
+      entity_id: 
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+      to: 'on'
+      for:
+        minutes: 3
+  action:
+    - service: ifttt.trigger
+      data: {"event":"garage_open"}
+    - service: notify.beau_pushbullet
+      data:
+        message: "Garage door was left open"
+        title: ""
+    - service: notify.erin_pushbullet
+      data:
+        message: "Garage door was left open"
+        title: ""    
+    - service: media_player.alexa_tts
+      entity_id: 
+        - media_player.beaus_echo
+        - media_player.beaus_2nd_echo_dot
+        - media_player.beaus_echo_dot
+      data:
+        message: "The garage door was left open"
 

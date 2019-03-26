@@ -45,23 +45,60 @@ views:
                event: landscape_lights_on
                service: ifttt.trigger
             type: entity-button
-    - entity: cover.gate_control
+            
+#    - entity: cover.gate_control
+#      icon: 'mdi:gate'
+#      name: 'Gate'
+#      tap_action:
+#        action:
+#         - service: cover.close_cover
+#           data:
+#            entity-id: cover.gate_control
+#      type: entity-button
+      
+    - type: entity-button
       icon: 'mdi:gate'
-      name: Toggle Gate
+      name: 'Gate'
       tap_action:
         action: call-service
-        service: cover.open_cover
-      type: entity-button
+        service: input_boolean.toggle
+        service_data:
+          entity_id: input_boolean.gate_control
+      entity: binary_sensor.neo_coolcam_door_window_detector_sensor
+      
+    - type: horizontal-stack
+      cards: 
+        - type: entity-button
+          icon: 'mdi:garage'
+          name: 'Single Garage Door'
+          tap_action:
+            action: call-service
+            service: input_boolean.toggle
+            service_data:
+              entity_id: input_boolean.single_garage_door
+          entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+          
+        - type: entity-button
+          icon: 'mdi:garage'
+          name: 'Double Garage Door'
+          tap_action:
+            action: call-service
+            service: input_boolean.toggle
+            service_data:
+              entity_id: input_boolean.double_garage_door
+          entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+          
+          
     - type: horizontal-stack
       cards:
-        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_2
+        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_7
           icon: 'mdi:lock'
           name: Lock Garage Entry Door
           tap_action:
             action: call-service
             service: lock.lock
           type: entity-button
-        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_2
+        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_7
           icon: 'mdi:lock-open'
           name: Unlock Garage Entry Door
           tap_action:
@@ -71,14 +108,10 @@ views:
     - type: vertical-stack
       cards:
         - entities:
-          - automation.outdoor_lights_on_at_night
-          - automation.outdoor_lights_off_at_sunrise
-          - automation.indoor_lights_on_at_sunset
-          - automation.indoor_lights_off_at_bedtime
-          - automation.lock_garage_door
-          - automation.unlock_garage_door
-          title: Automation
+          - group.all_automations
+          show_header_toggle: false
           type: entities
+          name: 'Automations'
     icon: 'mdi:home'
     path: default_view
     title: default_view
@@ -93,8 +126,7 @@ views:
         states:
           - arm_home
           - arm_away
-          - arm_night
-          - armed_custom_bypass
+#          - arm_night
         type: alarm-panel
     icon: 'mdi:blur-radial'
 ################################################################################################################################
@@ -103,11 +135,46 @@ views:
   - name: Surveillance
     theme: NightOwlTransparent
     cards:
-      - camera-image: camera.ptz_camera
-        entity: camera.ptz_camera
-        show_info: false
-        title: Driveway Camera
-        type: picture-entity
+      - type: vertical-stack
+        cards:
+        - type: picture-glance
+          title: Gate Keypad
+          entities:
+            - binary_sensor.ring_gate_keypad_ding
+            - binary_sensor.ring_gate_keypad_motion
+          camera_image: camera.gate_keypad
+        - camera-image: camera.ptz_camera
+          entity: camera.ptz_camera
+          show_info: false
+          title: Driveway Camera
+          type: picture-entity
+        - camera-image: camera.garage_dogs
+          entity: camera.garage_dogs
+          show_info: false
+          title: Garage Dog Kennel
+          type: picture-entity
+        
+        
+      - type: vertical-stack
+        cards:
+        - entity: binary_sensor.back_porch_door
+          icon: 'mdi:door'
+          name: Back Porch Door
+          type: entity-button
+        - type: horizontal-stack
+          cards:
+            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+              icon: 'mdi:garage'
+              name: Single Garage Door
+              type: entity-button
+            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+              icon: 'mdi:garage'
+              name: Double Garage Door
+              type: entity-button
+        - entity: binary_sensor.neo_coolcam_door_window_detector_sensor
+          icon: 'mdi:gate'
+          name: Gate
+          type: entity-button
       - type: map    
         aspect_ratio: 969
         default_zoom: 11
@@ -115,86 +182,170 @@ views:
           - device_tracker.beauhill_beausphone
           - device_tracker.evaughnhill_erinphone
           - zone.home
-      - entity: binary_sensor.back_porch_door
-        icon: 'mdi:door'
-        name: Back Porch Door
-        type: entity-button
-      - type: horizontal-stack
-        cards:
-          - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_3
-            icon: 'mdi:garage'
-            name: Single Garage Door
-            type: entity-button
-          - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_4
-            icon: 'mdi:garage'
-            name: Double Garage Door
-            type: entity-button
+      
+          
     icon: 'mdi:eye'
     title: Surviellance
 ###############################################################################################################################
-
-##########PAGE 4 - WEATHER######################################################################################################    
-  - name: Weather
-    theme: NightOwlTransparent[]
+  - name: Climate
+    theme: NightOwlTransparent
     cards:
-      - aspect_ration: 969
+      - type: vertical-stack
+        cards: 
+        - type: thermostat
+          entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1_2
+          name: 'Garage'
+        - type: horizontal-stack
+          cards:
+          - entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1_2
+            name: 'Set Temp to 38'
+            tap_action:
+              action: call-service
+              service: climate.set_temperature
+              service_data:
+                entity_id: climate.2gig_technologies_ct101_thermostat_iris_heating_1_2
+                temperature: 38
+            type: entity-button
+            icon: 'mdi:temperature-fahrenheit'
+      
+          - type: sensor
+            entity: sensor.garage_thermostat_battery
+            name: ' ' 
+
+    icon: 'mdi:fan'
+    path: climate
+    title: Climate
+##########PAGE 5 - WEATHER######################################################################################################    
+  - name: Weather
+    theme: NightOwlTransparent
+    cards:
+      - aspect_ratio: 969
         image: >-
           https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=UDX&brand=wui&num=10&delay=25&type=N0R&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25769976&lat=0&lon=0&label=you       
         type: picture
+      - type: iframe
+        url: https://embed.windy.com/?44.229,-105.573,6
+        aspect_ratio: 80%
       - entities:
-          - sensor.pws_feelslike_f
+          - sensor.dark_sky_apparent_temperature
           - sensor.vision_zp3111_multisensor_4in1_temperature
         hours_to_show: 48
-        title: Feels Like Temperature
         type: history-graph
       - type: vertical-stack
         cards: 
          - type: sensor
-           entity: sensor.pws_temp_f
+           entity: sensor.dark_sky_temperature
            name: Temperature
            icon: 'mdi:thermometer'
            graph: line
            detail: 2
-           hours_to_show: 48
+           hours_to_show: 72
          - type: sensor
-           entity: sensor.pws_wind_mph
+           entity: sensor.dark_sky_wind_speed
            graph: line
            detail: 2
-           hours_to_show: 48
+           hours_to_show: 72
            name: Wind Speed
            icon: 'mdi:weather-windy'
          - type: sensor
-           entity: sensor.pws_wind_gust_mph
+           entity: sensor.dark_sky_wind_gust
            graph: line
            detail: 2
-           hours_to_show: 48
+           hours_to_show: 72
            name: Wind Gusts 
            icon: 'mdi:weather-windy'
       - entity: weather.dark_sky
         type: weather-forecast
       - type: vertical-stack
         cards:
-          - entities:
-             - sensor.pws_weather_1d
-             - sensor.pws_weather_1n
-             - sensor.pws_weather_2d
-             - sensor.pws_weather_3d
-             - sensor.pws_weather_4d
-            name: Weather Forecast
-            type: entities
+          - type: sensor
+            entity: sensor.dark_sky_summary_1
+            name: "24 Hour Forecast"
+          - type: glance
+            title: " "
+            entities:
+             - entity: sensor.dark_sky_daytime_high_temperature_1
+               name: "High"
+             - entity: sensor.dark_sky_overnight_low_temperature_1
+               name: "Low"
+             - entity: sensor.dark_sky_wind_speed_1
+               name: "Wind Speed"
+             - entity: sensor.dark_sky_precip_probability_1
+               name: "Precip %"
+
+          - type: sensor
+            entity: sensor.dark_sky_summary_2
+            name: "48 Hour Forecast"
+          - type: glance
+            title: " "
+            entities:
+             - entity: sensor.dark_sky_daytime_high_temperature_2
+               name: "High"
+             - entity: sensor.dark_sky_overnight_low_temperature_2
+               name: "Low"
+             - entity: sensor.dark_sky_wind_speed_2
+               name: "Wind Speed"
+             - entity: sensor.dark_sky_precip_probability_2
+               name: "Precip %"
+
+          - type: sensor
+            entity: sensor.dark_sky_summary_3
+            name: "Day 3 Forecast"
+          - type: glance
+            title: " "
+            entities:
+             - entity: sensor.dark_sky_daytime_high_temperature_3
+               name: "High"
+             - entity: sensor.dark_sky_overnight_low_temperature_3
+               name: "Low"
+             - entity: sensor.dark_sky_wind_speed_3
+               name: "Wind Speed"
+             - entity: sensor.dark_sky_precip_probability_3
+               name: "Precip %"
+
+          - type: sensor
+            entity: sensor.dark_sky_summary_4
+            name: "Day 4 Forecast"
+          - type: glance
+            title: " "
+            entities:
+             - entity: sensor.dark_sky_daytime_high_temperature_4
+               name: "High"
+             - entity: sensor.dark_sky_overnight_low_temperature_4
+               name: "Low"
+             - entity: sensor.dark_sky_wind_speed_4
+               name: "Wind Speed"
+             - entity: sensor.dark_sky_precip_probability_4
+               name: "Precip %"
     icon: 'mdi:theme-light-dark'
     path: weather
     title: Weather
 
 ################################################################################################################################
 
-#######PAGE 5 - MEDIA CONTROLS#################################################################################################
+#######PAGE 6 - MEDIA CONTROLS#################################################################################################
   - name: Media
     theme: NightOwlTransparent
     cards:
+      - type: vertical-stack
+        cards:
+          - entity: media_player.beaus_echo
+            type: media-control
+          - entity: media_player.beaus_2nd_echo_dot
+            type: media-control
+          - entity: media_player.beaus_echo_dot
+            type: media-control
+          - entity: media_player.everywhere
+            type: media-control
+      - type: vertical-stack
+        cards:
+         - entity: media_player.49_tcl_roku_tv
+           type: media-control
+         - entity: media_player.roku_player
+           type: media-control
+         - entity: media_player.man_cave
+           type: media-control
       - entity: media_player.spotify
-        type: media-control
-      - entity: media_player.denonavr
         type: media-control
     icon: 'mdi:cast'
     title: Media

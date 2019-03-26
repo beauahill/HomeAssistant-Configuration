@@ -38,7 +38,7 @@ http:
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
   # Secrets are defined in the file secrets.yaml
-  api_password: !secret http_password
+#  api_password: !secret http_password
   cors_allowed_origins:
     - http://192.168.0.131:7080
     - http://192.168.0.145
@@ -56,10 +56,20 @@ updater:
 #####END OF MAIN#### 
 ##############################################################################################
 
-
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
+#camera:
+#  - platform: usps
+#    scan_interval: 5
+#  - platform: yi
+#    name: 'Garage Camera'
+#    host: '192.168.1.190'
+#    password: 
+    
+climate:
+  - platform: zwave
+    
 # Discover some devices automatically
 discovery:
 
@@ -88,13 +98,15 @@ media_player:
     aliases:
         abc123def456: 'Hassio'
 #  - platform: denonavr
-#    host: 192.168.0.144
+#    host: 192.168.0.145
 #    name: Man Cave Audio
 #    show_all_sources: True
-#  - platform: alexa
-#    email: !secret amazon_email
-#    password: !secret amazon_password
-#    url: “amazon.com”
+  - platform: alexa
+    email: !secret amazon_email
+    password: !secret amazon_password
+    url: amazon.com
+  - platform: roku
+  - platform: yamaha
 
 mqtt:
   broker: m15.cloudmqtt.com
@@ -112,10 +124,27 @@ notify:
   
 owntracks:
 
+ring:
+  username: !secret ring_username
+  password: !secret ring_password
+
+sensor:
+  - platform: ups
+    username: !secret UPS_Username
+    password: !secret UPS_Password
+
+shell_command:
+  disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
+  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
+
 sun:
 
 tts:
   - platform: google
+
+#usps:
+#    username: !secret USPS_Username
+#    password: !secret USPS_Password
   
 weather:
   - platform: darksky
@@ -124,4 +153,3 @@ weather:
 zwave:
     usb_path: /dev/ttyACM0
     network_key: "0x2e, 0xcc, 0xab, 0x1c, 0xa3, 0x7f, 0x0e, 0xb5, 0x70, 0x71, 0x2d, 0x98, 0x25, 0x43, 0xee, 0x0c"
-

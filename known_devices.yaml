@@ -1,11 +1,3 @@
-beauhill_beausphone:
-  hide_if_away: false
-  icon: 'local/beau.png'
-  mac:
-  name: beauhill
-  picture:
-  track: true
-
 evaughnhill_erinphone:
   hide_if_away: false
   icon:
@@ -27,5 +19,13 @@ beauhill_beausphone:
   icon:
   mac:
   name: beauhill
+  picture:
+  track: true
+
+e_vaughn_hill_erinphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: e.vaughn.hill
   picture:
   track: true

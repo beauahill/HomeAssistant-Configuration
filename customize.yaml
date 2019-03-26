@@ -5,10 +5,10 @@ media_player.49_tcl_roku_tv:
 media_player.roku_player:
   friendly_name: Bedroom Roku
 binary_sensor.vision_zg8101_garage_door_detector_sensor_3:
-  friendly_name: Single Garage Door
+  friendly_name: Double Garage Door
   device_class: opening
 binary_sensor.vision_zg8101_garage_door_detector_sensor_4:
-  friendly_name: Double Garage Door
+  friendly_name: Single Garage Door
   device_class: opening
 binary_sensor.back_porch_door:
   friendly_name: Back Porch Door

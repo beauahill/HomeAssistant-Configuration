@@ -31,7 +31,6 @@ living_room_lights:
   entities:
     - light.level
     - light.level_2
-    - light.level_6
     
 outdoor_lights:  
   name: Outdoor Lights
@@ -83,9 +82,7 @@ indoor_lights:
     entities:
       - light.level_2
       - light.level
-      - light.level_6
-      
- 
+
 locks:
     name: Garage Lock
     entities:

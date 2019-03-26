@@ -1,40 +1,30 @@
 sensor:
-  - platform: wunderground
-    api_key: !secret wunderground_key
+  - platform: darksky
+    api_key: !secret darksky_key
+    forecast:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
     monitored_conditions:
-      - weather_1d
-      - weather_1n
-      - weather_2d
-      - weather_2n
-      - weather_3d
-      - weather_3n
-      - weather_4d
-      - weather_4n
-      - alerts
-      - feelslike_f
-      - elevation
-      - location
-      - observation_time
-      - precip_today_in
-      - precip_1d_in
-      - precip_2d_in
-      - precip_3d_in
-      - precip_4d_in
-      - station_id
-      - temp_f
-      - weather
-      - wind_mph
-      - wind_gust_mph
-
-group:
-  daily_forecast:
-    name: Wunderground Forecast
-    entities:
-    - sensor.weather_1d
-    - sensor.weather_1n
-    - sensor.weather_2d
-    - sensor.weather_2n
-    - sensor.weather_3d
-    - sensor.weather_3n
-    - sensor.weather_4d
-    - sensor.weather_4n
+      - summary
+      - icon
+      - temperature
+      - precip_type
+      - precip_probability
+      - precip_accumulation
+      - apparent_temperature
+      - wind_speed
+      - wind_gust
+      - cloud_cover
+      - humidity
+      - daily_summary
+      - temperature_high
+      - temperature_low
+      - sunrise_time
+      - sunset_time
+      

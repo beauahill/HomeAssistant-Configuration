@@ -1,28 +1,15 @@
-#input_boolean:
-#  gate_actuate:
-#    name: Open or Close Gate
-#    initial: off
+input_boolean:
+  gate_control:
+    name: Gate Control
+    initial: off
+    icon: mdi:garage
+#    icon_template:  >-
+#     {% if states.binary_sensor.neo_coolcam_door_window_detector_sensor.state == 'on' %}
+#      mdi:gate-open
+#     {% else %}
+#      mdi:gate
+#     {% endif %}
 
-#automation:
-#  - alias: Open or Close Gate
-#    trigger: 
-#      - platform: state
-#        entity_id: input_boolean.gate_actuate
-#        to: 'on'
-#        for:
-#          seconds: 1
-#    action:
-#      - service: ifttt.trigger
-#        data: {"event":"gate_control"}
-
-#  - alias: Send Off to Switch
-#    trigger: 
-#      - platform: state
-#        entity_id: input_boolean.gate_actuate
-#        to: 'off'
-#    action:
-#      - service: ifttt.trigger
-#        data: {"event":"gate_close"}
 
 cover:
   - platform: template
@@ -44,3 +31,52 @@ cover:
 #         {%- else -%}
 #         mdi:garage
 #         {%- endif -%}
+
+automation:
+- alias: Toggle Gate
+  trigger: 
+  - platform: state
+    entity_id: input_boolean.gate_control
+    to: 'on'
+  action:
+   - service: ifttt.trigger
+     data: {"event":"gate_control"}
+- alias: Toggle Gate Off
+  trigger: 
+  - platform: state
+    entity_id: input_boolean.gate_control
+    to: 'off'
+  action:
+   - service: ifttt.trigger
+     data: {"event":"gate_control"}
+
+
+
+- alias: Alexa notify if motion at gate
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.ring_gate_keypad_motion
+    to: 'on'
+  action:
+   - service: media_player.alexa_tts
+     entity_id: 
+      - media_player.beaus_2nd_echo_dot
+      - media_player.beaus_echo
+      - media_player.beaus_echo_dot
+     data:
+       message: "Motion has been detected at the gate"
+
+- alias: Alexa notify if ring is pressed
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.ring_gate_keypad_ding
+    to: 'on'
+  action:
+   - service: media_player.alexa_tts
+     entity_id: 
+      - media_player.beaus_2nd_echo_dot
+      - media_player.beaus_echo
+      - media_player.beaus_echo_dot
+     data:
+       message: "There is someone at the gate"
