@@ -1,0 +1,97 @@
+input_boolean:
+  single_garage_door:
+    name: Single Garage Door Control
+    initial: off
+    icon: mdi:garage
+#    icon_template:  >-
+#     {% if states.binary_sensor.vision_zg8101_garage_door_detector_sensor_3.state == 'on' %}
+#      mdi:garage-open
+#     {% else %}
+#      mdi:garage
+#     {% endif %}
+    
+  double_garage_door:
+    name: Double Garage Door Control
+    initial: off
+    icon: mdi:garage
+#    icon_template:  >-
+#     {% if states.binary_sensor.vision_zg8101_garage_door_detector_sensor_4.state == 'on' %}
+#      mdi:garage-open
+#     {% else %}
+#      mdi:garage
+#     {% endif %} 
+    
+automation:
+  - alias: Toggle Single Garage Door
+    trigger: 
+      - platform: state
+        entity_id: input_boolean.single_garage_door
+        to: 'on'
+    action:
+      - service: ifttt.trigger
+        data: {"event":"single_garage_control"}
+  - alias: Toggle Single Garage Door Off
+    trigger: 
+      - platform: state
+        entity_id: input_boolean.single_garage_door
+        to: 'off'
+    action:
+      - service: ifttt.trigger
+        data: {"event":"single_garage_control"}
+
+  - alias: Toggle Double Garage Door
+    trigger: 
+      - platform: state
+        entity_id: input_boolean.double_garage_door
+        to: 'on'
+    action:
+      - service: ifttt.trigger
+        data: {"event":"double_garage_control"}
+  - alias: Toggle Double Garage Door Off
+    trigger: 
+      - platform: state
+        entity_id: input_boolean.double_garage_door
+        to: 'off'
+    action:
+      - service: ifttt.trigger
+        data: {"event":"double_garage_control"}
+
+
+
+
+
+
+cover:
+  - platform: template
+    covers: 
+      single_garage_control:
+        friendly_name: 'Single Garage Control'
+        open_cover:
+          service: ifttt.trigger
+          data: {"event":"single_garage_control"}
+        close_cover:
+          service: ifttt.trigger
+          data: {"event":"single_garage_control"}
+        stop_cover:
+          service: ifttt.trigger
+          data: {"event":"single_garage_control"}
+        icon_template: 
+#         {%- if states.binary_sensor.garagedoor.state == 'on' -%}
+          mdi:garage
+#         {%- else -%}
+#         mdi:garage
+#         {%- endif -%}
+      double_garage_control:
+        friendly_name: 'Double Garage Control'
+        open_cover:
+          service: ifttt.trigger
+          data: {"event":"double_garage_control"}
+        close_cover:
+          service: ifttt.trigger
+          data: {"event":"double_garage_control"}
+        stop_cover:
+          service: ifttt.trigger
+          data: {"event":"double_garage_control"}
+        icon_template: 
+#         {%- if states.binary_sensor.garagedoor.state == 'on' -%}
+          mdi:garage
