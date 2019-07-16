@@ -61,9 +61,9 @@ automation:
   action:
    - service: media_player.alexa_tts
      entity_id: 
-      - media_player.beaus_2nd_echo_dot
-      - media_player.beaus_echo
-      - media_player.beaus_echo_dot
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo
+      - media_player.beau_s_echo_dot
      data:
        message: "Motion has been detected at the gate"
 
@@ -75,8 +75,8 @@ automation:
   action:
    - service: media_player.alexa_tts
      entity_id: 
-      - media_player.beaus_2nd_echo_dot
-      - media_player.beaus_echo
-      - media_player.beaus_echo_dot
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo
+      - media_player.beau_s_echo_dot
      data:
        message: "There is someone at the gate"

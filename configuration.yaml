@@ -7,6 +7,11 @@ homeassistant:
   time_zone: America/Denver
   customize: !include customize.yaml
   packages: !include_dir_named packages
+  auth_providers:
+   - type: trusted_networks
+     trusted_networks:
+      - 192.168.0.0/24
+      - beauhill.duckdns.org
   
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -15,11 +20,7 @@ panel_iframe:
   configurator:
     title: 'Configurator'
     icon: 'mdi:wrench'
-    url: https://192.168.0.137:3218
-  nodered:
-    title: 'Node Red'
-    icon: 'mdi:shuffle-variant'
-    url: https://192.168.0.137:1880
+    url: https://192.168.0.137:8123/hassio/ingress/core_configurator
     
   mdiindex:
     title: MDI Icon Index
@@ -41,11 +42,13 @@ http:
 #  api_password: !secret http_password
   cors_allowed_origins:
     - http://192.168.0.131:7080
-    - http://192.168.0.145
+    - http://192.168.0.14
+    - htyp://192.168.0.135
     - https://reformedreality.com
     - https://192.168.0.0/24
-  trusted_networks:
-    - 192.168.0.0/24
+    - beauhill.duckdns.org
+#  trusted_networks:
+#    - 192.168.0.0/24
 
 lovelace:
   mode: yaml
@@ -55,6 +58,12 @@ updater:
 ###############################################################################################
 #####END OF MAIN#### 
 ##############################################################################################
+
+alexa_media:
+ accounts:
+  - email: !secret amazon_email
+    password: !secret amazon_password
+    url: amazon.com
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -73,9 +82,9 @@ climate:
 # Discover some devices automatically
 discovery:
 
-device_tracker:
-  platform: owntracks
-  mqtt_topic: "owntracks/#"
+#device_tracker:
+#  platform: owntracks
+#  mqtt_topic: "owntracks/#"
 
 ffmpeg:
 
@@ -101,10 +110,10 @@ media_player:
 #    host: 192.168.0.145
 #    name: Man Cave Audio
 #    show_all_sources: True
-  - platform: alexa
-    email: !secret amazon_email
-    password: !secret amazon_password
-    url: amazon.com
+#  - platform: alexa
+#    email: !secret amazon_email
+#    password: !secret amazon_password
+#    url: amazon.com
   - platform: roku
   - platform: yamaha
 
@@ -132,6 +141,16 @@ sensor:
   - platform: ups
     username: !secret UPS_Username
     password: !secret UPS_Password
+    
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'date_time_iso'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
 
 shell_command:
   disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
@@ -139,8 +158,11 @@ shell_command:
 
 sun:
 
+system_health:
+
 tts:
-  - platform: google
+  - platform: google_translate
+    service_name: google_say
 
 #usps:
 #    username: !secret USPS_Username

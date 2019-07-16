@@ -1,9 +1,7 @@
 camera:
-  - platform: yi
+  - platform: ffmpeg
     name: Garage Dogs
-    host: '192.168.0.190'
-    username: root
-    password: CebhWYO81!
+    input: -rtsp_transport tcp -i rtsp://192.168.0.190:8554/unicast
 
   - platform: mjpeg
     mjpeg_url: http://192.168.0.210:8000/videostream.cgi?user=beauhill&pwd=CebhWYO81!
@@ -13,4 +11,4 @@ camera:
     name: PTZ Camera
     
   - platform: ring
-    scan_interval: 30
+    scan_interval: 90

@@ -37,14 +37,34 @@ views:
           - entity: light.level_6
             name: Lamp Bulb
             type: light
-          - entity: input_boolean.landscapelt_toggle
-            icon: 'mdi:lightbulb'
-            tap_action:
-             action: call-service
-             data:
-               event: landscape_lights_on
-               service: ifttt.trigger
-            type: entity-button
+          - type: horizontal-stack
+            cards:
+             - entity: automation.fence_lights_on
+               icon: 'mdi:lightbulb-on'
+               tap_action:
+                action: call-service
+                service: automation.trigger
+                service_data:
+                  entity_id: automation.fence_lights_on
+               type: entity-button
+               
+             - entity: automation.fence_lights_off
+               icon: 'mdi:lightbulb'
+               tap_action:
+                action: call-service
+                service: automation.trigger
+                service_data:
+                  entity_id: automation.fence_lights_off
+               type: entity-button
+               
+          #- entity: automation.fence_lights_on
+          #  icon: 'mdi:lightbulb'
+          #  tap_action:
+          #   action: call-service
+          #   service: automation.trigger
+          #   service_data:
+          #     entity_id: automation.fence_lights_on
+          #  type: entity-button
             
 #    - entity: cover.gate_control
 #      icon: 'mdi:gate'
@@ -259,63 +279,63 @@ views:
       - type: vertical-stack
         cards:
           - type: sensor
-            entity: sensor.dark_sky_summary_1
+            entity: sensor.dark_sky_summary_1d
             name: "24 Hour Forecast"
           - type: glance
             title: " "
             entities:
-             - entity: sensor.dark_sky_daytime_high_temperature_1
+             - entity: sensor.dark_sky_daytime_high_temperature_1d
                name: "High"
-             - entity: sensor.dark_sky_overnight_low_temperature_1
+             - entity: sensor.dark_sky_overnight_low_temperature_1d
                name: "Low"
-             - entity: sensor.dark_sky_wind_speed_1
+             - entity: sensor.dark_sky_wind_speed_1d
                name: "Wind Speed"
-             - entity: sensor.dark_sky_precip_probability_1
+             - entity: sensor.dark_sky_precip_probability_1d
                name: "Precip %"
 
           - type: sensor
-            entity: sensor.dark_sky_summary_2
+            entity: sensor.dark_sky_summary_2d
             name: "48 Hour Forecast"
           - type: glance
             title: " "
             entities:
-             - entity: sensor.dark_sky_daytime_high_temperature_2
+             - entity: sensor.dark_sky_daytime_high_temperature_2d
                name: "High"
-             - entity: sensor.dark_sky_overnight_low_temperature_2
+             - entity: sensor.dark_sky_overnight_low_temperature_2d
                name: "Low"
-             - entity: sensor.dark_sky_wind_speed_2
+             - entity: sensor.dark_sky_wind_speed_2d
                name: "Wind Speed"
-             - entity: sensor.dark_sky_precip_probability_2
+             - entity: sensor.dark_sky_precip_probability_2d
                name: "Precip %"
 
           - type: sensor
-            entity: sensor.dark_sky_summary_3
+            entity: sensor.dark_sky_summary_3d
             name: "Day 3 Forecast"
           - type: glance
             title: " "
             entities:
-             - entity: sensor.dark_sky_daytime_high_temperature_3
+             - entity: sensor.dark_sky_daytime_high_temperature_3d
                name: "High"
-             - entity: sensor.dark_sky_overnight_low_temperature_3
+             - entity: sensor.dark_sky_overnight_low_temperature_3d
                name: "Low"
-             - entity: sensor.dark_sky_wind_speed_3
+             - entity: sensor.dark_sky_wind_speed_3d
                name: "Wind Speed"
-             - entity: sensor.dark_sky_precip_probability_3
+             - entity: sensor.dark_sky_precip_probability_3d
                name: "Precip %"
 
           - type: sensor
-            entity: sensor.dark_sky_summary_4
+            entity: sensor.dark_sky_summary_4d
             name: "Day 4 Forecast"
           - type: glance
             title: " "
             entities:
-             - entity: sensor.dark_sky_daytime_high_temperature_4
+             - entity: sensor.dark_sky_daytime_high_temperature_4d
                name: "High"
-             - entity: sensor.dark_sky_overnight_low_temperature_4
+             - entity: sensor.dark_sky_overnight_low_temperature_4d
                name: "Low"
-             - entity: sensor.dark_sky_wind_speed_4
+             - entity: sensor.dark_sky_wind_speed_4d
                name: "Wind Speed"
-             - entity: sensor.dark_sky_precip_probability_4
+             - entity: sensor.dark_sky_precip_probability_4d
                name: "Precip %"
     icon: 'mdi:theme-light-dark'
     path: weather
@@ -329,13 +349,13 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - entity: media_player.beaus_echo
+          - entity: media_player.beau_s_echo
             type: media-control
-          - entity: media_player.beaus_2nd_echo_dot
+          - entity: media_player.beau_s_2nd_echo_dot
             type: media-control
-          - entity: media_player.beaus_echo_dot
+          - entity: media_player.beau_s_echo_dot
             type: media-control
-          - entity: media_player.everywhere
+          - entity: media_player.everywhere_2
             type: media-control
       - type: vertical-stack
         cards:

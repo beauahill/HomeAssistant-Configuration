@@ -22,7 +22,7 @@ automation:
      to: 'armed_away'
   action:
     - service: media_player.alexa_tts
-      entity_id: media_player.beaus_echo
+      entity_id: media_player.beau_s_echo
       data:
         message: "Alarm is armed away"
 
@@ -36,7 +36,7 @@ automation:
      to: 'armed_home'
   action:
     - service: media_player.alexa_tts
-      entity_id: media_player.beaus_echo
+      entity_id: media_player.beau_s_echo
       data:
         message: "Alarm is Armed Home"
 
@@ -50,7 +50,7 @@ automation:
      to: 'disarmed'
   action:
     - service: media_player.alexa_tts
-      entity_id: media_player.beaus_echo
+      entity_id: media_player.beau_s_echo
       data:
         message: "Alarm is Disarmed"
         

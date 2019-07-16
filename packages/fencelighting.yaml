@@ -1,0 +1,129 @@
+script:
+  fl_4th_july:
+   sequence: 
+    - service: ifttt.trigger
+      data: {"event":"fencelights_1_on_4th_July"}
+    - service: ifttt.trigger
+      data: {"event":"fencelights_2_on_4th_July"}
+  fl_on:
+   sequence: 
+    - service: ifttt.trigger
+      data: {"event":"fencelights_1_on"}
+    - service: ifttt.trigger
+      data: {"event":"fencelights_2_on"}
+  fl_xmas:
+   sequence: 
+    - service: ifttt.trigger
+      data: {"event":"fencelights_1_on_Xmas"}
+    - service: ifttt.trigger
+      data: {"event":"fencelights_2_on_Xmas"}
+  fl_wyogameday:
+   sequence: 
+    - service: ifttt.trigger
+      data: {"event":"fencelights_1_on_wyogameday"}
+    - service: ifttt.trigger
+      data: {"event":"fencelights_2_on_wyogameday"}
+  fl_newyears:
+   sequence: 
+    - service: ifttt.trigger
+      data: {"event":"fencelights_1_on_newyears"}
+    - service: ifttt.trigger
+      data: {"event":"fencelights_2_on_newyears"}
+      
+automation:
+- alias: Fence Lights On
+  initial_state: 'on'
+  trigger:
+    platform: sun
+    event: sunset
+    offset: '-00:30:00'
+  action:
+    service_template: >
+        {% if now().month == 7 %}
+          {% if 0 < now().day < 8 %}
+            script.fl_4th_july
+          {% else %}
+            script.fl_on
+          {% endif %}
+          
+        {% elif now().month == 12 %} 
+          {% if 11 < now().day < 27 %}
+            script.fl_xmas
+          {% elif now().day == 31 %}
+            script.fl_newyears
+          {% else %}
+            script.fl_on
+          {% endif %}
+          
+        {% elif now().month == 1 %}
+          {% if now().day == 1 %}
+            script.fl_newyears
+          {% else %}
+            script.fl_on
+          {% endif %}
+
+        {% elif now().year == 2019 %}
+          {% if now().month == 8 %}
+            {% if 29 < now().day <= 31 %}
+              script.fl_wyogameday
+            {% else %}
+              script.fl_on
+            {% endif %}
+            
+          {% elif now().month == 9 %}
+            {% if 5 < now().day < 9 %}
+              script.fl_wyogameday
+            {% elif 12 < now().day < 16 %}
+              script.fl_wyogameday
+            {% elif 19 < now().day < 23 %}
+              script.fl_wyogameday
+            {% elif 26 < now().day < 30 %}
+              script.fl_wyogameday
+            {% else %}
+              script.fl_on
+            {% endif %}
+          {% elif now().month == 10 %}
+            {% if 10 < now().day < 14 %}
+              script.fl_wyogameday
+            {% elif 17 < now().day < 21 %}
+              script.fl_wyogameday
+            {% elif 24 < now().day < 28 %}
+              script.fl_wyogameday
+            {% else %}
+              script.fl_on
+            {% endif %}
+          {% elif now().month == 11 %}
+            {% if 7 < now().day < 11 %}
+              script.fl_wyogameday
+            {% elif 14 < now().day < 18 %}
+              script.fl_wyogameday
+            {% elif 20 < now().day < 24 %}
+              script.fl_wyogameday
+            {% elif 28 < now().day < 32 %}
+              script.fl_wyogameday
+            {% else %}
+              script.fl_on
+            {% endif %}  
+          {% else %}
+            script.fl_on
+          {% endif %}
+           
+        {% else %}
+          script.fl_on
+        {% endif %}
+
+
+      
+- alias: Fence Lights Off
+  initial_state: 'on'
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: '+00:30:00'
+  action:
+    - service: ifttt.trigger
+      data: {"event":"fencelights_1_off"}
+    - service: ifttt.trigger
+      data: {"event":"fencelights_2_off"}
+    
+    
