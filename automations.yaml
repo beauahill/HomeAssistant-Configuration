@@ -1,4 +1,3 @@
-####SET THEME######################################
 - id: Set Theme at Startup
   alias: Set theme at startup
   initial_state: 'on'
@@ -6,39 +5,34 @@
     platform: homeassistant
     event: start
   action:
-   - service: frontend.set_theme
-     data:
-       name: NightOwl
-
-###SSL RENEWAL########################################       
+  - service: frontend.set_theme
+    data:
+      name: NightOwl
 - id: letsencrypt_renewal
   alias: Lets Encrypt Renewal
   initial_state: 'on'
   trigger:
   - platform: time
-    at: '00:00:00'
+    at: 00:00:00
   action:
   - service: hassio.addon_restart
     data:
       addon: core_letsencrypt
-      
-####LIGHTING AUTOMATIONS#################################
 - id: Indoor_Lights_On
   alias: Indoor Lights on at Sunset
   initial_state: 'on'
   trigger:
     platform: sun
     event: sunset
-    offset: '-00:45:00'
+    offset: -00:45:00
   action:
-    - service: light.turn_on
-      data:
-        entity_id: group.living_room_lights
-    - service: light.turn_on
-      data: 
-        entity_id: light.level_6
-        brightness: 200
-    
+  - service: light.turn_on
+    data:
+      entity_id: group.living_room_lights
+  - service: light.turn_on
+    data:
+      entity_id: light.level_6
+      brightness: 200
 - id: Indoor_Lights_Off
   alias: Indoor Lights off at Bedtime
   initial_state: 'on'
@@ -46,13 +40,12 @@
     platform: time
     at: '21:00:00'
   action:
-    - service: light.turn_off
-      data:
-        entity_id: group.living_room_lights
-    - service: light.turn_off
-      data: 
-        entity_id: light.level_6
-      
+  - service: light.turn_off
+    data:
+      entity_id: group.living_room_lights
+  - service: light.turn_off
+    data:
+      entity_id: light.level_6
 - id: Outdoor_Lights_On
   alias: Outdoor Lights on at Night
   initial_state: 'on'
@@ -60,44 +53,31 @@
     platform: sun
     event: sunset
   action:
-    - service: light.turn_on
-      data:
-        entity_id: group.outdoor_lights
-        brightness: 255
-    - service: switch.turn_on
-    - service: ifttt.trigger
-      data: {"event":"landscapelt_on"}
-      
+  - service: light.turn_on
+    data:
+      entity_id: group.outdoor_lights
+      brightness: 255
+  - service: switch.turn_on
+  - service: ifttt.trigger
+    data:
+      event: landscapelt_on
 - id: Outdoor_Lights_Off
   alias: Outdoor Lights off at Sunrise
   initial_state: 'on'
   trigger:
     platform: sun
     event: sunrise
-    offset: '+00:30:00'
+    offset: +00:30:00
   action:
-    - service: light.turn_off
-      data:
-        entity_id: 
-          - group.outdoor_lights
-          - group.landscape_lights
-    - service: switch.turn_off
-    - service: ifttt.trigger
-      data: {"event":"landscapelt_off"}
-###########################################################   
-#- id: open_gate
-#  alias: Open Gate
-#  trigger:
-#    platform: state
-#    entity_id: switch.gate_opener
-#    from: 'off'
-#    to: 'on'
-#  action:
-#    service: ifttt.trigger
-#    data:
-#      event: gate_opener
-
-##########LOCK AUTOMATION###############################
+  - service: light.turn_off
+    data:
+      entity_id:
+      - group.outdoor_lights
+      - group.landscape_lights
+  - service: switch.turn_off
+  - service: ifttt.trigger
+    data:
+      event: landscapelt_off
 - id: lock_door
   alias: Lock Garage Door
   initial_state: 'on'
@@ -106,61 +86,88 @@
     at: '20:00:00'
   action:
     service: lock.lock
-    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked_7
-
+    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
 - id: unlock_door
   alias: Unlock Garage Door
   initial_state: 'on'
   trigger:
     platform: time
-    at: '06:45:00'
+    at: 06:45:00
   action:
     service: lock.unlock
-    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked_7
+    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
     
-#############HA RESTART###################################
-- id: restart_HA
-  alias: Restart HA
-  initial_state: 'on'
-  trigger: 
-    platform: time
-    at: '02:00:00'  
-  condition:
-    condition: time
-    weekday:
-    - sun
-    - wed
-    - fri
-  action:
-    - service: homeassistant.restart
-    
-##########NOTIFY IF GARAGE LEFT OPEN#########################################
 - alias: Notify if garage left open
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
-      to: 'on'
-      for:
-        minutes: 3
+  - platform: state
+    entity_id:
+    - binary_sensor.vision_zg8101_garage_door_detector_sensor
+    - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+    to: 'on'
+    for:
+      minutes: 3
   action:
-    - service: ifttt.trigger
-      data: {"event":"garage_open"}
-    - service: notify.beau_pushbullet
+  - service: ifttt.trigger
+    data:
+      event: garage_open
+  - service: notify.beau_pushbullet
+    data:
+      message: Garage door was left open
+      title: ''
+  - service: notify.erin_pushbullet
+    data:
+      message: Garage door was left open
+      title: ''
+  - service: notify.alexa_media
+    data: 
+      target: 
+        - media_player.beau_s_echo
+        - media_player.beau_s_2nd_echo_dot
+        - media_player.beau_s_echo_dot
+      message: "Garage Door was Left Open"
       data:
-        message: "Garage door was left open"
-        title: ""
-    - service: notify.erin_pushbullet
-      data:
-        message: "Garage door was left open"
-        title: ""    
-    - service: media_player.alexa_tts
-      entity_id: 
-        - media_player.beaus_echo
-        - media_player.beaus_2nd_echo_dot
-        - media_player.beaus_echo_dot
-      data:
-        message: "The garage door was left open"
+        type: tts
+        method: speak
+  id: 8241993d082e478eb2e1b38f2add9213
 
+
+- id: '1563552008255'
+  alias: Garage Door - Single Opening
+  trigger:
+  - entity_id: binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.alexa_media
+    data: 
+      target: 
+         - media_player.beau_s_echo
+         - media_player.beau_s_2nd_echo_dot
+         - media_player.beau_s_echo_dot
+      message: "Single Garage Door is Opening"
+      data:
+        type: tts
+        method: speak
+
+- id: '1563552930551'
+  alias: Garage Door - Double Opening
+  trigger:
+  - entity_id: binary_sensor.vision_zg8101_garage_door_detector_sensor
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+    - service: notify.alexa_media
+      data: 
+        target: 
+         - media_player.beau_s_echo
+         - media_player.beau_s_2nd_echo_dot
+         - media_player.beau_s_echo_dot
+        message: "Double Garage Door is Opening"
+        data:
+          type: tts
+          method: speak

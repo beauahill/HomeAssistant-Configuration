@@ -10,16 +10,16 @@ views:
       cards:
       - type: vertical-stack
         cards:
-          - entity: light.level_3
+          - entity: light.linear_wd500z_1_wall_dimmer_switch_level
             name: Garage Doors
             type: light
-          - entity: light.level_4
+          - entity: light.linear_lb60z_1_dimmable_led_light_bulb_level
             name: Garage Patio
             type: light
-          - entity: light.level_5
+          - entity: light.linear_wd500z_1_wall_dimmer_switch_level_2
             name: Front Porch
             type: light
-          - entity: switch.inovelli_nzw30s_onoff_switchscene_switch
+          - entity: switch.inovelli_nzw30s_on_off_switch_scene_switch
             icon: 'mdi:lightbulb'
             name: Back Porch Lights
             tap_action:
@@ -28,13 +28,13 @@ views:
             type: entity-button
       - type: vertical-stack
         cards:
-          - entity: light.level
+          - entity: light.airline_mechanical_zds_100_level
             name: Lamp Dimmer
             type: light
-          - entity: light.level_2
+          - entity: light.airline_mechanical_zds_100_level_2
             name: Lamp Dimmer
             type: light
-          - entity: light.level_6
+          - entity: light.linear_lb60z_1_dimmable_led_light_bulb_level_2
             name: Lamp Bulb
             type: light
           - type: horizontal-stack
@@ -96,7 +96,7 @@ views:
             service: input_boolean.toggle
             service_data:
               entity_id: input_boolean.single_garage_door
-          entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+          entity: binary_sensor.vision_zg8101_garage_door_detector_sensor
           
         - type: entity-button
           icon: 'mdi:garage'
@@ -106,19 +106,19 @@ views:
             service: input_boolean.toggle
             service_data:
               entity_id: input_boolean.double_garage_door
-          entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+          entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_2
           
           
     - type: horizontal-stack
       cards:
-        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_7
+        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked
           icon: 'mdi:lock'
           name: Lock Garage Entry Door
           tap_action:
             action: call-service
             service: lock.lock
           type: entity-button
-        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked_7
+        - entity: lock.kwikset_touchpad_electronic_deadbolt_locked
           icon: 'mdi:lock-open'
           name: Unlock Garage Entry Door
           tap_action:
@@ -163,12 +163,15 @@ views:
             - binary_sensor.ring_gate_keypad_ding
             - binary_sensor.ring_gate_keypad_motion
           camera_image: camera.gate_keypad
-        - camera-image: camera.ptz_camera
+          camera_view: live
+        - camera_image: camera.ptz_camera
+          camera_view: live
           entity: camera.ptz_camera
           show_info: false
           title: Driveway Camera
           type: picture-entity
-        - camera-image: camera.garage_dogs
+        - camera_image: camera.garage_dogs
+          camera_view: live
           entity: camera.garage_dogs
           show_info: false
           title: Garage Dog Kennel
@@ -183,11 +186,11 @@ views:
           type: entity-button
         - type: horizontal-stack
           cards:
-            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_4
+            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor
               icon: 'mdi:garage'
               name: Single Garage Door
               type: entity-button
-            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_2
               icon: 'mdi:garage'
               name: Double Garage Door
               type: entity-button
@@ -213,17 +216,17 @@ views:
       - type: vertical-stack
         cards: 
         - type: thermostat
-          entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1_2
+          entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1
           name: 'Garage'
         - type: horizontal-stack
           cards:
-          - entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1_2
+          - entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1
             name: 'Set Temp to 38'
             tap_action:
               action: call-service
               service: climate.set_temperature
               service_data:
-                entity_id: climate.2gig_technologies_ct101_thermostat_iris_heating_1_2
+                entity_id: climate.2gig_technologies_ct101_thermostat_iris_heating_1
                 temperature: 38
             type: entity-button
             icon: 'mdi:temperature-fahrenheit'
@@ -355,15 +358,15 @@ views:
             type: media-control
           - entity: media_player.beau_s_echo_dot
             type: media-control
-          - entity: media_player.everywhere_2
+          - entity: media_player.everywhere
             type: media-control
       - type: vertical-stack
         cards:
-         - entity: media_player.49_tcl_roku_tv
+         - entity: media_player.roku_tv
            type: media-control
          - entity: media_player.roku_player
            type: media-control
-         - entity: media_player.man_cave
+         - entity: media_player.man_cave_roku
            type: media-control
       - entity: media_player.spotify
         type: media-control

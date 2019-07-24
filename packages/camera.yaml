@@ -1,7 +1,8 @@
 camera:
-  - platform: ffmpeg
+  - platform: generic
     name: Garage Dogs
-    input: -rtsp_transport tcp -i rtsp://192.168.0.190:8554/unicast
+    still_image_url: http://192.168.0.190/jpg/image.jpg
+    stream_source: rtsp://192.168.0.190:554/ch0_0.h264
 
   - platform: mjpeg
     mjpeg_url: http://192.168.0.210:8000/videostream.cgi?user=beauhill&pwd=CebhWYO81!

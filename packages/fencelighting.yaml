@@ -2,9 +2,9 @@ script:
   fl_4th_july:
    sequence: 
     - service: ifttt.trigger
-      data: {"event":"fencelights_1_on_4th_July"}
+      data: {"event":"fencelights_1_on_Fourth_July"}
     - service: ifttt.trigger
-      data: {"event":"fencelights_2_on_4th_July"}
+      data: {"event":"fencelights_2_on_Fourth_July"}
   fl_on:
    sequence: 
     - service: ifttt.trigger

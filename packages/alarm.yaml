@@ -21,10 +21,16 @@ automation:
        - alarm_control_panel.home_alarm
      to: 'armed_away'
   action:
-    - service: media_player.alexa_tts
-      entity_id: media_player.beau_s_echo
+   - service: notify.alexa_media
+     data: 
+      target: 
+        - media_player.beau_s_echo
+        - media_player.beau_s_2nd_echo_dot
+        - media_player.beau_s_echo_dot
+      message: "Alarm is armed away"
       data:
-        message: "Alarm is armed away"
+        type: tts
+        method: speak
 
 #####################NOTIFY ARMED HOME####################
 - alias: Notify Armed Home
@@ -35,10 +41,16 @@ automation:
        - alarm_control_panel.home_alarm
      to: 'armed_home'
   action:
-    - service: media_player.alexa_tts
-      entity_id: media_player.beau_s_echo
+   - service: notify.alexa_media
+     data: 
+      target: 
+        - media_player.beau_s_echo
+        - media_player.beau_s_2nd_echo_dot
+        - media_player.beau_s_echo_dot
+      message: "Alarm is armed home"
       data:
-        message: "Alarm is Armed Home"
+        type: tts
+        method: speak
 
 ########################NOTIFY DISARMED###########################
 - alias: Notify Disarmed
@@ -49,10 +61,16 @@ automation:
        - alarm_control_panel.home_alarm
      to: 'disarmed'
   action:
-    - service: media_player.alexa_tts
-      entity_id: media_player.beau_s_echo
+   - service: notify.alexa_media
+     data: 
+      target: 
+        - media_player.beau_s_echo
+        - media_player.beau_s_2nd_echo_dot
+        - media_player.beau_s_echo_dot
+      message: "Alarm is disarmed"
       data:
-        message: "Alarm is Disarmed"
+        type: tts
+        method: speak
         
         
 ##############################ARMED AWAY################################################    
@@ -62,8 +80,8 @@ automation:
     - platform: state
       entity_id: 
         - binary_sensor.back_porch_door
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
       to: 'on'
   condition:
     - condition: state
@@ -109,8 +127,8 @@ automation:
     - platform: state
       entity_id: 
         - binary_sensor.back_porch_door
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_4
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_3
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor
+        - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
       to: 'on'
   condition:
     - condition: state

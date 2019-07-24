@@ -2,25 +2,24 @@ homeassistant:
   name: Crimson
   latitude: !secret latitude
   longitude: !secret longitude
-  elevation: 4554
+  elevation: 1388
   unit_system: imperial
   time_zone: America/Denver
   customize: !include customize.yaml
   packages: !include_dir_named packages
-  auth_providers:
-   - type: trusted_networks
-     trusted_networks:
-      - 192.168.0.0/24
-      - beauhill.duckdns.org
+#  auth_providers:
+#   - type: trusted_networks
+#     trusted_networks:
+#       - 192.168.0.0/24
   
 group: !include groups.yaml
 automation: !include automations.yaml
   
 panel_iframe:
-  configurator:
-    title: 'Configurator'
-    icon: 'mdi:wrench'
-    url: https://192.168.0.137:8123/hassio/ingress/core_configurator
+#  configurator:
+#    title: 'Configurator'
+#    icon: 'mdi:wrench'
+#    url: https://192.168.0.137:8123/hassio/ingress/core_configurator
     
   mdiindex:
     title: MDI Icon Index
@@ -46,9 +45,6 @@ http:
     - htyp://192.168.0.135
     - https://reformedreality.com
     - https://192.168.0.0/24
-    - beauhill.duckdns.org
-#  trusted_networks:
-#    - 192.168.0.0/24
 
 lovelace:
   mode: yaml
@@ -131,30 +127,37 @@ notify:
     name: erin_pushbullet
     api_key: !secret EH_Pushbullet_Key    
   
-owntracks:
+#owntracks:
 
+recorder:
+  db_url: !secret mariadb_url
+  purge_interval: 1
+  purge_keep_days: 7
+  
 ring:
   username: !secret ring_username
   password: !secret ring_password
 
-sensor:
-  - platform: ups
-    username: !secret UPS_Username
-    password: !secret UPS_Password
-    
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-      - 'date_time_iso'
-      - 'time_date'
-      - 'time_utc'
-      - 'beat'
+#sensor:
+#  - platform: ups
+#    username: !secret UPS_Username
+#    password: !secret UPS_Password
+#    
+#  - platform: time_date
+#    display_options:
+#      - 'time'
+#      - 'date'
+#      - 'date_time'
+#      - 'date_time_iso'
+#      - 'time_date'
+#      - 'time_utc'
+#      - 'beat'
 
-shell_command:
-  disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
-  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
+#shell_command:
+#  disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
+#  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
+
+stream:
 
 sun:
 

@@ -29,17 +29,17 @@ surveillance:
 living_room_lights:
   name: Indoor Lights
   entities:
-    - light.level
-    - light.level_2
+    - light.airline_mechanical_zds_100_level
+    - light.airline_mechanical_zds_100_level_2
+    - light.linear_lb60z_1_dimmable_led_light_bulb_level_2
     
 outdoor_lights:  
   name: Outdoor Lights
   entities:
-    - light.level_3
-    - light.level_4
-    - light.level_5
-    - switch.inovelli_nzw30s_onoff_switchscene_switch
-    - input_boolean.landscapelt_toggle
+    - light.linear_lb60z_1_dimmable_led_light_bulb_level
+    - light.linear_wd500z_1_wall_dimmer_switch_level_2
+    - light.linear_wd500z_1_wall_dimmer_switch_level
+    - switch.inovelli_nzw30s_on_off_switch_scene_switch
 
 gate_control:
   name: Gate Control
@@ -57,7 +57,7 @@ security_sensor:
     - sensor.vision_zp3111_multisensor_4in1_burglar
     - sensor.vision_zp3111_multisensor_4in1_emergency
     - sensor.vision_zp3111_multisensor_4in1_sourcenodeid
-    - sensor.kwikset_touchpad_electronic_deadbolt_alarm_level_2
+    - sensor.kwikset_touchpad_electronic_deadbolt_alarm_level
     #- zwave.vision_zd2105us5_recessed_doorwindow_sensor
     #- sensor.vision_zd2105us5_recessed_doorwindow_sensor_access_control
     #- sensor.alarm_level_2
@@ -80,16 +80,18 @@ security_sensor:
 indoor_lights:
     name: Indoor Lighting
     entities:
-      - light.level_2
-      - light.level
+      - light.airline_mechanical_zds_100_level
+      - light.airline_mechanical_zds_100_level_2
+      - light.linear_lb60z_1_dimmable_led_light_bulb_level_2
 
 locks:
     name: Garage Lock
     entities:
-      - lock.kwikset_touchpad_electronic_deadbolt_locked_2
+      - lock.kwikset_touchpad_electronic_deadbolt_locked
       
 cameras:
     name: Cameras
     entities:
       - camera.garage_dogs
       - camera.ptz_camera
+      - camera.gate_keypad

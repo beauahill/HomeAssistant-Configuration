@@ -4,11 +4,24 @@ media_player.49_tcl_roku_tv:
   friendly_name: Roku TV
 media_player.roku_player:
   friendly_name: Bedroom Roku
-binary_sensor.vision_zg8101_garage_door_detector_sensor_3:
+binary_sensor.vision_zg8101_garage_door_detector_sensor:
   friendly_name: Double Garage Door
   device_class: opening
-binary_sensor.vision_zg8101_garage_door_detector_sensor_4:
+binary_sensor.vision_zg8101_garage_door_detector_sensor_2:
   friendly_name: Single Garage Door
   device_class: opening
 binary_sensor.back_porch_door:
   friendly_name: Back Porch Door
+light.airline_mechanical_zds_100_level:
+  friendly_name: Living Room Lamp Dimmer
+light.airline_mechanical_zds_100_level_2:
+  friendly_name: Living Room Lamp Dimmer2
+light.linear_wd500z_1_wall_dimmer_switch_level:
+  friendly_name: Garage Door Lights
+light.linear_wd500z_1_wall_dimmer_switch_level_2:
+  friendly_name: Front Porch Lights
+light.linear_lb60z_1_dimmable_led_light_bulb_level:
+  friendly_name: Garage Porch Light
+light.linear_lb60z_1_dimmable_led_light_bulb_level_2:
+  friendtly_name: Living Room Lamp Bulb
+  

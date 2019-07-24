@@ -2,17 +2,22 @@ cloud:
   google_actions:
     filter:
       include_entities:
-        - switch.inovelli_nzw30s_onoff_switchscene_switch
-        - light.level_5
-        - light.level_4
-        - light.level_3
+        - switch.inovelli_nzw30s_on_off_switch_scene_switch
+        - light.airline_mechanical_zds_100_level
+        - light.airline_mechanical_zds_100_level_2
+        - light.linear_lb60z_1_dimmable_led_light_bulb_level
+        - light.linear_wd500z_1_wall_dimmer_switch_level
+        - light.linear_wd500z_1_wall_dimmer_switch_level_2
+        - light.linear_lb60z_1_dimmable_led_light_bulb_level_2
         - cover.gate_control
-        - zwave.kwikset_touchpad_electronic_deadbolt_3
-        - light.level_2
-        - light.level
-        - media_player.man_cave
-        - media_player.49_tcl_roku_tv
+        - input_boolean.double_garage_door
+        - input_boolean.single_garage_door
+        - input_boolean.landscapelt_toggle
+        - zwave.kwikset_touchpad_electronic_deadbolt
+        - media_player.man_cave_roku
+        - media_player.roku_tv
         - media_player.spotify
+        - media_player.mbr_roku
       include_domains:
         - group.indoor_lights
         - group.living_room_lights
@@ -21,17 +26,22 @@ cloud:
   alexa:
     filter:
       include_entities:
-        - switch.inovelli_nzw30s_onoff_switchscene_switch
-        - light.level_5
-        - light.level_4
-        - light.level_3
+        - switch.inovelli_nzw30s_on_off_switch_scene_switch
+        - light.airline_mechanical_zds_100_level
+        - light.airline_mechanical_zds_100_level_2
+        - light.linear_lb60z_1_dimmable_led_light_bulb_level
+        - light.linear_wd500z_1_wall_dimmer_switch_level
+        - light.linear_wd500z_1_wall_dimmer_switch_level_2
+        - light.linear_lb60z_1_dimmable_led_light_bulb_level_2
         - cover.gate_control
-        - zwave.kwikset_touchpad_electronic_deadbolt_3
-        - light.level_2
-        - light.level
-        - media_player.man_cave
-        - media_player.49_tcl_roku_tv
+        - input_boolean.double_garage_door
+        - input_boolean.single_garage_door
+        - input_boolean.landscapelt_toggle
+        - zwave.kwikset_touchpad_electronic_deadbolt
+        - media_player.man_cave_roku
+        - media_player.roku_tv
         - media_player.spotify
+        - media_player.mbr_roku
       include_domains:
         - group.indoor_lights
         - group.living_room_lights

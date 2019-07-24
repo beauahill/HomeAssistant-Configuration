@@ -4,15 +4,15 @@ sensor:
       garage_thermostat_battery:
         friendly_name: "Garage Thermostat Battery"
         value_template: >-
-          {%- if states('zwave.2gig_technologies_ct101_thermostat_iris_2') -%}
-            {{ state_attr('zwave.2gig_technologies_ct101_thermostat_iris_2','battery_level') }}
+          {%- if states('zwave.2gig_technologies_ct101_thermostat_iris') -%}
+            {{ state_attr('zwave.2gig_technologies_ct101_thermostat_iris','battery_level') }}
           {%- else -%}
             'uknown'
           {%- endif -%} 
 
         icon_template: >-
-          {%- if states('zwave.2gig_technologies_ct101_thermostat_iris_2') -%}
-            {% set battery_level = state_attr('zwave.2gig_technologies_ct101_thermostat_iris_2','battery_level')|int('unknown') %}
+          {%- if states('zwave.2gig_technologies_ct101_thermostat_iris') -%}
+            {% set battery_level = state_attr('zwave.2gig_technologies_ct101_thermostat_iris','battery_level')|int('unknown') %}
             {% set battery_round = (battery_level|int / 10)|int * 10 %}
             {% if battery_level == 'uknown' %}
               mdi:battery
@@ -31,14 +31,14 @@ sensor:
           {% endif %}
           
         unit_of_measurement: '%'
-        entity_id: zwave.2gig_technologies_ct101_thermostat_iris_2
+        entity_id: zwave.2gig_technologies_ct101_thermostat_iris
 
 automation:
 - alias: Battery Low Alert
   trigger:
     platform: numeric_state
     entity_id: sensor.garage_thermostat_battery
-    below: 10
+    below: 15
   action:
     service: notify.beau_pushbullet
     data: 
