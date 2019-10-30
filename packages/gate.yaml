@@ -59,13 +59,17 @@ automation:
     entity_id: binary_sensor.ring_gate_keypad_motion
     to: 'on'
   action:
-   - service: notify.alexa_media
-     entity_id: 
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo
-      - media_player.beau_s_echo_dot
-     data:
-       message: "Motion has been detected at the gate"
+    - service: notify.alexa_media
+      data: 
+        target: 
+          - media_player.beau_s_echo
+          - media_player.beau_s_2nd_echo_dot
+          - media_player.beau_s_echo_dot
+        message: "Motion has been detected at the gate"
+        data:
+          type: tts
+          method: speak
+
 
 - alias: Alexa notify if ring is pressed
   trigger:
@@ -73,10 +77,13 @@ automation:
     entity_id: binary_sensor.ring_gate_keypad_ding
     to: 'on'
   action:
-   - service: notify.alexa_media
-     entity_id: 
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo
-      - media_player.beau_s_echo_dot
-     data:
-       message: "There is someone at the gate"
+    - service: notify.alexa_media
+      data: 
+        target:
+          - media_player.beau_s_2nd_echo_dot
+          - media_player.beau_s_echo
+          - media_player.beau_s_echo_dot
+        message: "There is someone at the gate"
+        data:
+          type: tts
+          method: speak

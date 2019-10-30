@@ -148,7 +148,7 @@ views:
           - arm_away
 #          - arm_night
         type: alarm-panel
-    icon: 'mdi:blur-radial'
+    icon: 'mdi:security-home'
 ################################################################################################################################
 
 ########PAGE 3 - SURVIELLANCE###################################################################################################
@@ -164,26 +164,39 @@ views:
             - binary_sensor.ring_gate_keypad_motion
           camera_image: camera.gate_keypad
           camera_view: live
-        - camera_image: camera.ptz_camera
-          camera_view: live
-          entity: camera.ptz_camera
+          
+        - camera_image: camera.driveway_and_gate
+          image: https://192.168.0.125/cgi-bin/currentpic.cgi?1564164375936
+          entity: camera.driveway_and_gate
+          title: Driveway and Gate
           show_info: false
-          title: Driveway Camera
           type: picture-entity
-        - camera_image: camera.garage_dogs
-          camera_view: live
-          entity: camera.garage_dogs
-          show_info: false
-          title: Garage Dog Kennel
-          type: picture-entity
+
+        - type: horizontal-stack
+          cards:
+           - camera_image: camera.ptz_camera
+             camera_view: live
+             entity: camera.ptz_camera
+             show_info: false
+             title: Garage
+             type: picture-entity
+           - camera_image: camera.garage_dogs
+             camera_view: live
+             entity: camera.garage_dogs
+             show_info: false
+             title: Garage Dog Kennel
+             type: picture-entity
+             
+      - camera_image: https://192.168.0.152/cgi-bin/currentpic.cgi?1564164348562
+        entity: camera.driveway
+        show_info: false
+        title: Driveway Camera
+        type: picture-entity
+          
         
         
       - type: vertical-stack
         cards:
-        - entity: binary_sensor.back_porch_door
-          icon: 'mdi:door'
-          name: Back Porch Door
-          type: entity-button
         - type: horizontal-stack
           cards:
             - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor
@@ -194,16 +207,22 @@ views:
               icon: 'mdi:garage'
               name: Double Garage Door
               type: entity-button
-        - entity: binary_sensor.neo_coolcam_door_window_detector_sensor
-          icon: 'mdi:gate'
-          name: Gate
-          type: entity-button
+        - type: horizontal-stack
+          cards:
+            - entity: binary_sensor.neo_coolcam_door_window_detector_sensor
+              icon: 'mdi:gate'
+              name: Gate
+              type: entity-button
+            - entity: binary_sensor.back_porch_door
+              icon: 'mdi:door'
+              name: Back Porch Door
+              type: entity-button
       - type: map    
         aspect_ratio: 969
         default_zoom: 11
         entities:
           - device_tracker.beauhill_beausphone
-          - device_tracker.evaughnhill_erinphone
+          - device_tracker.e_vaughnhill_erinphone
           - zone.home
       
           
@@ -234,6 +253,9 @@ views:
           - type: sensor
             entity: sensor.garage_thermostat_battery
             name: ' ' 
+      - type: thermostat
+        entity: climate.unnamed_device
+        name: Living Room
 
     icon: 'mdi:fan'
     path: climate
@@ -370,8 +392,37 @@ views:
            type: media-control
       - entity: media_player.spotify
         type: media-control
+      - entity: media_player.yamaha_receiver
+        type: media-control
+      - entity: media_player.yamaha_receiver_zone_2
+        type: media-control
     icon: 'mdi:cast'
     title: Media
+    
+##################################################################################################################################
+
+#####PAGE 7 - BASEMENT RADON#######################################################################################################
+
+  - name: Radon
+    theme: NightOwlTransparent
+    cards:
+      - type: horizontal-stack
+        cards:
+          - entity: sensor.basement_airthings_wave_temperature
+            name: Basement Temperature
+            type: sensor
+          - entity: sensor.basement_airthings_wave_humidity
+            name: Basement Humidity
+            type: sensor
+          - entity: sensor.basement_airthings_wave_radon_1_day_average
+            name: Basement Radon 1-Day
+            type: sensor
+          - entity: sensor.basement_airthings_wave_radon_long_term_average
+            name: Basement Radon Average
+            type: sensor
+    icon: 'mdi:blur-radial'
+    title: Basement Radon
+      
     
     
     

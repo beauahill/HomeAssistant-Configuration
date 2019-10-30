@@ -55,11 +55,11 @@ updater:
 #####END OF MAIN#### 
 ##############################################################################################
 
-alexa_media:
- accounts:
-  - email: !secret amazon_email
-    password: !secret amazon_password
-    url: amazon.com
+#alexa_media:
+#  accounts:
+#  - email: !secret amazon_email
+#    password: !secret amazon_password
+#    url: amazon.com
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -74,6 +74,8 @@ conversation:
     
 climate:
   - platform: zwave
+  - platform: venstar
+    host: 192.168.0.43
     
 # Discover some devices automatically
 discovery:
@@ -84,6 +86,9 @@ discovery:
 
 ffmpeg:
 
+hacs:
+  token: 65f128b934e795e5a76ee9454aba9d030b33961f
+  
 # Enables support for tracking state changes over time
 history:
 
@@ -125,19 +130,26 @@ notify:
     api_key: !secret BH_Pushbullet_Key
   - platform: pushbullet
     name: erin_pushbullet
-    api_key: !secret EH_Pushbullet_Key    
+    api_key: !secret EH_Pushbullet_Key
+  - platform: alexa_media
+    name: alexa_media
   
 #owntracks:
 
 recorder:
-  db_url: !secret mariadb_url
-  purge_interval: 1
-  purge_keep_days: 7
-  
+#  db_url: mysql://hassio:CebhWYO81!@core-mariadb/homeassistant?charset=utf8
+
 ring:
   username: !secret ring_username
   password: !secret ring_password
 
+
+sensor:
+  - platform: airthings_wave
+    mac: "98:07:2D:43:4C:89"
+    name: 'Basement Airthings Wave'
+    scan_interval: 120
+    
 #sensor:
 #  - platform: ups
 #    username: !secret UPS_Username

@@ -24,4 +24,5 @@ light.linear_lb60z_1_dimmable_led_light_bulb_level:
   friendly_name: Garage Porch Light
 light.linear_lb60z_1_dimmable_led_light_bulb_level_2:
   friendtly_name: Living Room Lamp Bulb
-  
+climate.unnamed_device:
+  friendly_name: MainThermostat

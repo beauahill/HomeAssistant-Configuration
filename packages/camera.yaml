@@ -12,4 +12,12 @@ camera:
     name: PTZ Camera
     
   - platform: ring
-    scan_interval: 90
+
+  - platform: ffmpeg
+    name: Driveway
+    input: -rtsp_transport tcp -i rtsp://192.168.0.152:8601/unicast
+    extra_arguments: -vf "transpose=2,transpose=2"
+    
+  - platform: ffmpeg
+    name: Driveway and Gate
+    input: -rtsp_transport tcp -i rtsp://192.168.0.125:8604/unicast
