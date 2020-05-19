@@ -48,19 +48,22 @@
       entity_id: light.level_6
 - id: Outdoor_Lights_On
   alias: Outdoor Lights on at Night
-  initial_state: 'on'
   trigger:
+  - event: sunset
     platform: sun
-    event: sunset
   action:
-  - service: light.turn_on
-    data:
-      entity_id: group.outdoor_lights
+  - data:
       brightness: 255
-  - service: switch.turn_on
-  - service: ifttt.trigger
-    data:
+      entity_id: group.outdoor_lights
+    service: light.turn_on
+  - data:
+      entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
+    entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
+    service: switch.turn_on
+  - data:
       event: landscapelt_on
+    service: ifttt.trigger
+  initial_state: 'on'
 - id: Outdoor_Lights_Off
   alias: Outdoor Lights off at Sunrise
   initial_state: 'on'
@@ -75,6 +78,8 @@
       - group.outdoor_lights
       - group.landscape_lights
   - service: switch.turn_off
+    data:
+      entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
   - service: ifttt.trigger
     data:
       event: landscapelt_off
@@ -96,7 +101,6 @@
   action:
     service: lock.unlock
     entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
-    
 - alias: Notify if garage left open
   initial_state: 'on'
   trigger:
@@ -120,18 +124,16 @@
       message: Garage door was left open
       title: ''
   - service: notify.alexa_media
-    data: 
-      target: 
-        - media_player.beau_s_echo
-        - media_player.beau_s_2nd_echo_dot
-        - media_player.beau_s_echo_dot
-      message: "Garage Door was Left Open"
+    data:
+      target:
+      - media_player.beau_s_echo
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo_dot
+      message: Garage Door was Left Open
       data:
         type: tts
         method: speak
   id: 8241993d082e478eb2e1b38f2add9213
-
-
 - id: '1563552008255'
   alias: Garage Door - Single Opening
   trigger:
@@ -142,16 +144,15 @@
   condition: []
   action:
   - service: notify.alexa_media
-    data: 
-      target: 
-         - media_player.beau_s_echo
-         - media_player.beau_s_2nd_echo_dot
-         - media_player.beau_s_echo_dot
-      message: "Single Garage Door is Opening"
+    data:
+      target:
+      - media_player.beau_s_echo
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo_dot
+      message: Single Garage Door is Opening
       data:
         type: tts
         method: speak
-
 - id: '1563552930551'
   alias: Garage Door - Double Opening
   trigger:
@@ -161,13 +162,96 @@
     to: 'on'
   condition: []
   action:
-    - service: notify.alexa_media
-      data: 
-        target: 
-         - media_player.beau_s_echo
-         - media_player.beau_s_2nd_echo_dot
-         - media_player.beau_s_echo_dot
-        message: "Double Garage Door is Opening"
-        data:
-          type: tts
-          method: speak
+  - service: notify.alexa_media
+    data:
+      target:
+      - media_player.beau_s_echo
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo_dot
+      message: Double Garage Door is Opening
+      data:
+        type: tts
+        method: speak
+- id: '1572470799220'
+  alias: Coop
+  description: ''
+  trigger:
+  - below: '28'
+    entity_id: sensor.dark_sky_apparent_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      event: coop_on
+    service: ifttt.trigger
+    
+- id: '1589818236256'
+  alias: Turn off Climate Due to Open Door/Window
+  description: ''
+  trigger:
+   - platform: state
+     entity_id:
+      - binary_sensor.back_porch_door
+      - binary_sensor.front_door
+     from: 'closed'
+     to: 'open'
+     for: 
+      minutes: 2
+   - platform: state
+     entity_id:
+      - binary_sensor.e_bedroom_window
+      - binary_sensor.n_dining_window
+      - binary_sensor.s_kitchen_window
+      - binary_sensor.w_bedroom_window
+     from: 'off'
+     to: 'on'
+     for: 
+      minutes: 2
+  condition: []
+  action:
+  - data: {}
+    entity_id: climate.main
+    service: climate.turn_off
+  - data:
+      message: "Climate has been turned off because a window or door has been open for 2 minutes"
+      target:
+      - media_player.beau_s_echo
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo_dot
+    service: notify.alexa_media
+
+- id: 'restoreClimate'
+  alias: Restore Climate after Closing Door/Window
+  description: ''
+  trigger:
+   - platform: state
+     entity_id:
+      - binary_sensor.back_porch_door
+      - binary_sensor.front_door
+     from: 'open'
+     to: 'closed'
+     for: 
+      minutes: 2
+   - platform: state
+     entity_id:
+      - binary_sensor.e_bedroom_window
+      - binary_sensor.n_dining_window
+      - binary_sensor.s_kitchen_window
+      - binary_sensor.w_bedroom_window
+     from: 'on'
+     to: 'off'
+     for: 
+      minutes: 2
+  condition: []
+  action:
+  - service: climate.set_hvac_mode
+    data:
+     entity_id: climate.main
+     hvac_mode: auto
+  - data:
+      message: "Climate has been restored to schedule"
+      target:
+      - media_player.beau_s_echo
+      - media_player.beau_s_2nd_echo_dot
+      - media_player.beau_s_echo_dot
+    service: notify.alexa_media

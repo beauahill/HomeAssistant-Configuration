@@ -1,5 +1,8 @@
 title: HILL HOME AUTOMATION
 background: !include views/background.yaml
+resources:
+ - url: /local/card-mod.js
+   type: js
 
 #############PAGE 1 - HOME CONTROL#############################################################
 views:
@@ -20,12 +23,15 @@ views:
             name: Front Porch
             type: light
           - entity: switch.inovelli_nzw30s_on_off_switch_scene_switch
-            icon: 'mdi:lightbulb'
             name: Back Porch Lights
+            icon: 'mdi:lightbulb'
             tap_action:
-              action: call-service
-              service: switch.toggle
+             action: call-service
+             service: switch.toggle
+             service_data:
+              entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
             type: entity-button
+            
       - type: vertical-stack
         cards:
           - entity: light.airline_mechanical_zds_100_level
@@ -84,7 +90,7 @@ views:
         service: input_boolean.toggle
         service_data:
           entity_id: input_boolean.gate_control
-      entity: binary_sensor.neo_coolcam_door_window_detector_sensor
+      entity: binary_sensor.gate
       
     - type: horizontal-stack
       cards: 
@@ -125,13 +131,13 @@ views:
             action: call-service
             service: lock.unlock
           type: entity-button
-    - type: vertical-stack
-      cards:
-        - entities:
-          - group.all_automations
-          show_header_toggle: false
-          type: entities
-          name: 'Automations'
+#    - type: vertical-stack
+#      cards:
+#        - entities:
+#          - group.all_automations
+#          show_header_toggle: false
+#          type: entities
+#          name: 'Automations'
     icon: 'mdi:home'
     path: default_view
     title: default_view
@@ -148,84 +154,140 @@ views:
           - arm_away
 #          - arm_night
         type: alarm-panel
-    icon: 'mdi:security-home'
+    icon: 'mdi:shield'
 ################################################################################################################################
 
 ########PAGE 3 - SURVIELLANCE###################################################################################################
   - name: Surveillance
     theme: NightOwlTransparent
     cards:
-      - type: vertical-stack
-        cards:
-        - type: picture-glance
-          title: Gate Keypad
-          entities:
-            - binary_sensor.ring_gate_keypad_ding
-            - binary_sensor.ring_gate_keypad_motion
-          camera_image: camera.gate_keypad
-          camera_view: live
+          - type: picture-glance
+            title: Gate Keypad
+            entities:
+              - binary_sensor.ring_gate_keypad_ding
+              - binary_sensor.ring_gate_keypad_motion
+            camera_image: camera.gate_keypad_2
+            camera_view: live
           
-        - camera_image: camera.driveway_and_gate
-          image: https://192.168.0.125/cgi-bin/currentpic.cgi?1564164375936
-          entity: camera.driveway_and_gate
-          title: Driveway and Gate
-          show_info: false
-          type: picture-entity
+          - type: picture-entity
+            camera_image: camera.driveway_and_gate
+            image: https://192.168.0.125/cgi-bin/currentpic.cgi?1564164375936
+            entity: camera.driveway_and_gate
+            title: Driveway and Gate
+            show_info: false
+            
+#        - camera_image: https://192.168.0.152/cgi-bin/currentpic.cgi?1564164348562
+          - type: picture-entity
+            camera_image: camera.driveway
+            entity: camera.driveway
+            show_info: false
+            title: Driveway Camera
 
-        - type: horizontal-stack
-          cards:
-           - camera_image: camera.ptz_camera
-             camera_view: live
-             entity: camera.ptz_camera
-             show_info: false
-             title: Garage
-             type: picture-entity
-           - camera_image: camera.garage_dogs
-             camera_view: live
-             entity: camera.garage_dogs
-             show_info: false
-             title: Garage Dog Kennel
-             type: picture-entity
+          - type: picture-entity
+            camera_image: camera.front_door
+            entity: camera.front_door
+            show_info: false
+            title: Front Door
+            
+          - type: picture-entity
+            camera_image: camera.backyard
+            entity: camera.backyard
+            show_info: false
+            title: Backyard
+            
+          - type: picture-entity
+            camera_image: camera.ptz_camera
+            camera_view: live
+            entity: camera.ptz_camera
+            show_info: false
+            title: Garage
              
-      - camera_image: https://192.168.0.152/cgi-bin/currentpic.cgi?1564164348562
-        entity: camera.driveway
-        show_info: false
-        title: Driveway Camera
-        type: picture-entity
-          
+          - type: picture-entity
+            camera_image: camera.garage_dogs
+            camera_view: live
+            entity: camera.garage_dogs
+            show_info: false
+            title: Garage Dog Kennel
         
-        
-      - type: vertical-stack
-        cards:
-        - type: horizontal-stack
-          cards:
-            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor
-              icon: 'mdi:garage'
-              name: Single Garage Door
-              type: entity-button
-            - entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_2
-              icon: 'mdi:garage'
-              name: Double Garage Door
-              type: entity-button
-        - type: horizontal-stack
-          cards:
-            - entity: binary_sensor.neo_coolcam_door_window_detector_sensor
+          - type: vertical-stack
+            cards:
+            
+            - type: entity-button
+              entity: binary_sensor.gate_sensor
               icon: 'mdi:gate'
               name: Gate
-              type: entity-button
-            - entity: binary_sensor.back_porch_door
-              icon: 'mdi:door'
-              name: Back Porch Door
-              type: entity-button
-      - type: map    
-        aspect_ratio: 969
-        default_zoom: 11
-        entities:
-          - device_tracker.beauhill_beausphone
-          - device_tracker.e_vaughnhill_erinphone
-          - zone.home
+            
+            - type: horizontal-stack
+              cards: 
+              - type: entity-button
+                entity: binary_sensor.vision_zg8101_garage_door_detector_sensor
+                icon: 'mdi:garage'
+                name: Single Garage Door
+            
+              - type: entity-button
+                entity: binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+                icon: 'mdi:garage'
+                name: Double Garage Door
+
+          - type: vertical-stack
+            cards:
+            - type: horizontal-stack
+              cards:
+              - type: entity-button
+                entity: binary_sensor.front_door
+                icon: 'mdi:door'
+                name: Front Door
+            
+              - type: entity-button
+                entity: binary_sensor.back_porch_door
+                icon: 'mdi:door'
+                name: Back Porch Door
+            - type: horizontal-stack
+              cards:
+              - type: entity-button
+                entity: binary_sensor.w_garage_door_sensor
+                icon: 'mdi:door'
+                name: W Garage Entry
+            
+              - type: entity-button
+                entity: binary_sensor.e_garage_door_sensor
+                icon: 'mdi:door'
+                name: E Garage Entry
+        
+          - type: vertical-stack
+            cards:
+            - type: horizontal-stack
+              cards:
+              - type: entity-button
+                entity: binary_sensor.n_dining_window_alarm
+                icon: 'mdi:window-closed'
+                name: N Dining Window
+            
+              - type: entity-button
+                entity: binary_sensor.s_kitchen_window_alarm
+                icon: 'mdi:window-closed'
+                name: S Kitchen Window
+
+            - type: horizontal-stack
+              cards:
+              - type: entity-button
+                entity: binary_sensor.e_bedroom_window_alarm
+                icon: 'mdi:window-closed'
+                name: Erin's Window
+            
+              - type: entity-button   
+                entity: binary_sensor.w_bedroom_window_alarm
+                icon: 'mdi:window-closed'
+                name: Beau's Window
+            
+#      - type: map    
+#        aspect_ratio: 969
+#        default_zoom: 11
+#        entities:
+#          - device_tracker.beauhill_beausphone
+#          - device_tracker.e_vaughnhill_erinphone
+#          - zone.home
       
-          
     icon: 'mdi:eye'
     title: Surviellance
 ###############################################################################################################################
@@ -235,17 +297,17 @@ views:
       - type: vertical-stack
         cards: 
         - type: thermostat
-          entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1
-          name: 'Garage'
+          entity: climate.2gig_technologies_ct101_thermostat_iris_mode
+          name: Garage
         - type: horizontal-stack
           cards:
-          - entity: climate.2gig_technologies_ct101_thermostat_iris_heating_1
+          - entity: climate.2gig_technologies_ct101_thermostat_iris_mode
             name: 'Set Temp to 38'
             tap_action:
               action: call-service
               service: climate.set_temperature
               service_data:
-                entity_id: climate.2gig_technologies_ct101_thermostat_iris_heating_1
+                entity_id: climate.2gig_technologies_ct101_thermostat_iris_mode
                 temperature: 38
             type: entity-button
             icon: 'mdi:temperature-fahrenheit'
@@ -253,9 +315,11 @@ views:
           - type: sensor
             entity: sensor.garage_thermostat_battery
             name: ' ' 
-      - type: thermostat
-        entity: climate.unnamed_device
-        name: Living Room
+      - type: vertical-stack
+        cards:
+        - type: thermostat
+          entity: climate.main
+          name: Living Room
 
     icon: 'mdi:fan'
     path: climate
@@ -390,7 +454,7 @@ views:
            type: media-control
          - entity: media_player.man_cave_roku
            type: media-control
-      - entity: media_player.spotify
+      - entity: media_player.spotify_beauhill
         type: media-control
       - entity: media_player.yamaha_receiver
         type: media-control
@@ -408,20 +472,23 @@ views:
     cards:
       - type: horizontal-stack
         cards:
-          - entity: sensor.basement_airthings_wave_temperature
+          - entity: sensor.airthings_wave_temperature
             name: Basement Temperature
             type: sensor
-          - entity: sensor.basement_airthings_wave_humidity
+          - entity: sensor.airthings_wave_humidity
             name: Basement Humidity
             type: sensor
-          - entity: sensor.basement_airthings_wave_radon_1_day_average
+          - entity: sensor.airthings_wave_radon_1_day_average
             name: Basement Radon 1-Day
             type: sensor
-          - entity: sensor.basement_airthings_wave_radon_long_term_average
+          - entity: sensor.airthings_wave_radon_long_term_average
             name: Basement Radon Average
             type: sensor
     icon: 'mdi:blur-radial'
     title: Basement Radon
+#######################################################################################################
+
+ 
       
     
     

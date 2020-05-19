@@ -1,8 +1,10 @@
 camera:
-  - platform: generic
+  - platform: ffmpeg
     name: Garage Dogs
-    still_image_url: http://192.168.0.190/jpg/image.jpg
-    stream_source: rtsp://192.168.0.190:554/ch0_0.h264
+    input: -rtsp_transport tcp -i rtsp://192.168.0.190/ch0_0.h264
+    extra_arguments: -vf "transpose=1"
+#    still_image_url: http://192.168.0.190/jpg/image.jpg
+#    stream_source: rtsp://192.168.0.190/ch0_0.h264
 
   - platform: mjpeg
     mjpeg_url: http://192.168.0.210:8000/videostream.cgi?user=beauhill&pwd=CebhWYO81!
@@ -15,9 +17,16 @@ camera:
 
   - platform: ffmpeg
     name: Driveway
-    input: -rtsp_transport tcp -i rtsp://192.168.0.152:8601/unicast
-    extra_arguments: -vf "transpose=2,transpose=2"
+    input: -rtsp_transport tcp -i rtsp://beauhill:CebhWYO81@192.168.0.152/live
     
   - platform: ffmpeg
     name: Driveway and Gate
-    input: -rtsp_transport tcp -i rtsp://192.168.0.125:8604/unicast
+    input: -rtsp_transport tcp -i rtsp://beauhill:CebhWYO81@192.168.0.125/live
+    
+  - platform: ffmpeg
+    name: Backyard
+    input: -rtsp_transport tcp -i rtsp://beauhill:CebhWYO81@192.168.0.146/live
+
+  - platform: ffmpeg
+    name: Front Door
+    input: -rtsp_transport tcp -i rtsp://beauhill:CebhWYO81@192.168.0.112/live

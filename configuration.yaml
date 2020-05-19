@@ -12,7 +12,7 @@ homeassistant:
 #     trusted_networks:
 #       - 192.168.0.0/24
   
-group: !include groups.yaml
+#group: !include groups.yaml
 automation: !include automations.yaml
   
 panel_iframe:
@@ -102,11 +102,7 @@ logbook:
 map:
 
 media_player:
-  - platform: spotify
-    client_id: !secret spotify_client
-    client_secret: !secret spotify_secret
-    aliases:
-        abc123def456: 'Hassio'
+
 #  - platform: denonavr
 #    host: 192.168.0.145
 #    name: Man Cave Audio
@@ -118,11 +114,11 @@ media_player:
   - platform: roku
   - platform: yamaha
 
-mqtt:
-  broker: m15.cloudmqtt.com
-  port: 17884
-  username: !secret mqtt_username
-  password: !secret mqtt_password
+#mqtt:
+#  broker: m15.cloudmqtt.com
+#  port: 17884
+#  username: !secret mqtt_username
+#  password: !secret mqtt_password
 
 notify:
   - platform: pushbullet
@@ -139,15 +135,14 @@ notify:
 recorder:
 #  db_url: mysql://hassio:CebhWYO81!@core-mariadb/homeassistant?charset=utf8
 
-ring:
-  username: !secret ring_username
-  password: !secret ring_password
+#ring:
+#  username: !secret ring_username
+#  password: !secret ring_password
 
 
 sensor:
   - platform: airthings_wave
-    mac: "98:07:2D:43:4C:89"
-    name: 'Basement Airthings Wave'
+    mac: 98:07:2D:43:4C:89
     scan_interval: 120
     
 #sensor:
@@ -169,6 +164,12 @@ sensor:
 #  disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
 #  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
 
+spotify:
+    client_id: !secret spotify_client
+    client_secret: !secret spotify_secret
+#    aliases:
+#        abc123def456: 'Hassio'
+
 stream:
 
 sun:
@@ -188,5 +189,5 @@ weather:
     api_key: !secret darksky_key
     
 zwave:
-    usb_path: /dev/ttyACM0
+    usb_path: /dev/ttyACM1
     network_key: "0x2e, 0xcc, 0xab, 0x1c, 0xa3, 0x7f, 0x0e, 0xb5, 0x70, 0x71, 0x2d, 0x98, 0x25, 0x43, 0xee, 0x0c"

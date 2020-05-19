@@ -82,6 +82,13 @@ automation:
         - binary_sensor.back_porch_door
         - binary_sensor.vision_zg8101_garage_door_detector_sensor
         - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+        - binary_sensor.front_door
+        - binary_sensor.w_garage_door_sensor
+        - binary_sensor.e_garage_door_sensor
+        - binary_sensor.e_bedroom_window_alarm
+        - binary_sensor.n_dining_window_alarm
+        - binary_sensor.s_kitchen_window_alarm
+        - binary_sensor.w_bedroom_window_alarm
       to: 'on'
   condition:
     - condition: state
@@ -129,6 +136,9 @@ automation:
         - binary_sensor.back_porch_door
         - binary_sensor.vision_zg8101_garage_door_detector_sensor
         - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+        - binary_sensor.front_door
+        - binary_sensor.w_garage_door_sensor
+        - binary_sensor.e_garage_door_sensor
       to: 'on'
   condition:
     - condition: state

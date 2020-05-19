@@ -9,8 +9,21 @@ input_boolean:
 #     {% else %}
 #      mdi:gate
 #     {% endif %}
+  gate:
+    name: Gate Sensor
+    icon: mdi:gate
 
-
+sensor:
+ - platform: template
+   sensors:
+     gate_sensor:
+       friendly_name: "Gate Sensor"
+       value_template: >-
+         {% if is_state('input_boolean.gate_sensor', 'on') %}
+          on
+         {% else %}
+          off
+         {% endif %}
 cover:
   - platform: template
     covers: 
@@ -26,7 +39,7 @@ cover:
         #  service: ifttt.trigger
         #  data: {"event":"gate_control"}
         icon_template: 
-#         {%- if states.binary_sensor.garagedoor.state == 'on' -%}
+#         {%- if states.binary_sensor.gate.state == 'on' -%}
           mdi:gate
 #         {%- else -%}
 #         mdi:garage
