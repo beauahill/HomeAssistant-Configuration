@@ -24,26 +24,6 @@ sensor:
          {% else %}
           off
          {% endif %}
-cover:
-  - platform: template
-    covers: 
-      gate_control:
-        friendly_name: 'Gate Control'
-        open_cover:
-          service: ifttt.trigger
-          data: {"event":"gate_control"}
-        close_cover:
-          service: ifttt.trigger
-          data: {"event":"gate_control"}
-        #stop_cover:
-        #  service: ifttt.trigger
-        #  data: {"event":"gate_control"}
-        icon_template: 
-#         {%- if states.binary_sensor.gate.state == 'on' -%}
-          mdi:gate
-#         {%- else -%}
-#         mdi:garage
-#         {%- endif -%}
 
 automation:
 - alias: Toggle Gate
@@ -51,52 +31,62 @@ automation:
   - platform: state
     entity_id: input_boolean.gate_control
     to: 'on'
+#  action:
+#  - service: ifttt.trigger
+#    data: {"event":"gate_control"}
   action:
-   - service: ifttt.trigger
-     data: {"event":"gate_control"}
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.gate
+  mode: single
+
 - alias: Toggle Gate Off
   trigger: 
   - platform: state
     entity_id: input_boolean.gate_control
     to: 'off'
+#  action:
+#  - service: ifttt.trigger
+#    data: {"event":"gate_control"}
   action:
-   - service: ifttt.trigger
-     data: {"event":"gate_control"}
-
-
-
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.gate
+  mode: single
+  
 - alias: Alexa notify if motion at gate
   initial_state: 'on'
   trigger:
   - platform: state
-    entity_id: binary_sensor.ring_gate_keypad_motion
+    entity_id: binary_sensor.gate_keypad_motion
     to: 'on'
+  condition:
+    condition: time
+    # At least one of the following is required.
+    after: '08:00:00'
+    before: '21:00:00'
   action:
-    - service: notify.alexa_media
-      data: 
-        target: 
-          - media_player.beau_s_echo
-          - media_player.beau_s_2nd_echo_dot
-          - media_player.beau_s_echo_dot
-        message: "Motion has been detected at the gate"
-        data:
-          type: tts
-          method: speak
-
+  - data:
+      data:
+        type: announce
+      message: Motion has been detected at the gate
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media 
 
 - alias: Alexa notify if ring is pressed
   trigger:
   - platform: state
-    entity_id: binary_sensor.ring_gate_keypad_ding
+    entity_id: binary_sensor.gate_keypad_ding
     to: 'on'
   action:
-    - service: notify.alexa_media
-      data: 
-        target:
-          - media_player.beau_s_2nd_echo_dot
-          - media_player.beau_s_echo
-          - media_player.beau_s_echo_dot
-        message: "There is someone at the gate"
-        data:
-          type: tts
-          method: speak
+  - data:
+      data:
+        type: announce
+      message: Someone is at the gate and pressed the Ring, please respond
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media 
+     
+    
+     

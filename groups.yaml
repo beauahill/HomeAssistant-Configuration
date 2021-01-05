@@ -1,27 +1,6 @@
-default_view:
-  view: yes
-  icon: mdi:home
-  entities:
-    - group.outdoor_lights
-    - group.indoor_lights
-    - group.gate_control
-    - automation.outdoor_lights_on_at_night
-    - automation.outdoor_lights_off_at_sunrise
-    - automation.indoor_lights_on_at_sunset
-    - automation.indoor_lights_off_at_bedtime
-    - automation.lock_garage_door
-    - automation.unlock_garage_door
-    - lock.kwikset_touchpad_electronic_deadbolt_locked_2
-    - media_player.spotify
-    - sensor.season
-    - sensor.vision_zp3111_multisensor_4in1_temperature
-    - sensor.vision_zp3111_multisensor_4in1_relative_humidity
-    - sensor.vision_zp3111_multisensor_4in1_luminance
-    - sensor.dark_sky_apparent_temperature
 
 surveillance:
   name: Surveillance
-  view: yes
   entities:
    - camera.garage_dogs
    - camera.ptz_camera
@@ -31,15 +10,15 @@ living_room_lights:
   entities:
     - light.airline_mechanical_zds_100_level
     - light.airline_mechanical_zds_100_level_2
-    - light.linear_lb60z_1_dimmable_led_light_bulb_level_2
+    - light.living_room_lamp_bulb
     
 outdoor_lights:  
   name: Outdoor Lights
   entities:
-    - light.linear_lb60z_1_dimmable_led_light_bulb_level
     - light.linear_wd500z_1_wall_dimmer_switch_level_2
     - light.linear_wd500z_1_wall_dimmer_switch_level
-    - switch.inovelli_nzw30s_on_off_switch_scene_switch
+    - light.garage_patio_dimmable_bulb
+#    - switch.inovelli_nzw30s_on_off_switch_scene_switch
 
 gate_control:
   name: Gate Control
@@ -52,7 +31,6 @@ landscape_lights:
     
 security_sensor:
   name: Security Sensors
-  view: yes
   entities: 
     - sensor.vision_zp3111_multisensor_4in1_burglar
     - sensor.vision_zp3111_multisensor_4in1_emergency

@@ -1,14 +1,14 @@
 alarm_control_panel:
   - platform: manual
     name: Home Alarm
-    code: 2971
-    pending_time: 30
+    code: '2971'
+    arming_time: 30
     delay_time: 20
     trigger_time: 4
     disarmed:
       trigger_time: 0
     armed_home:
-      pending_time: 0
+      arming_time: 0
       delay_time: 0
  
 automation:      
@@ -16,106 +16,96 @@ automation:
 - alias: Notify Armed Away
   initial_state: 'on'
   trigger:
-   - platform: state
-     entity_id:
-       - alarm_control_panel.home_alarm
-     to: 'armed_away'
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'armed_away'
   action:
-   - service: notify.alexa_media
-     data: 
-      target: 
-        - media_player.beau_s_echo
-        - media_player.beau_s_2nd_echo_dot
-        - media_player.beau_s_echo_dot
-      message: "Alarm is armed away"
+  - data:
       data:
-        type: tts
-        method: speak
+        type: announce
+      message: Alarm is armed away
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media
 
 #####################NOTIFY ARMED HOME####################
 - alias: Notify Armed Home
   initial_state: 'on'
   trigger:
-   - platform: state
-     entity_id:
-       - alarm_control_panel.home_alarm
-     to: 'armed_home'
+  - platform: state
+    entity_id:
+      - alarm_control_panel.home_alarm
+    to: 'armed_home'
   action:
-   - service: notify.alexa_media
-     data: 
-      target: 
-        - media_player.beau_s_echo
-        - media_player.beau_s_2nd_echo_dot
-        - media_player.beau_s_echo_dot
-      message: "Alarm is armed home"
+  - data:
       data:
-        type: tts
-        method: speak
+        type: announce
+      message: Alarm is armed home
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media
 
 ########################NOTIFY DISARMED###########################
 - alias: Notify Disarmed
   initial_state: 'on'
   trigger:
-   - platform: state
-     entity_id:
-       - alarm_control_panel.home_alarm
-     to: 'disarmed'
+  - platform: state
+    entity_id:
+      - alarm_control_panel.home_alarm
+    to: 'disarmed'
   action:
-   - service: notify.alexa_media
-     data: 
-      target: 
-        - media_player.beau_s_echo
-        - media_player.beau_s_2nd_echo_dot
-        - media_player.beau_s_echo_dot
-      message: "Alarm is disarmed"
+  - data:
       data:
-        type: tts
-        method: speak
+        type: announce
+      message: Alarm is disarmed
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media
         
         
 ##############################ARMED AWAY################################################    
 - alias: Trigger alarm while armed away
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-        - binary_sensor.back_porch_door
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
-        - binary_sensor.front_door
-        - binary_sensor.w_garage_door_sensor
-        - binary_sensor.e_garage_door_sensor
-        - binary_sensor.e_bedroom_window_alarm
-        - binary_sensor.n_dining_window_alarm
-        - binary_sensor.s_kitchen_window_alarm
-        - binary_sensor.w_bedroom_window_alarm
-      to: 'on'
+  - platform: state
+    entity_id: 
+     - binary_sensor.back_porch_door
+     - binary_sensor.vision_zg8101_garage_door_detector_sensor
+     - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+     - binary_sensor.front_door
+     - binary_sensor.w_garage_door_sensor
+     - binary_sensor.e_garage_door_sensor
+     - binary_sensor.e_bedroom_window_alarm
+     - binary_sensor.n_dining_window_alarm
+     - binary_sensor.s_kitchen_window_alarm
+     - binary_sensor.w_bedroom_window_alarm
+    to: 'on'
   condition:
-    - condition: state
-      entity_id: alarm_control_panel.home_alarm
-      state: armed_away
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
   action:
-    - service: alarm_control_panel.alarm_trigger
-      entity_id: alarm_control_panel.home_alarm
-    - service: ifttt.trigger
-      data: {"event":"alarm_away"}
-    - service: notify.beau_pushbullet
-      data:
-        message: "HOME ALARM TRIGGERED"
-        title: "ALARM TRIGGERED"
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.spotify
-        source: 'Everywhere'
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.spotify
-        volume_level: '1.0'   
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.spotify
-        media_content_id: 'spotify:track:1GHJ6Qt08DWmbozdSJ4s0d'
-        media_content_type: 'music'
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+  - service: ifttt.trigger
+    data: {"event":"alarm_away"}
+  - service: notify.beau_pushbullet
+    data:
+      message: "HOME ALARM TRIGGERED"
+      title: "ALARM TRIGGERED"
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.spotify
+      source: 'Everywhere'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.spotify
+      volume_level: '1.0'   
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.spotify
+      media_content_id: 'spotify:track:1GHJ6Qt08DWmbozdSJ4s0d'
+      media_content_type: 'music'
 #    - service: media_player.media_play
 #      data:
 #        entity_id: media_player_spotify
@@ -131,41 +121,41 @@ automation:
 - alias: Trigger Alarm While Armed Home
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-        - binary_sensor.back_porch_door
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor
-        - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
-        - binary_sensor.front_door
-        - binary_sensor.w_garage_door_sensor
-        - binary_sensor.e_garage_door_sensor
-      to: 'on'
+  - platform: state
+    entity_id: 
+     - binary_sensor.back_porch_door
+     - binary_sensor.vision_zg8101_garage_door_detector_sensor
+     - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+     - binary_sensor.front_door
+     - binary_sensor.w_garage_door_sensor
+     - binary_sensor.e_garage_door_sensor
+    to: 'on'
   condition:
-    - condition: state
-      entity_id: alarm_control_panel.home_alarm
-      state: armed_home
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home
   action:
-    - service: alarm_control_panel.alarm_trigger
-      entity_id: alarm_control_panel.home_alarm
-    - service: ifttt.trigger
-      data: {"event":"alarm_home"}
-    - service: notify.beau_pushbullet
-      data:
-        message: "HOME ALARM TRIGGERED"
-        title: "ALARM TRIGGERED"
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.spotify
-        source: 'Everywhere'
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.spotify
-        volume_level: '0.60'   
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.spotify
-        media_content_id: 'spotify:track:5DXJXnxyOqupTpR6QrmSa0'
-        media_content_type: 'music'
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+  - service: ifttt.trigger
+    data: {"event":"alarm_home"}
+  - service: notify.beau_pushbullet
+    data:
+      message: "HOME ALARM TRIGGERED"
+      title: "ALARM TRIGGERED"
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.spotify
+      source: 'Everywhere'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.spotify
+      volume_level: '0.60'   
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.spotify
+      media_content_id: 'spotify:track:5DXJXnxyOqupTpR6QrmSa0'
+      media_content_type: 'music'
 #    - service: media_player.media_play
 #      data:
 #        entity_id: media_player_spotify

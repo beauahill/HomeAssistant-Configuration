@@ -1,18 +1,20 @@
 homeassistant:
-  name: Crimson
-  latitude: !secret latitude
-  longitude: !secret longitude
-  elevation: 1388
-  unit_system: imperial
-  time_zone: America/Denver
+#  name: Crimson
+#  latitude: !secret latitude
+#  longitude: !secret longitude
+#  elevation: 1388
+#  unit_system: imperial
+#  time_zone: America/Denver
   customize: !include customize.yaml
   packages: !include_dir_named packages
 #  auth_providers:
 #   - type: trusted_networks
 #     trusted_networks:
 #       - 192.168.0.0/24
-  
-#group: !include groups.yaml
+
+cloud:
+
+group: !include groups.yaml
 automation: !include automations.yaml
   
 panel_iframe:
@@ -31,10 +33,11 @@ config:
 
 # Enables the frontend
 frontend:
-  themes: !include themes.yaml
+  themes: !include_dir_merge_named themes
+ # !include themes.yaml
 
 http:
-  base_url: https://beauhill.duckdns.org:8123
+#  base_url: https://beauhill.duckdns.org:8123
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
   # Secrets are defined in the file secrets.yaml
@@ -46,8 +49,8 @@ http:
     - https://reformedreality.com
     - https://192.168.0.0/24
 
-lovelace:
-  mode: yaml
+#lovelace:
+#  mode: yaml
 
 updater:
 
@@ -62,6 +65,10 @@ updater:
 #    url: amazon.com
 
 # Allows you to issue voice commands from the frontend in enabled browsers
+binary_sensor:
+ - platform: workday
+   country: US
+
 conversation:
 
 #camera:
@@ -73,16 +80,12 @@ conversation:
 #    password: 
     
 climate:
-  - platform: zwave
+#  - platform: zwave
   - platform: venstar
     host: 192.168.0.43
     
 # Discover some devices automatically
 discovery:
-
-#device_tracker:
-#  platform: owntracks
-#  mqtt_topic: "owntracks/#"
 
 ffmpeg:
 
@@ -111,8 +114,8 @@ media_player:
 #    email: !secret amazon_email
 #    password: !secret amazon_password
 #    url: amazon.com
-  - platform: roku
-  - platform: yamaha
+#  - platform: roku
+#  - platform: yamaha
 
 #mqtt:
 #  broker: m15.cloudmqtt.com
@@ -130,8 +133,9 @@ notify:
   - platform: alexa_media
     name: alexa_media
   
-#owntracks:
-
+owntracks:
+  mqtt_topic: "owntracks/#"
+  
 recorder:
 #  db_url: mysql://hassio:CebhWYO81!@core-mariadb/homeassistant?charset=utf8
 
@@ -164,12 +168,18 @@ sensor:
 #  disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
 #  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
 
+sonoff:
+  username: !secret sonoff_username
+  password: !secret sonoff_password
+
 spotify:
     client_id: !secret spotify_client
     client_secret: !secret spotify_secret
 #    aliases:
 #        abc123def456: 'Hassio'
-
+spotcast:
+    sp_dc: !secret sp_dc
+    sp_key: !secret sp_key
 stream:
 
 sun:
@@ -189,5 +199,5 @@ weather:
     api_key: !secret darksky_key
     
 zwave:
-    usb_path: /dev/ttyACM1
+    usb_path: /dev/ttyACM0
     network_key: "0x2e, 0xcc, 0xab, 0x1c, 0xa3, 0x7f, 0x0e, 0xb5, 0x70, 0x71, 0x2d, 0x98, 0x25, 0x43, 0xee, 0x0c"

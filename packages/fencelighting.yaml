@@ -34,7 +34,7 @@ automation:
 - alias: Fence Lights On
   initial_state: 'on'
   trigger:
-    platform: sun
+  - platform: sun
     event: sunset
     offset: '-00:30:00'
   action:
@@ -117,13 +117,13 @@ automation:
 - alias: Fence Lights Off
   initial_state: 'on'
   trigger:
-    platform: sun
+  - platform: sun
     event: sunrise
     offset: '+00:30:00'
   action:
-    - service: ifttt.trigger
-      data: {"event":"fencelights_1_off"}
-    - service: ifttt.trigger
-      data: {"event":"fencelights_2_off"}
+  - service: ifttt.trigger
+    data: {"event":"fencelights_1_off"}
+  - service: ifttt.trigger
+    data: {"event":"fencelights_2_off"}
     
     

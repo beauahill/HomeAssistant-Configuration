@@ -22,39 +22,41 @@ input_boolean:
 #     {% endif %} 
     
 automation:
-  - alias: Toggle Single Garage Door
-    trigger: 
-      - platform: state
-        entity_id: input_boolean.single_garage_door
-        to: 'on'
-    action:
-      - service: ifttt.trigger
-        data: {"event":"single_garage_control"}
-  - alias: Toggle Single Garage Door Off
-    trigger: 
-      - platform: state
-        entity_id: input_boolean.single_garage_door
-        to: 'off'
-    action:
-      - service: ifttt.trigger
-        data: {"event":"single_garage_control"}
+- alias: Toggle Single Garage Door
+  trigger: 
+  - platform: state
+    entity_id: input_boolean.single_garage_door
+    to: 'on'
+  action:
+  - service: ifttt.trigger
+    data: {"event":"single_garage_control"}
 
-  - alias: Toggle Double Garage Door
-    trigger: 
-      - platform: state
-        entity_id: input_boolean.double_garage_door
-        to: 'on'
-    action:
-      - service: ifttt.trigger
-        data: {"event":"double_garage_control"}
-  - alias: Toggle Double Garage Door Off
-    trigger: 
-      - platform: state
-        entity_id: input_boolean.double_garage_door
-        to: 'off'
-    action:
-      - service: ifttt.trigger
-        data: {"event":"double_garage_control"}
+- alias: Toggle Single Garage Door Off
+  trigger: 
+  - platform: state
+    entity_id: input_boolean.single_garage_door
+    to: 'off'
+  action:
+  - service: ifttt.trigger
+    data: {"event":"single_garage_control"}
+
+- alias: Toggle Double Garage Door
+  trigger: 
+  - platform: state
+    entity_id: input_boolean.double_garage_door
+    to: 'on'
+  action:
+  - service: ifttt.trigger
+    data: {"event":"double_garage_control"}
+
+- alias: Toggle Double Garage Door Off
+  trigger: 
+  - platform: state
+    entity_id: input_boolean.double_garage_door
+    to: 'off'
+  action:
+  - service: ifttt.trigger
+    data: {"event":"double_garage_control"}
 
 cover:
   - platform: template

@@ -1,0 +1,26 @@
+automation:
+- id: 'Coop On'
+  alias: Coop On
+  description: ''
+  trigger:
+  - below: '20'
+    entity_id: sensor.dark_sky_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      event: coop_on
+    service: ifttt.trigger
+
+- id: 'Coop Off'
+  alias: Coop Off
+  description: ''
+  trigger:
+  - above: '20'
+    entity_id: sensor.dark_sky_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      event: coop_off
+    service: ifttt.trigger

@@ -1,13 +1,3 @@
-- id: Set Theme at Startup
-  alias: Set theme at startup
-  initial_state: 'on'
-  trigger:
-    platform: homeassistant
-    event: start
-  action:
-  - service: frontend.set_theme
-    data:
-      name: NightOwl
 - id: letsencrypt_renewal
   alias: Lets Encrypt Renewal
   initial_state: 'on'
@@ -20,45 +10,33 @@
       addon: core_letsencrypt
 - id: Indoor_Lights_On
   alias: Indoor Lights on at Sunset
-  initial_state: 'on'
   trigger:
-    platform: sun
-    event: sunset
+  - event: sunset
     offset: -00:45:00
+    platform: sun
   action:
-  - service: light.turn_on
-    data:
-      entity_id: group.living_room_lights
-  - service: light.turn_on
-    data:
-      entity_id: light.level_6
-      brightness: 200
+  - entity_id: light.lr_dimming_bulb,light.lr_lamp_dimmer,light.lr_lamp_dimmer_2
+    service: light.turn_on
+  initial_state: 'on'
 - id: Indoor_Lights_Off
   alias: Indoor Lights off at Bedtime
-  initial_state: 'on'
   trigger:
+  - at: '21:00:00'
     platform: time
-    at: '21:00:00'
   action:
-  - service: light.turn_off
-    data:
-      entity_id: group.living_room_lights
-  - service: light.turn_off
-    data:
-      entity_id: light.level_6
+  - entity_id: light.lr_dimming_bulb,light.lr_lamp_dimmer,light.lr_lamp_dimmer_2
+    service: light.turn_off
+  initial_state: 'on'
 - id: Outdoor_Lights_On
   alias: Outdoor Lights on at Night
   trigger:
   - event: sunset
     platform: sun
   action:
-  - data:
-      brightness: 255
-      entity_id: group.outdoor_lights
+  - data: {}
+    entity_id: light.garage_doors,light.garage_patio_dimming_bulb,light.front_porch
     service: light.turn_on
-  - data:
-      entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
-    entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
+  - entity_id: switch.back_porch_lights
     service: switch.turn_on
   - data:
       event: landscapelt_on
@@ -66,42 +44,40 @@
   initial_state: 'on'
 - id: Outdoor_Lights_Off
   alias: Outdoor Lights off at Sunrise
-  initial_state: 'on'
   trigger:
-    platform: sun
-    event: sunrise
+  - event: sunrise
     offset: +00:30:00
+    platform: sun
   action:
-  - service: light.turn_off
-    data:
-      entity_id:
-      - group.outdoor_lights
-      - group.landscape_lights
-  - service: switch.turn_off
-    data:
-      entity_id: switch.inovelli_nzw30s_on_off_switch_scene_switch
-  - service: ifttt.trigger
-    data:
+  - data: {}
+    entity_id: light.garage_doors,light.garage_patio_dimming_bulb,light.front_porch
+    service: light.turn_off
+  - entity_id: switch.back_porch_lights
+    service: switch.turn_off
+  - data:
       event: landscapelt_off
+    service: ifttt.trigger
+  initial_state: 'on'
 - id: lock_door
   alias: Lock Garage Door
-  initial_state: 'on'
   trigger:
+  - at: '21:00:00'
     platform: time
-    at: '20:00:00'
   action:
+  - entity_id: lock.e_garage_entry_door
     service: lock.lock
-    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
+  initial_state: 'on'
 - id: unlock_door
   alias: Unlock Garage Door
-  initial_state: 'on'
   trigger:
+  - at: 06:45:00
     platform: time
-    at: 06:45:00
   action:
+  - entity_id: lock.e_garage_entry_door
     service: lock.unlock
-    entity_id: lock.kwikset_touchpad_electronic_deadbolt_locked
-- alias: Notify if garage left open
+  initial_state: 'on'
+- id: 8241993d082e478eb2e1b38f2add9213
+  alias: Notify if garage left open
   initial_state: 'on'
   trigger:
   - platform: state
@@ -126,14 +102,10 @@
   - service: notify.alexa_media
     data:
       target:
-      - media_player.beau_s_echo
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo_dot
-      message: Garage Door was Left Open
+      - media_player.everywhere
       data:
-        type: tts
-        method: speak
-  id: 8241993d082e478eb2e1b38f2add9213
+        type: announce
+      message: A garage door was left open.
 - id: '1563552008255'
   alias: Garage Door - Single Opening
   trigger:
@@ -146,13 +118,10 @@
   - service: notify.alexa_media
     data:
       target:
-      - media_player.beau_s_echo
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo_dot
-      message: Single Garage Door is Opening
+      - media_player.everywhere
       data:
-        type: tts
-        method: speak
+        type: announce
+      message: The double garage door is opening.
 - id: '1563552930551'
   alias: Garage Door - Double Opening
   trigger:
@@ -165,13 +134,10 @@
   - service: notify.alexa_media
     data:
       target:
-      - media_player.beau_s_echo
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo_dot
-      message: Double Garage Door is Opening
+      - media_player.everywhere
       data:
-        type: tts
-        method: speak
+        type: announce
+      message: The single garage door is opening
 - id: '1572470799220'
   alias: Coop
   description: ''
@@ -184,74 +150,240 @@
   - data:
       event: coop_on
     service: ifttt.trigger
-    
-- id: '1589818236256'
-  alias: Turn off Climate Due to Open Door/Window
+- id: '1590163494482'
+  alias: Restore Climate
+  description: Due to windows and doors closed
+  trigger:
+  - entity_id: binary_sensor.e_bedroom_window_alarm
+    for: 00:02:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.w_bedroom_window_alarm
+    for: 00:02:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.n_dining_window_alarm
+    for: 00:02:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.s_kitchen_window_alarm
+    for: 00:02:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.back_porch_door
+    for: 00:02:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.s_kitchen_window_2
+    for: 00:02:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.n_dining_window_2
+    for: 00:02:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.e_bedroom_window_alarm
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.w_bedroom_window_alarm
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.n_dining_window_alarm
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.s_kitchen_window_alarm
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.back_porch_door
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.climate_state
+    state: 'on'
+  action:
+  - data:
+      preset_mode: none
+    entity_id: climate.main
+    service: climate.set_preset_mode
+  - data:
+      message: Thermostat has been restored
+    service: notify.beau_pushbullet
+  - data:
+      data:
+        type: announce
+      message: Thermostat has been restored
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media
+  - data: {}
+    entity_id: input_boolean.climate_state
+    service: input_boolean.turn_off
+- id: '1590164413627'
+  alias: Turn off Climate
+  description: Due to open door or window
+  trigger:
+  - entity_id: binary_sensor.e_bedroom_window_alarm
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.w_bedroom_window_alarm
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.n_dining_window_alarm
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.s_kitchen_window_alarm
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.back_porch_door
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.s_kitchen_window_2
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.n_dining_window_2
+    for: 00:05:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.climate_state
+    state: 'off'
+  action:
+  - data:
+      preset_mode: away
+    entity_id: climate.main
+    service: climate.set_preset_mode
+  - data:
+      data:
+        type: announce
+      message: Thermostat has been turned off due to an open door or window
+      target:
+      - media_player.everywhere
+    service: notify.alexa_media
+  - data:
+      message: Thermostat has been turned off due to an open door or window
+    service: notify.beau_pushbullet
+  - data: {}
+    entity_id: input_boolean.climate_state
+    service: input_boolean.turn_on
+- id: '1590506306244'
+  alias: Lock Back Door at Night
   description: ''
   trigger:
-   - platform: state
-     entity_id:
-      - binary_sensor.back_porch_door
-      - binary_sensor.front_door
-     from: 'closed'
-     to: 'open'
-     for: 
-      minutes: 2
-   - platform: state
-     entity_id:
-      - binary_sensor.e_bedroom_window
-      - binary_sensor.n_dining_window
-      - binary_sensor.s_kitchen_window
-      - binary_sensor.w_bedroom_window
-     from: 'off'
-     to: 'on'
-     for: 
-      minutes: 2
-  condition: []
+  - at: '21:00:00'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: lock.back_porch_deadbolt
+    state: unlocked
   action:
   - data: {}
-    entity_id: climate.main
-    service: climate.turn_off
-  - data:
-      message: "Climate has been turned off because a window or door has been open for 2 minutes"
-      target:
-      - media_player.beau_s_echo
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo_dot
-    service: notify.alexa_media
-
-- id: 'restoreClimate'
-  alias: Restore Climate after Closing Door/Window
+    entity_id: lock.back_porch_deadbolt
+    service: lock.lock
+- id: '1603471969440'
+  alias: Notify of Low Garage Temperature
   description: ''
   trigger:
-   - platform: state
-     entity_id:
-      - binary_sensor.back_porch_door
-      - binary_sensor.front_door
-     from: 'open'
-     to: 'closed'
-     for: 
-      minutes: 2
-   - platform: state
-     entity_id:
-      - binary_sensor.e_bedroom_window
-      - binary_sensor.n_dining_window
-      - binary_sensor.s_kitchen_window
-      - binary_sensor.w_bedroom_window
-     from: 'on'
-     to: 'off'
-     for: 
-      minutes: 2
+  - type: value
+    platform: device
+    device_id: de15b8f8ec56452da36723c5a9d641c9
+    entity_id: sensor.garage_therm_temp1
+    domain: sensor
+    below: 38
+    above: -100
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - type: is_value
+    condition: device
+    device_id: de15b8f8ec56452da36723c5a9d641c9
+    entity_id: sensor.garage_therm_temp1
+    domain: sensor
+    below: 38
+  action:
+  - service: notify.beau_pushbullet
+    data:
+      message: The garage temperature is low!
+  - service: notify.erin_pushbullet
+    data:
+      message: The garage temperature is low!
+  - service: notify.alexa_media
+    data:
+      data:
+        type: announce
+      message: The garage temperature is low, check the heater or thermostat
+      target:
+      - media_player.everywhere
+  mode: single
+- id: '1608329261918'
+  alias: Turn on XMas Lights
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
   condition: []
   action:
-  - service: climate.set_hvac_mode
-    data:
-     entity_id: climate.main
-     hvac_mode: auto
-  - data:
-      message: "Climate has been restored to schedule"
-      target:
-      - media_player.beau_s_echo
-      - media_player.beau_s_2nd_echo_dot
-      - media_player.beau_s_echo_dot
-    service: notify.alexa_media
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.xmas
+  mode: single
+- id: '1608329309993'
+  alias: Turn off XMas Lights
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:30:00'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.xmas
+  mode: single
+- id: '1608336829577'
+  alias: Turn on Ext Cord
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:15:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.ext_cord
+  mode: single
+- id: '1608336920574'
+  alias: Turn off Ext Cord
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.ext_cord
+  mode: single

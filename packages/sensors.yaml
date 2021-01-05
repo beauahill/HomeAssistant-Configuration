@@ -4,39 +4,38 @@ binary_sensor:
         back_porch_door:
             value_template: "{{ states('sensor.vision_zd2105us_5_recessed_door_window_sensor_alarm_level')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.vision_zd2105us_5_recessed_door_window_sensor_alarm_level
+#            entity_id: sensor.vision_zd2105us_5_recessed_door_window_sensor_alarm_level
         e_garage_door_sensor:
             value_template: "{{ states('sensor.e_garage_door_alarm')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.e_garage_door_alarm
+#            entity_id: sensor.e_garage_door_alarm
         w_garage_door_sensor:
             value_template: "{{ states('sensor.w_garage_door_alarm')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.w_garage_door_alarm
+#            entity_id: sensor.w_garage_door_alarm
         front_door:
             value_template: "{{ states('sensor.front_door')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.front_door
+#            entity_id: sensor.front_door
         gate_sensor:
             value_template: "{{ is_state('sensor.gate_sensor', 'on') }}"
             device_class: opening
-            entity_id: sensor.gate_sensor
+#            entity_id: sensor.gate_sensor
         n_dining_window_alarm:
             value_template: "{{ states('sensor.n_dining_window')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.n_dining_window
+#            entity_id: sensor.n_dining_window
         s_kitchen_window_alarm:
             value_template: "{{ states('sensor.s_kitchen_window')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.s_kitchen_window
+#            entity_id: sensor.s_kitchen_window
         e_bedroom_window_alarm:
             value_template: "{{ states('sensor.e_bedroom_window')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.e_bedroom_window
+#            entity_id: sensor.e_bedroom_window
         w_bedroom_window_alarm:
             value_template: "{{ states('sensor.w_bedroom_window')|float > 250 }}"
             device_class: opening
-            entity_id: sensor.w_bedroom_window
+#            entity_id: sensor.w_bedroom_window
     
-    - platform: ring
-       
+#    - platform: ring

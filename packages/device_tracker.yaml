@@ -1,0 +1,68 @@
+sensor:
+    - platform: mqtt
+      state_topic: "owntracks/beauhill/Android"
+      name: Phone Battery (Beau)
+      device_class: battery
+      unit_of_measurement: '%'
+      value_template: >
+        {% if value_json.batt %}
+          {{value_json.batt }}
+        {% else %}
+          {{ states('sensor.phone_battery_beau') }}
+        {% endif %}  
+    - platform: mqtt
+      state_topic: "owntracks/beauhill/Android"
+      name: GPS Accuracy (Beau)
+      value_template: >
+        {% if value_json.acc %}
+          {{ value_json.acc }}
+        {% else %}
+          {{ states('sensor.gps_accuracy_beau') }}
+        {% endif %}
+    - platform: mqtt
+      state_topic: "owntracks/beauhill/Android"
+      name: Connection (Beau)
+      value_template: >
+        {% if value_json.conn %}
+            {% if value_json.conn == 'w' %}
+                WiFi
+            {% else %}
+                Mobile
+            {% endif %}
+        {% else %}
+            {{ states('sensor.connection_beau') }}
+        {% endif %}
+
+    - platform: mqtt
+      state_topic: "owntracks/e.vaughn.hill/Android"
+      name: Phone Battery (Erin)
+      device_class: battery
+      unit_of_measurement: '%'
+      value_template: >
+        {% if value_json.batt %}
+          {{value_json.batt }}
+        {% else %}
+          {{ states('sensor.phone_battery_erin') }}
+        {% endif %}  
+    - platform: mqtt
+      state_topic: "owntracks/e.vaughn.hill/Android"
+      name: GPS Accuracy (Erin)
+      value_template: >
+        {% if value_json.acc %}
+          {{ value_json.acc }}
+        {% else %}
+          {{ states('sensor.gps_accuracy_erin') }}
+        {% endif %}
+    - platform: mqtt
+      state_topic: "owntracks/e.vaughn.hill/Android"
+      name: Connection (Erin)
+      value_template: >
+        {% if value_json.conn %}
+            {% if value_json.conn == 'w' %}
+                WiFi
+            {% else %}
+                Mobile
+            {% endif %}
+        {% else %}
+            {{ states('sensor.connection_erin') }}
+        {% endif %}

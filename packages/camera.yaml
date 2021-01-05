@@ -13,7 +13,7 @@ camera:
     #password: CebhWYO81!
     name: PTZ Camera
     
-  - platform: ring
+#  - platform: ring
 
   - platform: ffmpeg
     name: Driveway
@@ -30,3 +30,7 @@ camera:
   - platform: ffmpeg
     name: Front Door
     input: -rtsp_transport tcp -i rtsp://beauhill:CebhWYO81@192.168.0.112/live
+
+  - platform: ffmpeg
+    name: Gate
+    input: -rtsp_transport tcp -i rtsp://beauhill:CebhWYO81@192.168.0.179/live
