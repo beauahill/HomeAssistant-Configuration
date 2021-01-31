@@ -37,7 +37,7 @@ automation:
   action:
   - service: switch.turn_on
     data: {}
-    entity_id: switch.gate
+    entity_id: switch.gate_opener_2
   mode: single
 
 - alias: Toggle Gate Off
@@ -51,7 +51,7 @@ automation:
   action:
   - service: switch.turn_on
     data: {}
-    entity_id: switch.gate
+    entity_id: switch.gate_opener_2
   mode: single
   
 - alias: Alexa notify if motion at gate

@@ -39,3 +39,60 @@ binary_sensor:
 #            entity_id: sensor.w_bedroom_window
     
 #    - platform: ring
+
+sensor:
+#NODEMCU DHT22 SENSOR IN ERIN'S OFFICE
+  - platform: mqtt
+    name: "Office Humidity"
+    unique_id: "office_humidity"
+    unit_of_measurement: '%'
+    expire_after: 86400
+    device_class: humidity
+    icon: mdi:water-percent
+    qos: 1
+    state_topic: "esp/dht/humidity"
+#    value_template: "{{ value_json.humidity }}"
+  - platform: mqtt
+    name: "Office Temperature"
+    unique_id: "office_temperature"
+    unit_of_measurement: '°F'
+    expire_after: 86400
+    device_class: temperature
+    icon: mdi:home-thermometer-outline
+    qos: 1
+    state_topic: "esp/dht/temperature"
+    
+#NODEMCU DHT22 SENSOR IN SHOP
+
+  - platform: mqtt
+    name: "Shop Humidity"
+    unique_id: "shop_humidity"
+    unit_of_measurement: '%'
+    expire_after: 86400
+    device_class: humidity
+    icon: mdi:water-percent
+    qos: 1
+    state_topic: "esp/shopdht/humidity"
+#    value_template: "{{ value_json.humidity }}"
+  - platform: mqtt
+    name: "Shop Temperature"
+    unique_id: "shop_temperature"
+    unit_of_measurement: '°F'
+    expire_after: 86400
+    device_class: temperature
+    icon: mdi:home-thermometer-outline
+    qos: 1
+    state_topic: "esp/shopdht/temperature"
+
+input_boolean:
+  go_pokes:
+    name: Set Lights to Go Pokes
+    icon: mdi:lightbulb-outline
+    
+  go_bills:
+    name: Set Lights to Go Bills
+    icon: mdi:lightbulb-outline
+
+  normal_lights:
+    name: Set Lights to Normal
+    icon: mdi:lightbulb-outline

@@ -40,6 +40,21 @@ script:
         data: {}
         entity_id: input_boolean.alexa_bar_lights
         
+      - service: light.turn_on
+        data:
+          entity_id: light.back_bar
+          brightness: 200
+
+      - service: light.turn_on
+        data:
+          entity_id: light.man_cave
+          brightness: 65
+          
+      - service: light.turn_on
+        data:
+          entity_id: light.bar_lights
+          brightness: 150
+        
   shut_down_mancave:
     alias: 'Shut Down the Man Cave'
     sequence:
@@ -77,6 +92,14 @@ script:
       - service: input_boolean.turn_off
         data: {}
         entity_id: input_boolean.alexa_bar_lights
+          
+      - service: light.turn_off
+        data:
+          entities: 
+            light.light.man_cave
+            light.back_bar
+            light.bar_lights
+
     
 input_boolean:
   alexa_bar_lights:

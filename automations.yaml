@@ -34,14 +34,18 @@
     platform: sun
   action:
   - data: {}
-    entity_id: light.garage_doors,light.garage_patio_dimming_bulb,light.front_porch
+    entity_id: light.garage_patio_dimming_bulb,light.front_porch
     service: light.turn_on
   - entity_id: switch.back_porch_lights
     service: switch.turn_on
-  - data:
-      event: landscapelt_on
-    service: ifttt.trigger
+  - service: light.turn_on
+    data:
+      brightness: 255
+      kelvin: 4000
+      transition: 600
+    entity_id: light.garage_bulb_1, light.garage_bulb_2, light.garage_bulb_3
   initial_state: 'on'
+  mode: single
 - id: Outdoor_Lights_Off
   alias: Outdoor Lights off at Sunrise
   trigger:
@@ -50,14 +54,16 @@
     platform: sun
   action:
   - data: {}
-    entity_id: light.garage_doors,light.garage_patio_dimming_bulb,light.front_porch
+    entity_id: light.garage_patio_dimming_bulb,light.front_porch
     service: light.turn_off
   - entity_id: switch.back_porch_lights
     service: switch.turn_off
-  - data:
-      event: landscapelt_off
-    service: ifttt.trigger
+  - service: light.turn_off
+    data:
+      transition: 600
+    entity_id: light.garage_bulb_1, light.garage_bulb_2, light.garage_bulb_3
   initial_state: 'on'
+  mode: single
 - id: lock_door
   alias: Lock Garage Door
   trigger:
@@ -386,4 +392,103 @@
   - service: switch.turn_off
     data: {}
     entity_id: switch.ext_cord
+  mode: single
+- id: '1611345510786'
+  alias: Light Color to Bills
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.go_bills
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 255
+      rgb_color:
+      - 198
+      - 12
+      - 48
+    entity_id: light.garage_bulb_1, light.garage_bulb_3, light.fence_led_controller_1
+  - service: light.turn_on
+    data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 51
+      - 141
+    entity_id: light.garage_bulb_2, light.fence_led_controller_2
+  mode: single
+- id: '1611345575275'
+  alias: Light Color to Wyo
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.go_pokes
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 255
+      rgb_color:
+      - 73
+      - 47
+      - 36
+    entity_id: light.garage_bulb_1, light.garage_bulb_3, light.fence_led_controller_1
+  - service: light.turn_on
+    data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 196
+      - 37
+    entity_id: light.garage_bulb_2, light.fence_led_controller_2
+  mode: single
+- id: '1611969498244'
+  alias: Light Color to Normal
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.normal_lights
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 255
+      kelvin: 4000
+    entity_id: light.garage_bulb_1, light.garage_bulb_2, light.garage_bulb_3, light.fence_led_controller_1,
+      light.fence_led_controller_2
+  mode: single
+- id: '1611969622730'
+  alias: Light Color to Bills Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.go_bills
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.normal_lights
+    data: {}
+  mode: single
+- id: '1611969676814'
+  alias: Light Color to WyoOff
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.go_pokes
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.normal_lights
   mode: single

@@ -8,8 +8,8 @@ automation:
     condition: and
     conditions:
       - condition: numeric_state
-        entity_id: 'sensor.dark_sky_apparent_temperature'
-        above: 78
+        entity_id: 'sensor.office_temperature'
+        above: 76
       - condition: state
         entity_id: 'binary_sensor.workday_sensor'
         state: 'on'
@@ -40,8 +40,8 @@ automation:
     condition: and
     conditions:
       - condition: numeric_state
-        entity_id: 'sensor.dark_sky_apparent_temperature'
-        below: 50
+        entity_id: 'sensor.office_temperature'
+        below: 64
       - condition: state
         entity_id: 'binary_sensor.workday_sensor'
         state: 'on'

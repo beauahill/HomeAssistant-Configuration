@@ -52,6 +52,8 @@ http:
 #lovelace:
 #  mode: yaml
 
+mobile_app:
+
 updater:
 
 ###############################################################################################
@@ -168,9 +170,6 @@ sensor:
 #  disco_off: echo -e -n "\x01\x08\x00\xF2\x51\x01\x00\x05\x01\x51" > /dev/ttyACM0
 #  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
 
-sonoff:
-  username: !secret sonoff_username
-  password: !secret sonoff_password
 
 spotify:
     client_id: !secret spotify_client
