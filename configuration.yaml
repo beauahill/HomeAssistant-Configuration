@@ -54,7 +54,7 @@ http:
 
 mobile_app:
 
-updater:
+#updater:
 
 ###############################################################################################
 #####END OF MAIN#### 
@@ -81,18 +81,18 @@ conversation:
 #    host: '192.168.1.190'
 #    password: 
     
-climate:
-#  - platform: zwave
-  - platform: venstar
-    host: 192.168.0.43
+# climate:
+# #  - platform: zwave
+#   - platform: venstar
+#     host: 192.168.0.43
     
 # Discover some devices automatically
 discovery:
 
-ffmpeg:
+# ffmpeg:
 
-hacs:
-  token: 65f128b934e795e5a76ee9454aba9d030b33961f
+#hacs:
+#  token: 65f128b934e795e5a76ee9454aba9d030b33961f
   
 # Enables support for tracking state changes over time
 history:
@@ -126,17 +126,18 @@ media_player:
 #  password: !secret mqtt_password
 
 notify:
-  - platform: pushbullet
-    name: beau_pushbullet
-    api_key: !secret BH_Pushbullet_Key
-  - platform: pushbullet
-    name: erin_pushbullet
-    api_key: !secret EH_Pushbullet_Key
+#   - platform: pushbullet
+#     name: beau_pushbullet
+#     api_key: !secret BH_Pushbullet_Key
+#   - platform: pushbullet
+#     name: erin_pushbullet
+#     api_key: !secret EH_Pushbullet_Key
   - platform: alexa_media
     name: alexa_media
+
   
-owntracks:
-  mqtt_topic: "owntracks/#"
+# owntracks:
+#   mqtt_topic: "owntracks/#"
   
 recorder:
 #  db_url: mysql://hassio:CebhWYO81!@core-mariadb/homeassistant?charset=utf8
@@ -146,10 +147,10 @@ recorder:
 #  password: !secret ring_password
 
 
-sensor:
-  - platform: airthings_wave
-    mac: 98:07:2D:43:4C:89
-    scan_interval: 120
+#sensor:
+#  - platform: airthings_wave
+#    mac: 98:07:2D:43:4C:89
+#    scan_interval: 120
     
 #sensor:
 #  - platform: ups
@@ -171,14 +172,14 @@ sensor:
 #  disco_on: echo -e -n "\x01\x08\x00\xF2\x51\x01\x01\x05\x01\x50" > /dev/ttyACM0
 
 
-spotify:
-    client_id: !secret spotify_client
-    client_secret: !secret spotify_secret
+#spotify:
+#    client_id: !secret spotify_client
+#    client_secret: !secret spotify_secret
 #    aliases:
 #        abc123def456: 'Hassio'
-spotcast:
-    sp_dc: !secret sp_dc
-    sp_key: !secret sp_key
+# spotcast:
+#     sp_dc: !secret sp_dc
+#     sp_key: !secret sp_key
 stream:
 
 sun:
@@ -197,6 +198,6 @@ weather:
   - platform: darksky
     api_key: !secret darksky_key
     
-zwave:
-    usb_path: /dev/ttyACM0
-    network_key: "0x2e, 0xcc, 0xab, 0x1c, 0xa3, 0x7f, 0x0e, 0xb5, 0x70, 0x71, 0x2d, 0x98, 0x25, 0x43, 0xee, 0x0c"
+#zwave:
+#    usb_path: /dev/ttyACM0
+#    network_key: "0x2e, 0xcc, 0xab, 0x1c, 0xa3, 0x7f, 0x0e, 0xb5, 0x70, 0x71, 0x2d, 0x98, 0x25, 0x43, 0xee, 0x0c"

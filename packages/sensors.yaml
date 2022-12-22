@@ -1,89 +1,145 @@
-binary_sensor:
-    - platform: template
-      sensors:
-        back_porch_door:
-            value_template: "{{ states('sensor.vision_zd2105us_5_recessed_door_window_sensor_alarm_level')|float > 250 }}"
-            device_class: opening
+#binary_sensor:
+#    - platform: template
+#      sensors:
+#        back_porch_door:
+#            value_template: "{{ states('sensor.vision_zd2105us_5_recessed_door_window_sensor_alarm_level')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.vision_zd2105us_5_recessed_door_window_sensor_alarm_level
-        e_garage_door_sensor:
-            value_template: "{{ states('sensor.e_garage_door_alarm')|float > 250 }}"
-            device_class: opening
+#        e_garage_door_sensor:
+#            value_template: "{{ states('sensor.e_garage_door_alarm')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.e_garage_door_alarm
-        w_garage_door_sensor:
-            value_template: "{{ states('sensor.w_garage_door_alarm')|float > 250 }}"
-            device_class: opening
+#        w_garage_door_sensor:
+#            value_template: "{{ states('sensor.w_garage_door_alarm')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.w_garage_door_alarm
-        front_door:
-            value_template: "{{ states('sensor.front_door')|float > 250 }}"
-            device_class: opening
+#        front_door:
+#            value_template: "{{ states('sensor.front_door')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.front_door
-        gate_sensor:
-            value_template: "{{ is_state('sensor.gate_sensor', 'on') }}"
-            device_class: opening
+#        gate_sensor:
+#            value_template: "{{ is_state('sensor.gate_sensor', 'on') }}"
+#            device_class: opening
 #            entity_id: sensor.gate_sensor
-        n_dining_window_alarm:
-            value_template: "{{ states('sensor.n_dining_window')|float > 250 }}"
-            device_class: opening
+#        n_dining_window_alarm:
+#            value_template: "{{ states('sensor.n_dining_window')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.n_dining_window
-        s_kitchen_window_alarm:
-            value_template: "{{ states('sensor.s_kitchen_window')|float > 250 }}"
-            device_class: opening
+#        s_kitchen_window_alarm:
+#            value_template: "{{ states('sensor.s_kitchen_window')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.s_kitchen_window
-        e_bedroom_window_alarm:
-            value_template: "{{ states('sensor.e_bedroom_window')|float > 250 }}"
-            device_class: opening
+#        e_bedroom_window_alarm:
+#            value_template: "{{ states('sensor.e_bedroom_window')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.e_bedroom_window
-        w_bedroom_window_alarm:
-            value_template: "{{ states('sensor.w_bedroom_window')|float > 250 }}"
-            device_class: opening
+#        w_bedroom_window_alarm:
+#            value_template: "{{ states('sensor.w_bedroom_window')|float > 250 }}"
+#            device_class: opening
 #            entity_id: sensor.w_bedroom_window
     
 #    - platform: ring
 
-sensor:
+#sensor:
 #NODEMCU DHT22 SENSOR IN ERIN'S OFFICE
-  - platform: mqtt
-    name: "Office Humidity"
-    unique_id: "office_humidity"
-    unit_of_measurement: '%'
-    expire_after: 86400
-    device_class: humidity
-    icon: mdi:water-percent
-    qos: 1
-    state_topic: "esp/dht/humidity"
+#  - platform: mqtt
+#    name: "Office Humidity"
+#    unique_id: "office_humidity"
+#    unit_of_measurement: '%'
+#    expire_after: 86400
+#    device_class: humidity
+#    icon: mdi:water-percent
+#    qos: 1
+#    state_topic: "esp/dht/humidity"
 #    value_template: "{{ value_json.humidity }}"
-  - platform: mqtt
-    name: "Office Temperature"
-    unique_id: "office_temperature"
-    unit_of_measurement: '°F'
-    expire_after: 86400
-    device_class: temperature
-    icon: mdi:home-thermometer-outline
-    qos: 1
-    state_topic: "esp/dht/temperature"
-    
+#  - platform: mqtt
+#    name: "Office Temperature"
+#    unique_id: "office_temperature"
+#    unit_of_measurement: '°F'
+#    expire_after: 86400
+#    device_class: temperature
+#    icon: mdi:home-thermometer-outline
+#    qos: 1
+#    state_topic: "esp/dht/temperature"
+
+mqtt:
+  sensor:
+#NODEMCU DHT22 SENSOR IN ERIN'S OFFICE
+    - name: "Office Humidity"
+      unique_id: "office_humidity"
+      unit_of_measurement: '%'
+      expire_after: 86400
+      device_class: humidity
+      icon: mdi:water-percent
+      qos: 1
+      state_topic: "esp/dht/EOfficehumidity"
+#    value_template: "{{ value_json.humidity }}"
+    - name: "Office Temperature"
+      unique_id: "office_temperature"
+      unit_of_measurement: '°F'
+      expire_after: 86400
+      device_class: temperature
+      icon: mdi:home-thermometer-outline
+      qos: 1
+      state_topic: "esp/dht/EOfficetemperature"    
+      
 #NODEMCU DHT22 SENSOR IN SHOP
-
-  - platform: mqtt
-    name: "Shop Humidity"
-    unique_id: "shop_humidity"
-    unit_of_measurement: '%'
-    expire_after: 86400
-    device_class: humidity
-    icon: mdi:water-percent
-    qos: 1
-    state_topic: "esp/shopdht/humidity"
+#  - platform: mqtt
+#    name: "Shop Humidity"
+#    unique_id: "shop_humidity"
+#    unit_of_measurement: '%'
+#    expire_after: 86400
+#    device_class: humidity
+#    icon: mdi:water-percent
+#    qos: 1
+#    state_topic: "esp/shopdht/humidity"
 #    value_template: "{{ value_json.humidity }}"
-  - platform: mqtt
-    name: "Shop Temperature"
-    unique_id: "shop_temperature"
-    unit_of_measurement: '°F'
-    expire_after: 86400
-    device_class: temperature
-    icon: mdi:home-thermometer-outline
-    qos: 1
-    state_topic: "esp/shopdht/temperature"
+#  - platform: mqtt
+#    name: "Shop Temperature"
+#    unique_id: "shop_temperature"
+#    unit_of_measurement: '°F'
+#    expire_after: 86400
+#    device_class: temperature
+#    icon: mdi:home-thermometer-outline
+#    qos: 1
+#    state_topic: "esp/shopdht/temperature"
 
+    - name: "Shop Humidity"
+      unique_id: "shop_humidity"
+      unit_of_measurement: '%'
+      expire_after: 86400
+      device_class: humidity
+      icon: mdi:water-percent
+      qos: 1
+      state_topic: "esp/dht/Shophumidity"
+#    value_template: "{{ value_json.humidity }}"
+    - name: "Shop Temperature"
+      unique_id: "shop_temperature"
+      unit_of_measurement: '°F'
+      expire_after: 86400
+      device_class: temperature
+      icon: mdi:home-thermometer-outline
+      qos: 1
+      state_topic: "esp/dht/Shoptemperature"
+      
+    - name: "Basement Office Humidity"
+      unique_id: "boffice_humidity"
+      unit_of_measurement: '%'
+      expire_after: 86400
+      device_class: humidity
+      icon: mdi:water-percent
+      qos: 1
+      state_topic: "esp/dht/BOfficehumidity"
+#    value_template: "{{ value_json.humidity }}"
+    - name: "Basement Office Temperature"
+      unique_id: "boffice_temperature"
+      unit_of_measurement: '°F'
+      expire_after: 86400
+      device_class: temperature
+      icon: mdi:home-thermometer-outline
+      qos: 1
+      state_topic: "esp/dht/BOfficetemperature"
+      
 input_boolean:
   go_pokes:
     name: Set Lights to Go Pokes

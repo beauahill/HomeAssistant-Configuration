@@ -15,18 +15,38 @@
     offset: -00:45:00
     platform: sun
   action:
-  - entity_id: light.lr_dimming_bulb,light.lr_lamp_dimmer,light.lr_lamp_dimmer_2
-    service: light.turn_on
+  - service: light.turn_on
+    data: {}
+    target:
+      device_id:
+      - e3add53c5786f03ca458702fdbb768fd
+      - 8fd11e81c4b424c3dc524c63d0a137f7
+      - 51105e9598fe4d0ae6e1fef73483ea2a
+  - service: switch.turn_on
+    data: {}
+    target:
+      device_id: 0180d58014ddb2a8ef21e4891690ee97
   initial_state: 'on'
+  mode: single
 - id: Indoor_Lights_Off
   alias: Indoor Lights off at Bedtime
   trigger:
-  - at: '21:00:00'
+  - at: '21:00'
     platform: time
   action:
-  - entity_id: light.lr_dimming_bulb,light.lr_lamp_dimmer,light.lr_lamp_dimmer_2
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    target:
+      device_id:
+      - e3add53c5786f03ca458702fdbb768fd
+      - 8fd11e81c4b424c3dc524c63d0a137f7
+      - 51105e9598fe4d0ae6e1fef73483ea2a
+  - service: switch.turn_off
+    data: {}
+    target:
+      device_id: 0180d58014ddb2a8ef21e4891690ee97
   initial_state: 'on'
+  mode: single
 - id: Outdoor_Lights_On
   alias: Outdoor Lights on at Night
   trigger:
@@ -34,16 +54,16 @@
     platform: sun
   action:
   - data: {}
-    entity_id: light.garage_patio_dimming_bulb,light.front_porch
     service: light.turn_on
-  - entity_id: switch.back_porch_lights
-    service: switch.turn_on
-  - service: light.turn_on
-    data:
-      brightness: 255
-      kelvin: 4000
-      transition: 600
-    entity_id: light.garage_bulb_1, light.garage_bulb_2, light.garage_bulb_3
+    target:
+      entity_id:
+      - light.garage_patio_dimming_bulb
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.back_porch_lights
+      - switch.front_porch
   initial_state: 'on'
   mode: single
 - id: Outdoor_Lights_Off
@@ -54,57 +74,67 @@
     platform: sun
   action:
   - data: {}
-    entity_id: light.garage_patio_dimming_bulb,light.front_porch
     service: light.turn_off
-  - entity_id: switch.back_porch_lights
-    service: switch.turn_off
-  - service: light.turn_off
-    data:
-      transition: 600
-    entity_id: light.garage_bulb_1, light.garage_bulb_2, light.garage_bulb_3
+    target:
+      entity_id:
+      - light.garage_patio_dimming_bulb
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.back_porch_lights
+      - switch.front_porch
   initial_state: 'on'
   mode: single
 - id: lock_door
   alias: Lock Garage Door
   trigger:
-  - at: '21:00:00'
+  - at: '21:00'
     platform: time
   action:
-  - entity_id: lock.e_garage_entry_door
-    service: lock.lock
+  - service: lock.lock
+    data: {}
+    target:
+      entity_id:
+      - lock.e_garage_entry_door
+      - lock.w_garage_entry_deadbolt
   initial_state: 'on'
 - id: unlock_door
   alias: Unlock Garage Door
   trigger:
-  - at: 06:45:00
+  - at: 06:45
     platform: time
   action:
-  - entity_id: lock.e_garage_entry_door
-    service: lock.unlock
+  - service: lock.unlock
+    data: {}
+    target:
+      entity_id:
+      - lock.e_garage_entry_door
+      - lock.w_garage_entry_deadbolt
   initial_state: 'on'
 - id: 8241993d082e478eb2e1b38f2add9213
   alias: Notify if garage left open
-  initial_state: 'on'
   trigger:
   - platform: state
-    entity_id:
-    - binary_sensor.vision_zg8101_garage_door_detector_sensor
-    - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
-    to: 'on'
+    entity_id: binary_sensor.single_garage
+    to: open
     for:
       minutes: 3
+    from: closed
+  - platform: state
+    entity_id: binary_sensor.double_garage
+    to: open
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+    from: closed
   action:
-  - service: ifttt.trigger
+  - service: notify.mobile_app_beaucephus
     data:
-      event: garage_open
-  - service: notify.beau_pushbullet
-    data:
-      message: Garage door was left open
-      title: ''
-  - service: notify.erin_pushbullet
-    data:
-      message: Garage door was left open
-      title: ''
+      message: A garage door was left open
+      title: Garage Door Open
   - service: notify.alexa_media
     data:
       target:
@@ -112,10 +142,16 @@
       data:
         type: announce
       message: A garage door was left open.
+  - service: notify.mobile_app_erinlg
+    data:
+      message: A garage door was left open
+      title: Garage Door Open
+  initial_state: 'on'
 - id: '1563552008255'
   alias: Garage Door - Single Opening
   trigger:
-  - entity_id: binary_sensor.vision_zg8101_garage_door_detector_sensor_2
+  - entity_id:
+    - binary_sensor.single_garage
     from: 'off'
     platform: state
     to: 'on'
@@ -127,11 +163,20 @@
       - media_player.everywhere
       data:
         type: announce
-      message: The double garage door is opening.
+      message: The single garage door is opening.
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: The single garage door is opening
+      title: Garage Door Opening
+  - service: notify.mobile_app_erinsiphone
+    data:
+      message: The single garage door is opening
+      title: Garage Door Opening
 - id: '1563552930551'
   alias: Garage Door - Double Opening
   trigger:
-  - entity_id: binary_sensor.vision_zg8101_garage_door_detector_sensor
+  - entity_id:
+    - binary_sensor.double_garage
     from: 'off'
     platform: state
     to: 'on'
@@ -143,7 +188,15 @@
       - media_player.everywhere
       data:
         type: announce
-      message: The single garage door is opening
+      message: The double garage door is opening
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: The double garage door is opening
+      title: Garage Door Opening
+  - service: notify.mobile_app_erinsiphone
+    data:
+      message: The double garage door is opening
+      title: Garage Door Opening
 - id: '1572470799220'
   alias: Coop
   description: ''
@@ -160,68 +213,111 @@
   alias: Restore Climate
   description: Due to windows and doors closed
   trigger:
-  - entity_id: binary_sensor.e_bedroom_window_alarm
-    for: 00:02:00
+  - entity_id:
+    - binary_sensor.window_bedroom_e
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    platform: state
+    from: 'on'
+    to: 'off'
+  - entity_id:
+    - binary_sensor.window_bedroom_w
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: binary_sensor.w_bedroom_window_alarm
-    for: 00:02:00
+  - entity_id:
+    - binary_sensor.window_dining
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: binary_sensor.n_dining_window_alarm
-    for: 00:02:00
+  - entity_id:
+    - binary_sensor.window_dining_2
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: binary_sensor.s_kitchen_window_alarm
-    for: 00:02:00
+  - entity_id:
+    - binary_sensor.window_kitchen
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: binary_sensor.back_porch_door
-    for: 00:02:00
+  - entity_id:
+    - binary_sensor.window_kitchen_2
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: binary_sensor.s_kitchen_window_2
-    for: 00:02:00
+  - entity_id:
+    - binary_sensor.door_back_porch
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: binary_sensor.n_dining_window_2
-    for: 00:02:00
-    from: 'off'
-    platform: state
-    to: 'on'
+  - platform: state
+    entity_id:
+    - binary_sensor.door_front
+    from: 'on'
+    to: 'off'
   condition:
   - condition: state
-    entity_id: binary_sensor.e_bedroom_window_alarm
+    entity_id: binary_sensor.window_bedroom_e
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.w_bedroom_window_alarm
+    entity_id: binary_sensor.window_bedroom_w
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.n_dining_window_alarm
+    entity_id: binary_sensor.window_dining
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.s_kitchen_window_alarm
+    entity_id: binary_sensor.window_dining_2
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.back_porch_door
+    entity_id: binary_sensor.window_kitchen
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.window_kitchen_2
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.door_back_porch
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.door_front
     state: 'off'
   - condition: state
     entity_id: input_boolean.climate_state
-    state: 'on'
+    state: 'off'
   action:
   - data:
       preset_mode: none
     entity_id: climate.main
     service: climate.set_preset_mode
-  - data:
-      message: Thermostat has been restored
-    service: notify.beau_pushbullet
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: Climate has been restored
+      title: Climate Restored
   - data:
       data:
         type: announce
@@ -229,52 +325,91 @@
       target:
       - media_player.everywhere
     service: notify.alexa_media
-  - data: {}
-    entity_id: input_boolean.climate_state
-    service: input_boolean.turn_off
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.climate_state
+  - service: notify.mobile_app_erinsiphone
+    data:
+      message: Climate has been restored
+      title: Climate Restored
 - id: '1590164413627'
   alias: Turn off Climate
   description: Due to open door or window
   trigger:
-  - entity_id: binary_sensor.e_bedroom_window_alarm
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.window_bedroom_e
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  - entity_id: binary_sensor.w_bedroom_window_alarm
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.window_bedroom_w
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  - entity_id: binary_sensor.n_dining_window_alarm
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.window_dining
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  - entity_id: binary_sensor.s_kitchen_window_alarm
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.window_dining_2
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  - entity_id: binary_sensor.back_porch_door
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.window_kitchen
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  - entity_id: binary_sensor.s_kitchen_window_2
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.window_kitchen_2
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  - entity_id: binary_sensor.n_dining_window_2
-    for: 00:05:00
+  - entity_id:
+    - binary_sensor.door_back_porch
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
     from: 'off'
     platform: state
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.climate_state
-    state: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.door_front
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
   action:
   - data:
       preset_mode: away
@@ -287,17 +422,23 @@
       target:
       - media_player.everywhere
     service: notify.alexa_media
-  - data:
-      message: Thermostat has been turned off due to an open door or window
-    service: notify.beau_pushbullet
-  - data: {}
-    entity_id: input_boolean.climate_state
-    service: input_boolean.turn_on
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: Climate control has been turned off due to open door or window
+      title: Climate Turned Off
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.climate_state
+  - service: notify.mobile_app_erinsiphone
+    data:
+      message: Climate control has been turned off due to open door or window
+      title: Climate Turned Off
 - id: '1590506306244'
   alias: Lock Back Door at Night
   description: ''
   trigger:
-  - at: '21:00:00'
+  - at: '21:00'
     platform: time
   condition:
   - condition: state
@@ -311,31 +452,24 @@
   alias: Notify of Low Garage Temperature
   description: ''
   trigger:
-  - type: value
-    platform: device
-    device_id: de15b8f8ec56452da36723c5a9d641c9
-    entity_id: sensor.garage_therm_temp1
-    domain: sensor
-    below: 38
-    above: -100
+  - platform: numeric_state
+    entity_id: sensor.garage_thermostat_air_temperature
+    below: '35'
     for:
       hours: 0
       minutes: 5
       seconds: 0
-  condition:
-  - type: is_value
-    condition: device
-    device_id: de15b8f8ec56452da36723c5a9d641c9
-    entity_id: sensor.garage_therm_temp1
-    domain: sensor
-    below: 38
+      milliseconds: 0
+  condition: []
   action:
-  - service: notify.beau_pushbullet
+  - service: notify.mobile_app_beaucephus
     data:
-      message: The garage temperature is low!
-  - service: notify.erin_pushbullet
+      message: The garage is below 35 degrees.  Please check!
+      title: Garage Temperature is Low!
+  - service: notify.mobile_app_erinlg
     data:
-      message: The garage temperature is low!
+      message: The garage is below 35 degrees.  Please check!
+      title: Garage Temperature is Low!
   - service: notify.alexa_media
     data:
       data:
@@ -410,7 +544,7 @@
       - 198
       - 12
       - 48
-    entity_id: light.garage_bulb_1, light.garage_bulb_3, light.fence_led_controller_1
+    entity_id: light.garage_rgb_1, light.garage_rgb_3, light.fence_led_controller_1
   - service: light.turn_on
     data:
       brightness: 255
@@ -418,7 +552,7 @@
       - 0
       - 51
       - 141
-    entity_id: light.garage_bulb_2, light.fence_led_controller_2
+    entity_id: light.garage_rgb_2, light.fence_led_controller_2
   mode: single
 - id: '1611345575275'
   alias: Light Color to Wyo
@@ -434,18 +568,18 @@
     data:
       brightness: 255
       rgb_color:
-      - 73
-      - 47
-      - 36
-    entity_id: light.garage_bulb_1, light.garage_bulb_3, light.fence_led_controller_1
+      - 255
+      - 196
+      - 37
+    entity_id: light.garage_rgb_1, light.garage_rgb_3, light.fence_led_controller_1
   - service: light.turn_on
     data:
       brightness: 255
       rgb_color:
-      - 255
-      - 196
-      - 37
-    entity_id: light.garage_bulb_2, light.fence_led_controller_2
+      - 73
+      - 47
+      - 36
+    entity_id: light.garage_rgb_2, light.fence_led_controller_2
   mode: single
 - id: '1611969498244'
   alias: Light Color to Normal
@@ -460,8 +594,8 @@
   - service: light.turn_on
     data:
       brightness: 255
-      kelvin: 4000
-    entity_id: light.garage_bulb_1, light.garage_bulb_2, light.garage_bulb_3, light.fence_led_controller_1,
+      kelvin: 3500
+    entity_id: light.garage_rgb_1, light.garage_rgb_2, light.garage_rgb_3, light.fence_led_controller_1,
       light.fence_led_controller_2
   mode: single
 - id: '1611969622730'
@@ -491,4 +625,181 @@
   - service: input_boolean.turn_on
     data: {}
     entity_id: input_boolean.normal_lights
+  mode: single
+- id: '1612152035860'
+  alias: Garage Lights On With Door
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.single_garage
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.double_garage
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: 'switch.garageworkbenchlights, switch.garage_lights_main, switch.garage_kennel_lights '
+  mode: single
+- id: '1612152174776'
+  alias: Garage Lights Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.single_garage
+    from: 'on'
+    to: 'off'
+    for: 00:10:00
+  - platform: state
+    entity_id: binary_sensor.double_garage
+    from: 'on'
+    to: 'off'
+    for: 00:10:00
+  - platform: time
+    at: '21:00'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: 'switch.garageworkbenchlights, switch.garage_lights_main, switch.garage_kennel_lights '
+  mode: single
+- id: '1640671010395'
+  alias: Low battery level detection & notification for all battery sensors
+  description: ''
+  use_blueprint:
+    path: gmlupatelli/low_battery_notification.yaml
+    input:
+      actions:
+      - service: notify.mobile_app_beaucephusiphone
+        data:
+          message: A sensor battery is low, check HA!
+          title: Sensor Battery Low
+- id: '1643764503476'
+  alias: Gate Motion Detected
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.gate_keypad_motion
+    to: 'on'
+    id: Motion Detected
+  condition:
+  - condition: time
+    after: 08:00
+    before: '21:00'
+  action:
+  - service: notify.alexa_media
+    data:
+      message: Motion Has Been Detected at the Gate
+      target:
+      - media_player.everywhere
+      data:
+        type: announce
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: Motion Has Been Detected at the Gate
+      title: Gate Motion Detected
+  mode: single
+- id: '1643764712042'
+  alias: Gate Notify if Ring is Pressed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.gate_keypad_ding
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.alexa_media
+    data:
+      message: Someone is at the gate and pressed the Ring, please respond
+      target:
+      - media_player.everywhere
+      data:
+        type: announce
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: Someone is at the gate and pressed the Ring, please respond
+      title: Ring Doorbell Pressed
+  - service: notify.mobile_app_erinsiphone
+    data:
+      message: Someone is at the gate and pressed the Ring, please respond
+      title: Ring Doorbell Pressed
+  mode: single
+- id: '1671583537019'
+  alias: Office Heat Pump Heat
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00:00
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.office_temperature
+      below: 64
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+  action:
+  - service: remote.send_command
+    data:
+      entity_id: remote.office_remote
+      command:
+      - b64:JgAGAWw1Dg0PDQ4oDg4OKA4NDg4ODQ0pDygODQ4ODg0OKA8nDw0ODg4NDg4ODQ4ODg0ODg4NDg4ODQ4ODg0OKA8NDg0PDQ4NDw0ODQ8NDigODg4NDg4ODQ4oDygOKA4oDigOKA4oDygODQ4ODigODQ8NDg0PDQ4NDw0ODQ8NDigOKA4ODg0OKA8NDg0PDQ4NDw0OKA4ODg0ODg4oDg0PDQ4NDw0ODQ8NDg0PDQ4ODigODQ4ODg0ODg4NDg4ODQ4ODg0PDQ4NDw0ODQ8NDg0ODg4NDw0ODQ8NDg0PDQ4NDw0ODg4NDg4MDw4ODg0ODg4NDigPDQ4NDigPKA4NDigPJw8NDigODg4ADQU=
+      - b64:JgAGAWo3DQ8MDw0pDQ8MKg0ODQ8MEAwqDSkNDg0PDA8OKQ0pDA8NDwwPDQ8MDw0PDQ4NDwwPDQ8MDw4ODA8NKg0ODQ8MDw0PDA8NDwwPDSkODg0ODQ8MDw0qDSkNKQ0pDSkNKQ4pDSkNDg0PDCoNDg0PDA8NDw0ODQ8NDwwPDCoNKQ4ODA8NDwwPDQ8NDg0qDQ4NKQ4ODQ4ODg0pDBAMDw0PDA8NDwwPDBAMDw0PDSkNDg4ODA8NDwwPDQ8MDw0PDQ4NDwwPDg4MDw4ODBANDgwQDA8MEA0ODBANDg0PDA8NDwwPDQ8MDw0PDA8NDw0ODSkNDw0ODQ8NDg4pDSkNDg0PDCoNDwwADQU=
+      - b64:JgAGAWo2DQ8NDg4oDg4MKg0PDA8NDwwqDSkNDwwPDQ8MKg0pDQ4ODgwPDQ8NDg4ODA8NDw0PDA8MEAwPDBAMKgwPDQ8MDw0PDQ4NDwwPDigNDw0PDQ4NDw0pDSkNKQ0pDSkNKg0pDSkNDg0PDCoNDw0ODQ8NDg0PDQ4NDw0ODSkOKA4ODQ8MDwwQDA8NDwwqDSkMKg0PDA8NDwwPDQ8NDg4ODQ4ODg0ODg4NDg4ODSkNDwwPDBAMDwwQDA8MEA0ODQ8MDw0PDA8NDwwPDQ8MDw0PDQ4NDw0ODQ8NDg4ODA8ODg0ODQ8MDw4ODQ4NDw0ODSoNDg0PDQ4NDwwPDQ8MKg0pDQ8MDw0ADQU=
+      - b64:JgAGAWo3DA8NDwwqDQ8NKQwPDQ8MDw0pDSoNDg0PDQ4NKQ4oDg4MEA0ODBAMDwwQDA8NDwwPDQ8NDg0PDA8NKQ4ODA8ODgwPDg4MDw0PDCoNDwwPDQ8MDw0pDSkNKgwqDSkNKQ0pDigNDwwQDCoNDg0PDA8NDwwPDQ8NDg0PDCoNKQ0PDQ4NDwwPDQ8MDw0pDQ8NKQwQDA8MEAwqDA8NDwwPDg4MDw0PDA8NDwwPDSoNDg0PDA8NDwwPDQ8MDw0PDA8NDw0ODQ8MDw0PDA8NDw0ODQ8MDw0PDA8NDw0ODQ8MDw4ODQ4NDwwPDQ8NDg0PDCoNDw0ODQ8MDw0pDigNDwwQDCoMDw0ADQU=
+      - b64:JgB2AGs2DA8NDw0pDQ8NKQ0ODQ8MDw4pDSkNDg0PDA8NKQ4pDQ4MEAwPDQ8NDg0PDQ4NDwwPDQ8MDw0PDQ4NKQ4ODQ4NDwwPDg4NDg4ODCoNDwwPDQ8MKgwPDg4MKg0pDSkODgwPDg4MKg0pDg4NDg4ODCoNKQ4ADQU=
+  mode: single
+- id: '1671583552898'
+  alias: Office Heat Pump Off
+  description: ''
+  trigger:
+  - platform: time
+    at: '15:45:00'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  action:
+  - service: remote.send_command
+    data:
+      entity_id: remote.office_remote
+      command: b64:JgB2AGo3Dg0NDw4oDg0PKAwPDBAMDw0pDSkNDw4NDQ8MKg0pDQ8ODQ0PDA8ODgwPDQ8MDw0PDg0NDwwPDQ8MKg4ODA8NDw4NDQ8ODQ0PDCoODQ0PDg0NDw4oDQ8MDw0PDA8NDwwPDSkODgwqDCoNKQ0qDigOKA4ADQU=
+  mode: single
+- id: '1671583564921'
+  alias: Office Heat Pump Cool
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00:00
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.office_temperature
+      above: 72
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+  action:
+  - service: remote.send_command
+    data:
+      entity_id: remote.office_remote
+      command:
+      - b64:JgAGAWw1Dg0PDQ4oDg4OKA4NDg4ODQ0pDygODQ4ODg0OKA8nDw0ODg4NDg4ODQ4ODg0ODg4NDg4ODQ4ODg0OKA8NDg0PDQ4NDw0ODQ8NDigODg4NDg4ODQ4oDygOKA4oDigOKA4oDygODQ4ODigODQ8NDg0PDQ4NDw0ODQ8NDigOKA4ODg0OKA8NDg0PDQ4NDw0OKA4ODg0ODg4oDg0PDQ4NDw0ODQ8NDg0PDQ4ODigODQ4ODg0ODg4NDg4ODQ4ODg0PDQ4NDw0ODQ8NDg0ODg4NDw0ODQ8NDg0PDQ4NDw0ODg4NDg4MDw4ODg0ODg4NDigPDQ4NDigPKA4NDigPJw8NDigODg4ADQU=
+      - b64:JgAGAWs2DQ8MDw0pDg4MKg0PDA8MEA0pDSkNDg4ODQ4NKg0pDQ4NDw0ODQ8MDw0PDA8NDw0ODQ8MDw4ODQ4OKQ0ODQ8NDg0PDQ4NDwwPDSkODgwPDQ8MDw0qDSkNKQ0pDSkNKQ4pDSkNDg4ODCoNDg0PDA8ODgwPDQ8NDwwPDSkNKQ4ODA8NDw0ODQ8MDw4pDQ4NKQ0PDSkNDg4ODBAMDwwQDQ4NDw0ODQ8NDg0PDCoNDg4ODQ4ODgwPDQ8NDg0PDA8ODg0ODQ8NDg0PDQ8MDwwQDA8NDwwPDQ8MDw0PDA8NDw0ODQ8MDw0PDA8NDw0ODigODg0ODikNKQ0pDSkNDw0ODSkODg0ADQU=
+      - b64:JgAGAWo2Dg4MDw0pDg4MKg0PDA8NDw0pDSkMEAwPDQ8MKgwqDQ4NDwwQDA8MDw0PDBANDg0PDQ4NDwwPDQ8MKgwPDQ8NDg0PDQ4NDw0ODSoMDw0PDA8NDwwqDCoMKg0pDSkOKQ0pDSkNDg4ODCoNDwwPDQ8MDw0PDQ4NDwwPDSkOKQ0ODQ8MDw0PDA8NDwwPDQ8NKQwPDg4NDg0PDQ4NDw0ODQ8MEA0ODBAMDw0PDSkNDg0PDA8NDw0ODQ8NDg0PDA8ODg0ODQ8MDw4ODBANDgwPDg4MEAwPDBAMDwwQDA8NDw0ODQ8MDw0PDA8NDwwPDSkNDwwPDQ8NDg4ODQ4NDwwqDSkNDwwADQU=
+      - b64:JgAGAWo3DA8NDwwqDQ8NKQwPDQ8MDw0pDSoNDg0PDQ4NKQ4oDg4MEA0ODBAMDwwQDA8NDwwPDQ8NDg0PDA8NKQ4ODA8ODgwPDg4MDw0PDCoNDwwPDQ8MDw0pDSkNKgwqDSkNKQ0pDigNDwwQDCoNDg0PDA8NDwwPDQ8NDg0PDCoNKQ0PDQ4NDwwPDQ8MDw0pDQ8NKQwQDA8MEAwqDA8NDwwPDg4MDw0PDA8NDwwPDSoNDg0PDA8NDwwPDQ8MDw0PDA8NDw0ODQ8MDw0PDA8NDw0ODQ8MDw0PDA8NDw0ODQ8MDw4ODQ4NDwwPDQ8NDg0PDCoNDw0ODQ8MDw0pDigNDwwQDCoMDw0ADQU=
+      - b64:JgB2AGs2DA8NDw0pDQ8NKQ0ODQ8MDw4pDSkNDg0PDA8NKQ4pDQ4MEAwPDQ8NDg0PDQ4NDwwPDQ8MDw0PDQ4NKQ4ODQ4NDwwPDg4NDg4ODCoNDwwPDQ8MKgwPDg4MKg0pDSkODgwPDg4MKg0pDg4NDg4ODCoNKQ4ADQU=
+  - service: notify.mobile_app_beaucephusiphone
+    data:
+      message: Office heat pump has been turned on to cool
+      title: Office Heat Pump Cool
+  - service: notify.mobile_app_erinsiphone
+    data:
+      title: Office Heat Pump Cool
+      message: Office heat pump has been turned on to cool.  Now get your ass to work!!
   mode: single

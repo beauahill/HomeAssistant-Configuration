@@ -69,17 +69,17 @@ automation:
   trigger:
   - platform: state
     entity_id: 
-     - binary_sensor.back_porch_door
-     - binary_sensor.vision_zg8101_garage_door_detector_sensor
-     - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
-     - binary_sensor.front_door
-     - binary_sensor.w_garage_door_sensor
-     - binary_sensor.e_garage_door_sensor
-     - binary_sensor.e_bedroom_window_alarm
-     - binary_sensor.n_dining_window_alarm
-     - binary_sensor.s_kitchen_window_alarm
-     - binary_sensor.w_bedroom_window_alarm
-    to: 'on'
+     - binary_sensor.single_garage
+     - binary_sensor.double_garage
+     - binary_sensor.door_back_porch
+     - binary_sensor.door_front
+     - binary_sensor.window_kitchen
+     - binary_sensor.window_kitchen_2
+     - binary_sensor.window_dining
+     - binary_sensor.window_dining_2
+     - binary_sensor.window_bedroom_e
+     - binary_sensor.window_bedroom_w
+    to: 'open'
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
@@ -89,7 +89,7 @@ automation:
     entity_id: alarm_control_panel.home_alarm
   - service: ifttt.trigger
     data: {"event":"alarm_away"}
-  - service: notify.beau_pushbullet
+  - service: notify.mobile_app_iphone
     data:
       message: "HOME ALARM TRIGGERED"
       title: "ALARM TRIGGERED"
@@ -123,13 +123,11 @@ automation:
   trigger:
   - platform: state
     entity_id: 
-     - binary_sensor.back_porch_door
-     - binary_sensor.vision_zg8101_garage_door_detector_sensor
-     - binary_sensor.vision_zg8101_garage_door_detector_sensor_2
-     - binary_sensor.front_door
-     - binary_sensor.w_garage_door_sensor
-     - binary_sensor.e_garage_door_sensor
-    to: 'on'
+     - binary_sensor.single_garage
+     - binary_sensor.double_garage
+     - binary_sensor.door_back_porch
+     - binary_sensor.door_front
+    to: 'open'
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
@@ -139,7 +137,7 @@ automation:
     entity_id: alarm_control_panel.home_alarm
   - service: ifttt.trigger
     data: {"event":"alarm_home"}
-  - service: notify.beau_pushbullet
+  - service: notify.mobile_app_iphone
     data:
       message: "HOME ALARM TRIGGERED"
       title: "ALARM TRIGGERED"

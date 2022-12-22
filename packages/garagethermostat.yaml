@@ -40,7 +40,7 @@ automation:
     entity_id: sensor.garage_therm_battery
     below: 20
   action:
-  - service: notify.beau_pushbullet
+  - service: notify.mobile_app_iphone
     data: 
       message: "Garage Thermostat Battery Low!"
       title: ""

@@ -26,67 +26,92 @@ sensor:
          {% endif %}
 
 automation:
-- alias: Toggle Gate
-  trigger: 
-  - platform: state
-    entity_id: input_boolean.gate_control
-    to: 'on'
+#- alias: Toggle Gate
+#  trigger: 
+#  - platform: state
+#    entity_id: input_boolean.gate_control
+#    to: 'on'
 #  action:
 #  - service: ifttt.trigger
 #    data: {"event":"gate_control"}
-  action:
-  - service: switch.turn_on
-    data: {}
-    entity_id: switch.gate_opener_2
-  mode: single
+#  action:
+#  - service: switch.turn_on
+#    data: {}
+#    entity_id: switch.gate_opener_2
+#  mode: single
 
-- alias: Toggle Gate Off
-  trigger: 
-  - platform: state
-    entity_id: input_boolean.gate_control
-    to: 'off'
+#- alias: Toggle Gate Off
+#  trigger: 
+#  - platform: state
+#    entity_id: input_boolean.gate_control
+#    to: 'off'
 #  action:
 #  - service: ifttt.trigger
 #    data: {"event":"gate_control"}
-  action:
-  - service: switch.turn_on
-    data: {}
-    entity_id: switch.gate_opener_2
-  mode: single
+#  action:
+#  - service: switch.turn_on
+#    data: {}
+#    entity_id: switch.gate_opener_2
+#  mode: single
   
-- alias: Alexa notify if motion at gate
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.gate_keypad_motion
-    to: 'on'
-  condition:
-    condition: time
-    # At least one of the following is required.
-    after: '08:00:00'
-    before: '21:00:00'
-  action:
-  - data:
-      data:
-        type: announce
-      message: Motion has been detected at the gate
-      target:
-      - media_player.everywhere
-    service: notify.alexa_media 
-
-- alias: Alexa notify if ring is pressed
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.gate_keypad_ding
-    to: 'on'
-  action:
-  - data:
-      data:
-        type: announce
-      message: Someone is at the gate and pressed the Ring, please respond
-      target:
-      - media_player.everywhere
-    service: notify.alexa_media 
+#- alias: Alexa notify if motion at gate
+#  initial_state: 'on'
+#  trigger:
+#  - platform: state
+#    entity_id: binary_sensor.gate_keypad_motion
+#    to: 'on'
+#  condition:
+#    condition: time
+#    # At least one of the following is required.
+#    after: '08:00:00'
+#    before: '21:00:00'
+#  action:
+#  - data:
+#      data:
+#        type: announce
+#      message: Motion has been detected at the gate
+#      target:
+#      - media_player.everywhere
+#    service: notify.alexa_media 
+#  - data:
+#      data:
+#       type: announce
+#      message: Motion Has Been Detected at the Gate
+#      title: Motion Detected at Gate
+#    service: notify.mobile_app_beaucephus
+#  - data:
+#      data:
+#       type: announce
+#      message: Motion Has Been Detected at the Gate
+#      title: Motion Detected at Gate
+#    service: notify.mobile_app_erinlg
+    
+    
+#- alias: Alexa notify if ring is pressed
+#  trigger:
+#  - platform: state
+#    entity_id: binary_sensor.gate_keypad_ding
+#    to: 'on'
+#  action:
+#  - data:
+#      data:
+#        type: announce
+#      message: Someone is at the gate and pressed the Ring, please respond
+#      target:
+#      - media_player.everywhere
+#    service: notify.alexa_media 
+#  - data:
+#      data:
+#       type: announce
+#      message: Someone is at the gate and pressed the Ring, please respond
+#      title: Someone Pressed the Ring
+#    service: notify.mobile_app_beaucephus
+#  - data:
+#      data:
+#       type: announce
+#      message: Someone is at the gate and pressed the Ring, please respond
+#      title: Someone Pressed the Ring
+#    service: notify.mobile_app_erinlg
      
     
      
